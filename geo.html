@@ -9766,7 +9766,9 @@ function set_map_width(width) {
 
 function set_color_of_region(country_code, color, type) {
     if(type == undefined) type = "fill";
-    var node_list = g_map.getElementsByClassName(country_code);
+    var node_list;
+    if(g_map.getElementsByClassName == undefined) node_list = document.getElementsByClassName(country_code);
+    else node_list = g_map.getElementsByClassName(country_code);
     for(var i = 0, length = node_list.length; i < length; i++) {
         node_list[i].style[type] = color;
     }
