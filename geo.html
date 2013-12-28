@@ -9680,7 +9680,9 @@ function timerStart(onReady, ready, ID, waitTime)
     return;
 }
 
-function shade_color(color, percent) {
+function shade_color(state, percent) {
+    if(state.hover_color != undefined) return state.hover_color;
+    var color = state.color;
     var num = parseInt(color.slice(1),16), amt = Math.round(2.55 * percent), R = (num >> 16) + amt, G = (num >> 8 & 0x00FF) + amt, B = (num & 0x0000FF) + amt;
     return "#" + (0x1000000 + (R<255?R<1?0:R:255)*0x10000 + (G<255?G<1?0:G:255)*0x100 + (B<255?B<1?0:B:255)).toString(16).slice(1);
 }
@@ -9688,17 +9690,17 @@ function shade_color(color, percent) {
 var g_key_return = 13;
 
 var g_use_hover = 0;
-var g_state = { inactive    :{color:"#e0e0e0", show_hover:0, show_info:0, flag_opacity:1.0},
-                active      :{color:"#ffff00", show_hover:1, show_info:0, flag_opacity:1.0},
-                paused      :{color:"#ffffb0", show_hover:1, show_info:1, flag_opacity:1.0},
-                wrong       :{color:"#ffb0b0", show_hover:1, show_info:1, flag_opacity:0.3},
-                correct     :{color:"#b0ffb0", show_hover:1, show_info:1, flag_opacity:0.3},
-                prev_wrong  :{color:"#ff3030", show_hover:1, show_info:1, flag_opacity:0.6},
-                highlight   :{color:"#ff80ff", show_hover:1, show_info:0, flag_opacity:1.0} };
+var g_state = { inactive    :{color:"#e0e0e0", show_hover:0, show_info:0, flag_opacity:1.0, hover_color:"#e0e0e0"},
+                active      :{color:"#00a050", show_hover:1, show_info:0, flag_opacity:1.0, hover_color:"#ff60ff"},
+                paused      :{color:"#00c060", show_hover:1, show_info:1, flag_opacity:1.0, hover_color:"#ff60ff"},
+                wrong       :{color:"#ff6060", show_hover:1, show_info:1, flag_opacity:0.3, hover_color:"#ffa0a0"},
+                correct     :{color:"#00ff00", show_hover:1, show_info:1, flag_opacity:0.3, hover_color:"#70e070"},
+                prev_wrong  :{color:"#ff2020", show_hover:1, show_info:1, flag_opacity:0.6, hover_color:"#ffa0a0"},
+                highlight   :{color:"#ff00ff", show_hover:1, show_info:0, flag_opacity:1.0, hover_color:"#ff60ff"} };
 
 var g_stroke_color = "#000000";
 var g_water_color = "#2020ff";
-var g_hover_shade_percent = 50;
+var g_hover_shade_percent = 30;
 
 var g_flag = {};
 var g_flag_type = "png";
@@ -9785,7 +9787,7 @@ function set_country_map_state(country_code, state) {
     else g_list[country_code].map_state = state;
     
     if(g_use_hover && g_mouse_position == country_code && state.show_hover == 1 && (g_game_state == 'off' || g_mouse_place == 'map')) {
-        set_color_of_region(country_code, shade_color(g_list[country_code].map_state.color, g_hover_shade_percent));
+        set_color_of_region(country_code, shade_color(g_list[country_code].map_state, g_hover_shade_percent));
     } else {
         set_color_of_region(country_code, g_list[country_code].map_state.color);
     }
