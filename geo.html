@@ -72,6 +72,32 @@
     border-style: solid;
 }
 
+.menu_info_header {
+    display: inline;
+    position: relative;
+    background-color: #e0ffe0;
+    border-color: #ff0000;
+    border-style: solid;
+    border-width: 3px;
+    top: 0px;
+}
+
+.menu_info_header:hover {
+    background-color: #b0ffb0;
+    cursor: pointer;
+    cursor: hand;
+}
+
+.menu_sub_info {
+    display: none;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background-color: #e0e0e0;
+    border-color: #00ff00;
+    border-style: solid;
+}
+
 .menu_desc {
     display: inline;
     margin-right: 3px;
@@ -157,38 +183,90 @@
     </style>
         <div id="main_menu" class="menu_top">
             <div id="menu_info_header" class="menu_top_header" onmousedown="toggle_menu(event, 'menu_sub')">
-                Info
-                <div id="menu_display" class="menu_sub">
-                    <div class="menu_desc">Hjälp</div>
-                    <div class="menu_choice_group">
-                        <ul>
-                            <li><div class="menu_desc">Använd menyn högst upp för att ställa in, sen kör igång</div>
-                            <li><div class="menu_desc">Mer hjälp kommer</div>
-                        </ul>
+                Hjälp/Info
+                <div id="menu_info" class="menu_sub">
+                    <div id="menu_info_help_header" class="menu_info_header" onmousedown="toggle_menu(event, 'menu_sub_info')">
+                        Hjälp
+                        <div id="menu_info_help" class="menu_sub_info">
+                            <div class="menu_choice_group">
+                                <ul>
+                                    <li><div class="menu_desc">Använd menyn högst upp för att ställa in, sen kör igång</div>
+                                    <li><div class="menu_desc">Mer hjälp kommer</div>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                    <div class="menu_desc">Info</div>
-                    <div class="menu_choice_group">
-                        <ul>
-                            <li><div class="menu_desc">Vilka områden som räknas som länder är baserat på [LÄNK KOMMER]. Jag har för närvarande [december 2013] med alla medlemsländer i FN samt Taiwan, Kosovo och Vatikanstaten. Jag har inte med [NAMN KOMMER] eftersom de inte har något associerat geografiskt område.</div>
-                        </ul>
+                    <div id="menu_info_info_header" class="menu_info_header" onmousedown="toggle_menu(event, 'menu_sub_info')">
+                        Info
+                        <div id="menu_info_info" class="menu_sub_info">
+                            <div class="menu_choice_group">
+                                <ul>
+                                    <li><div class="menu_desc">Vilka områden som räknas som länder är baserat på <a href="https://sv.wikipedia.org/wiki/Lista_%C3%B6ver_sj%C3%A4lvst%C3%A4ndiga_stater">Wikipedia: Lista över självständiga stater</a>. Jag har för närvarande [december 2013] med alla medlemsländer i FN samt Taiwan, Kosovo och Vatikanstaten. Jag har inte med "Den suveräna militära hospitalsorden av sankt Johannes av Jerusalem, av Rhodos och av Malta" (Malteserorden) eftersom de inte har något associerat geografiskt område.</div>
+                                    <li><div class="menu_desc">Information om länderna hämtas automatiskt, så fel kan förekomma och får gärna rapporteras om de upptäcks. Se kontaktinformation nedan.</div></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                    <div class="menu_desc">Källor</div>
-                    <div class="menu_choice_group">
-                        <ul>
-                            <li><div class="menu_desc">Namn på länder och huvudstäder kommer från svenska wikipedia, hämtade december 2013</div>
-                            <li><div class="menu_desc">Lista på länder som ingår i FN hämtade från svenska wikipedia december 2013. [LÄNK KOMMER]</div>
-                            <li><div class="menu_desc">Kartan är en aningen modifierad version av en karta från wikimedia commons hämtad december 2013. [LÄNK KOMMER]</div>
-                            <li><div class="menu_desc">Flaggorna är hämtade via svenska wikipedia-sidan för listan över FN-länder [LÄNK KOMMER]</div>
-                        </ul>
+                    <div id="menu_info_sources_header" class="menu_info_header" onmousedown="toggle_menu(event, 'menu_sub_info')">
+                        Källor
+                        <div id="menu_info_sources" class="menu_sub_info">
+                            <div class="menu_choice_group">
+                                <ul>
+                                    <li><div class="menu_desc">Namn på länder och huvudstäder kommer från ländernas respektive sida på svenska wikipedia, hämtade december 2013.</div>
+                                    <li><div class="menu_desc">Lista på länder som ingår i FN hämtade från <a href="https://sv.wikipedia.org/wiki/F%C3%B6renta_nationernas_medlemsstater">Wikipedia: Förenta nationernas medlemsstater</a> december 2013.</div>
+                                    <li><div class="menu_desc">Kartan är en aningen modifierad version av en <a href="http://en.wikipedia.org/wiki/File:BlankMap-World-Microstates.svg">karta från wikipedia</a> hämtad december 2013.</div>
+                                    <li><div class="menu_desc">Flaggorna är hämtade via <a href="https://sv.wikipedia.org/wiki/F%C3%B6renta_nationernas_medlemsstater">Wikipedia: Förenta nationernas medlemsstater</a> december 2013.</div>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                    <div class="menu_desc">TODO</div>
-                    <div class="menu_choice_group">
-                        <ul>
-                            <li><div class="menu_desc">Lägga till fler filter och val av vilka länder som (inte) ska vara med, t ex "FN-länder", "ö-länder", mm.</div>
-                            <li><div class="menu_desc">Lägga till numerisk data hämtad automatiskt från lämpliga källor, t ex antal invånare och areal på länder, så att det kan användas för att filtrera länder, t ex endast länder med mer än 100 000 invånare.</div>
-                            <li><div class="menu_desc">Använda numerisk data till fler saker, t ex färga kartan efter den numeriska datan. Borde vara enkelt att implementera och skulle vara väldigt intressant att få igång.</div>
-                            <li><div class="menu_desc">Göra så att man kan filtrera på "endast länder jag inte klarade" så att man kan repetera.</div>
-                        </ul>
+                    <div id="menu_info_problem_header" class="menu_info_header" onmousedown="toggle_menu(event, 'menu_sub_info')">
+                        Kända problem
+                        <div id="menu_info_problem" class="menu_sub_info">
+                            <div class="menu_choice_group">
+                                <ul>
+                                    <li><div class="menu_desc">Kartan kan vara ganska slö i vissa webbläsare. Avaktivering av "Hover"-effekten under Utseende-menyn förbättrar situationen lite.</div></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="menu_info_contact_header" class="menu_info_header" onmousedown="toggle_menu(event, 'menu_sub_info')">
+                        Kontakt
+                        <div id="menu_info_contact" class="menu_sub_info">
+                            <div class="menu_choice_group">
+                                <ul>
+                                    <li><div class="menu_desc">Kontakt-adress finns längst ner på sidan.</div></li>
+                                    <li><div class="menu_desc">För närvarande finns ingen hemsida för spelet. Senaste versionen kan laddas ner på <a href="https://github.com/boriscc/geo/releases">github-sidan</a>.</div></li>
+                                    <li><div class="menu_desc">Problem kan rapporteras via <a href="https://github.com/boriscc/geo/issues/new">githubs Issue</a> eller via mail-adressen längst ner på sidan.</div></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="menu_info_compatibility_header" class="menu_info_header" onmousedown="toggle_menu(event, 'menu_sub_info')">
+                        Kompatibilitet
+                        <div id="menu_info_compatibility" class="menu_sub_info">
+                            <div class="menu_choice_group">
+                                <ul>
+                                    <li><div class="menu_desc">Chrome 31.0.1650.63, Windows 8.1: Fungerar bra</div></li>
+                                    <li><div class="menu_desc">Firefox 26.0, Windows 8.1: Fungerar bra</div></li>
+                                    <li><div class="menu_desc">Safari 5.1.7, Windows 8.1: Fungerar bra</div></li>
+                                    <li><div class="menu_desc">Internet Explorer 11.0, Windows 8.1: Fungerar, men kartan visas inte korrekt när man zoomar in</div></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="menu_info_todo_header" class="menu_info_header" onmousedown="toggle_menu(event, 'menu_sub_info')">
+                        TODO
+                        <div id="menu_info_todo" class="menu_sub_info">
+                            <div class="menu_choice_group">
+                                <ul>
+                                    <li><div class="menu_desc">Lägga till fler filter och val av vilka länder som (inte) ska vara med, t ex "FN-länder", "ö-länder", mm.</div>
+                                    <li><div class="menu_desc">Lägga till numerisk data hämtad automatiskt från lämpliga källor, t ex antal invånare och areal på länder, så att det kan användas för att filtrera länder, t ex endast länder med mer än 100 000 invånare.</div>
+                                    <li><div class="menu_desc">Använda numerisk data till fler saker, t ex färga kartan efter den numeriska datan. Borde vara enkelt att implementera och skulle vara väldigt intressant att få igång.</div>
+                                    <li><div class="menu_desc">Göra så att man kan filtrera på "endast länder jag inte klarade" så att man kan repetera.</div>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -10002,7 +10080,9 @@ function toggle_menu(event, cls) {
         g_menu[cls].checked.elem = undefined;
     }
     
-    if(event != undefined && event.stopPropagation != undefined) event.stopPropagation();
+    if(event != undefined && event.stopPropagation != undefined) {
+        event.stopPropagation();
+    }
 }
 
 function close_menu(event, cls) {
@@ -10302,6 +10382,14 @@ function init() {
     var top_padding_size = document.getElementById('main_menu').clientHeight;
     document.getElementById('top_padding').style.height = top_padding_size + "px";
     var list = document.getElementsByClassName('menu_sub');
+    for(var i = 0; i < list.length; i++) {
+        list[i].style.top = top_padding_size + "px";
+    }
+    
+    document.getElementById('menu_info').style.display = 'inline';
+    top_padding_size = document.getElementById('main_menu').clientHeight + document.getElementById('menu_info').clientHeight + 4;
+    document.getElementById('menu_info').style.display = 'none';
+    list = document.getElementsByClassName('menu_sub_info');
     for(var i = 0; i < list.length; i++) {
         list[i].style.top = top_padding_size + "px";
     }
