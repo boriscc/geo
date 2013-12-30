@@ -339,6 +339,7 @@ li {
                         <div class="menu_choice" id="guess_location">Landets plats</div>
                         <div class="menu_choice" id="guess_flag">Landets flagga</div>
                     </div>
+                    <div class="menu_choice" id="guess_in_order" onclick="set_choice(event, 'guess_in_order')">Förbestämd ordning</div>
                 </div>
             </div><div id="menu_aid_header" class="menu_top_header" onclick="toggle_menu(event, 'menu_sub')">
                 Hjälpmedel
@@ -893,7 +894,8 @@ var g_game_guess = undefined;
 var g_game_country_list = [];
 var g_game_show_active;
 var g_game_show_done;
-var g_game_correct_nr, g_game_done_nr, g_game_total_nr;
+var g_game_correct_nr, g_game_done_nr, g_game_total_nr, g_game_guess_nr;
+var g_game_in_order;
 var g_filter_reg = {};
 
 var g_zoom = {};
@@ -1250,9 +1252,11 @@ function start_game() {
     document.getElementById('menu_start_button').innerHTML = 'AVSLUTA';
     g_game_show_active = (choice_get_id('help_show_active') != undefined);
     g_game_show_done = (choice_get_id('help_show_done') != undefined);
+    g_game_in_order = (choice_get_id('guess_in_order') != undefined);
     
     g_game_correct_nr = 0;
     g_game_done_nr = 0;
+    g_game_guess_nr = 0;
     g_game_total_nr = g_game_country_list.length;
     
     clear_flags();
@@ -1311,13 +1315,21 @@ function game_show_results() {
     if(g_game_state != 'on' || g_game_done_nr != g_game_total_nr) alert('Internal error 5');
     
     var state;
-    if(g_game_correct_nr < g_game_total_nr) state = 'bad';
-    else state = 'good';
-    show_message('Du hade ' + g_game_correct_nr + ' av ' + g_game_total_nr + ' rätt.', state);
+    
+    if(g_game_in_order) {
+        if(g_game_correct_nr < g_game_total_nr) state = 'bad';
+        else state = 'good';
+        show_message('Du hade ' + g_game_correct_nr + ' av ' + g_game_total_nr + ' rätt.', state);
+    } else {
+        if(g_game_guess_nr == g_game_total_nr) state = 'good';
+        else state = 'bad';
+        show_message('Du hade ' + (g_game_guess_nr - g_game_total_nr) + ' felaktiga gissningar', state);
+    }
 }
 
 function game_show_help() {
     if(g_game_state != 'on' || g_game_done_nr == g_game_total_nr) alert('Internal error 6');
+    if(g_game_in_order == false) return;
     
     var id = g_game_country_list[g_game_done_nr].country_code;
     
@@ -1334,60 +1346,95 @@ function game_show_help() {
     }
 }
 
-function make_guess(val) {
-    if(g_game_state == 'off' || g_game_done_nr == g_game_total_nr) return;
+function game_get_correct(id) {
+    var correct, correct_disp;
     
-    var correct;
-    var correct_disp;
-    val = encodeURIComponent((val + "").trim().replace(/ /g, '_').toLowerCase()).toLowerCase();
     if(g_game_guess == 'guess_name') {
-        correct_disp = decodeURIComponent(g_list[g_game_country_list[g_game_done_nr].country_code].name.replace(/_/g, ' '));
+        correct_disp = decodeURIComponent(g_list[g_game_country_list[id].country_code].name.replace(/_/g, ' '));
         correct = encodeURIComponent(correct_disp.replace(/ /g, '_').toLowerCase()).toLowerCase();
     } else if(g_game_guess == 'guess_capital') {
-        correct_disp = decodeURIComponent(g_list[g_game_country_list[g_game_done_nr].country_code].cap.replace(/_/g, ' '));
+        correct_disp = decodeURIComponent(g_list[g_game_country_list[id].country_code].cap.replace(/_/g, ' '));
         correct = encodeURIComponent(correct_disp.replace(/ /g, '_').toLowerCase()).toLowerCase();
     } else if(g_game_guess == 'guess_location') {
-        correct = g_game_country_list[g_game_done_nr].country_code;
+        correct = g_game_country_list[id].country_code;
     } else if(g_game_guess == 'guess_flag') {
-        correct = g_game_country_list[g_game_done_nr].country_code;
+        correct = g_game_country_list[id].country_code;
     } else {
         alert('Internal error 4');
     }
+    var country_code = g_game_country_list[id].country_code;
     
-    var id = g_game_country_list[g_game_done_nr].country_code;
-    if(val == correct) {
-        g_game_correct_nr++;
-        g_game_country_list[g_game_done_nr].correct = 1;
-        if(g_game_show_done) {
-            set_country_map_state(id, g_state.correct);
-            set_country_flag_state(id, g_state.correct);
+    return { country_code: country_code, val: correct, disp: correct_disp };
+}
+
+function make_guess(val) {
+    if(g_game_state == 'off' || g_game_done_nr == g_game_total_nr) return;
+    
+    val = encodeURIComponent((val + "").trim().replace(/ /g, '_').toLowerCase()).toLowerCase();
+    var correct;
+    
+    if(g_game_in_order) {
+        correct = game_get_correct(g_game_done_nr);
+        if(val == correct.val) {
+            g_game_correct_nr++;
+            g_game_country_list[g_game_done_nr].correct = 1;
+            if(g_game_show_done) {
+                set_country_map_state(correct.country_code, g_state.correct);
+                set_country_flag_state(correct.country_code, g_state.correct);
+            } else {
+                set_country_map_state(id, g_state.active);
+                set_country_flag_state(id, g_state.active);
+            }
+            show_message('Rätt!', 'good');
         } else {
-            set_country_map_state(id, g_state.active);
-            set_country_flag_state(id, g_state.active);
+            if(g_game_show_done) {
+                set_country_map_state(id, g_state.prev_wrong);
+                set_country_flag_state(id, g_state.prev_wrong);
+            } else {
+                set_country_map_state(id, g_state.active);
+                set_country_flag_state(id, g_state.active);
+            }
+            if(g_game_guess == 'guess_name' || g_game_guess == 'guess_capital') {
+                show_message('Fel, skulle vara: ' + correct_disp);
+            } else {
+                show_message('Fel!');
+            }
         }
-        show_message('Rätt!', 'good');
+        
+        if(g_game_show_done && g_game_done_nr >= 1 && g_game_country_list[g_game_done_nr - 1].correct == 0) {
+            var id_prev = g_game_country_list[g_game_done_nr - 1].country_code;
+            set_country_map_state(id_prev, g_state.wrong);
+            set_country_flag_state(id_prev, g_state.wrong);
+        }
+        
+        g_game_done_nr++;
+        g_list[id].done = true;
     } else {
-        if(g_game_show_done) {
-            set_country_map_state(id, g_state.prev_wrong);
-            set_country_flag_state(id, g_state.prev_wrong);
-        } else {
-            set_country_map_state(id, g_state.active);
-            set_country_flag_state(id, g_state.active);
+        var is_correct = false;
+        var id;
+        for(var i = 0; i < g_game_total_nr; i++) {
+            correct = game_get_correct(i);
+            if(val == correct.val && g_list[correct.country_code].active == true && g_list[correct.country_code].done == false) {
+                is_correct = true;
+                id = i;
+                break;
+            }
         }
-        if(g_game_guess == 'guess_name' || g_game_guess == 'guess_capital') {
-            show_message('Fel, skulle vara: ' + correct_disp);
+        g_game_guess_nr++;
+        if(is_correct) {
+            g_game_country_list[id].correct = true;
+            g_list[correct.country_code].done = true;
+            g_game_correct_nr++;
+            g_game_done_nr++;
+            show_message('Rätt!', 'good');
+            if(g_game_show_done) {
+                set_country_map_state(correct.country_code, g_state.correct);
+                set_country_flag_state(correct.country_code, g_state.correct);
+            }
         } else {
             show_message('Fel!');
         }
     }
-    if(g_game_show_done && g_game_done_nr >= 1 && g_game_country_list[g_game_done_nr - 1].correct == 0) {
-        var id_prev = g_game_country_list[g_game_done_nr - 1].country_code;
-        set_country_map_state(id_prev, g_state.wrong);
-        set_country_flag_state(id_prev, g_state.wrong);
-    }
-    
-    g_game_done_nr++;
-    g_list[id].done = true;
     
     if(g_game_done_nr == g_game_total_nr) {
         game_show_results();
@@ -1439,6 +1486,7 @@ function init() {
 
     set_choice({target: document.getElementById('set_map_hover') }, 'set_map_hover');
     set_choice({target: document.getElementById('help_show_active') }, 'help_show_active');
+    set_choice({target: document.getElementById('guess_in_order') }, 'guess_in_order');
     
     update_map_hover();
     
