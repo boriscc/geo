@@ -983,7 +983,7 @@ function set_country_flag_state(country_code, state) {
 
 function country_click(evt, country_code)
 {
-    if(g_game_state == 'on' && g_game_guess == 'guess_location' && g_list[country_code].active && (!g_game_show_active || g_list[country_code].done == false)) make_guess(country_code);
+    if(g_game_state == 'on' && g_game_guess == 'guess_location' && (!g_game_show_active || g_list[country_code].active) && (!g_game_show_done || g_list[country_code].done == false)) make_guess(country_code);
     evt.stopPropagation();
 }
 
@@ -1036,7 +1036,7 @@ function nowhere_hover(evt)
 }
 
 function flag_click(evt, country_code) {
-    if(g_game_state == 'on' && g_game_guess == 'guess_flag' && g_list[country_code].active && (!g_game_show_active || g_list[country_code].done == false)) make_guess(country_code);
+    if(g_game_state == 'on' && g_game_guess == 'guess_flag' && (!g_game_show_active || g_list[country_code].active) && (!g_game_show_done || g_list[country_code].done == false)) make_guess(country_code);
 }
 
 function clear_flags() {
@@ -1223,6 +1223,7 @@ function create_game_country_list() {
             g_list[key].done = false;
         } else {
             g_list[key].active = false;
+            g_list[key].done = false;
         }
     }
     
@@ -1382,17 +1383,17 @@ function make_guess(val) {
                 set_country_map_state(correct.country_code, g_state.correct);
                 set_country_flag_state(correct.country_code, g_state.correct);
             } else {
-                set_country_map_state(id, g_state.active);
-                set_country_flag_state(id, g_state.active);
+                set_country_map_state(correct.country_code, g_state.active);
+                set_country_flag_state(correct.country_code, g_state.active);
             }
             show_message('Rätt!', 'good');
         } else {
             if(g_game_show_done) {
-                set_country_map_state(id, g_state.prev_wrong);
-                set_country_flag_state(id, g_state.prev_wrong);
+                set_country_map_state(correct.country_code, g_state.prev_wrong);
+                set_country_flag_state(correct.country_code, g_state.prev_wrong);
             } else {
-                set_country_map_state(id, g_state.active);
-                set_country_flag_state(id, g_state.active);
+                set_country_map_state(correct.country_code, g_state.active);
+                set_country_flag_state(correct.country_code, g_state.active);
             }
             if(g_game_guess == 'guess_name' || g_game_guess == 'guess_capital') {
                 show_message('Fel, skulle vara: ' + correct_disp);
@@ -1408,7 +1409,7 @@ function make_guess(val) {
         }
         
         g_game_done_nr++;
-        g_list[id].done = true;
+        g_list[correct.country_code].done = true;
     } else {
         var is_correct = false;
         var id;
@@ -1447,8 +1448,10 @@ function guess_text(evt, elem) {
     if(g_game_state == 'off') return;
     var key = get_key(evt);
     if(key == g_key_return) {
-        if(g_game_guess == 'guess_name' || g_game_guess == 'guess_capital') make_guess(elem.value);
-        elem.value = '';
+        if((g_game_guess == 'guess_name' || g_game_guess == 'guess_capital') && (!g_game_show_active || g_list[country_code].active) && (!g_game_show_done || g_list[country_code].done == false)) {
+            make_guess(elem.value);
+            elem.value = '';
+        }
     }
 }
 
