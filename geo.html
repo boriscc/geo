@@ -44,16 +44,18 @@
     padding-top: 3px;
     padding-bottom: 3px;
     background-color: #e0e0e0;
+    z-index: 100000;
 }
 
 .menu_top_header {
-    display: inline;
+    display: inline-block;
     position: relative;
     background-color: #e0ffe0;
-    border-color: #ff0000;
-    border-style: solid;
-    border-width: 3px;
-    top: 0px;
+    border-color: #000000;
+    border-style: solid solid solid none;
+    border-width: 2px;
+    bottom: 0px;
+    padding: 0px 1px 0px 1px;
 }
 
 .menu_top_header:hover {
@@ -68,18 +70,17 @@
     top: 0px;
     left: 0px;
     background-color: #e0e0e0;
-    border-color: #00ff00;
-    border-style: solid;
     cursor: default;
 }
 
 .menu_info_header {
-    display: inline;
+    display: inline-block;
     position: relative;
     background-color: #e0ffe0;
-    border-color: #ff0000;
-    border-style: solid;
-    border-width: 3px;
+    border-color: #000000;
+    border-style: solid solid solid none;
+    border-width: 2px;
+    padding: 0px 1px 0px 1px;
     top: 0px;
 }
 
@@ -95,8 +96,6 @@
     top: 0px;
     left: 0px;
     background-color: #e0e0e0;
-    border-color: #00ff00;
-    border-style: solid;
     cursor: default;
 }
 
@@ -168,7 +167,7 @@
 }
 
 .menu_country_info {
-    display: inline;
+    display: inline-block;
     border-color: #0000ff;
     border-style: solid;
 }
@@ -191,7 +190,19 @@
 
 .menu_smallbutton {
     margin: 0px;
-    padding: 1px;
+    padding: 0px 2px 0px 2px;
+}
+
+.menu_smallbutton:focus {
+    background-color: #e0ffe0;
+}
+
+#guess_input:focus {
+    background-color: #ffffff;
+}
+
+li {
+    margin-left: 1.5em;
 }
     </style>
         <div id="main_menu" class="menu_top">
@@ -208,8 +219,7 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
-                    <div id="menu_info_info_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
+                    </div><div id="menu_info_info_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
                         Info
                         <div id="menu_info_info" class="menu_sub_info">
                             <div class="menu_choice_group">
@@ -219,8 +229,7 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
-                    <div id="menu_info_sources_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
+                    </div><div id="menu_info_sources_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
                         Källor
                         <div id="menu_info_sources" class="menu_sub_info">
                             <div class="menu_choice_group">
@@ -232,8 +241,7 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
-                    <div id="menu_info_problem_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
+                    </div><div id="menu_info_problem_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
                         Kända problem
                         <div id="menu_info_problem" class="menu_sub_info">
                             <div class="menu_choice_group">
@@ -242,8 +250,7 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
-                    <div id="menu_info_contact_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
+                    </div><div id="menu_info_contact_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
                         Kontakt
                         <div id="menu_info_contact" class="menu_sub_info">
                             <div class="menu_choice_group">
@@ -254,8 +261,7 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
-                    <div id="menu_info_compatibility_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
+                    </div><div id="menu_info_compatibility_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
                         Kompatibilitet
                         <div id="menu_info_compatibility" class="menu_sub_info">
                             <div class="menu_choice_group">
@@ -267,8 +273,7 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
-                    <div id="menu_info_todo_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
+                    </div><div id="menu_info_todo_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
                         TODO
                         <div id="menu_info_todo" class="menu_sub_info">
                             <div class="menu_choice_group">
@@ -282,8 +287,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div id="menu_display_header" class="menu_top_header" onclick="toggle_menu(event, 'menu_sub')">
+            </div><div id="menu_display_header" class="menu_top_header" onclick="toggle_menu(event, 'menu_sub')">
                 Utseende
                 <div id="menu_display" class="menu_sub">
                     <ul>
@@ -302,8 +306,7 @@
                         <div class="menu_choice" onclick="set_zoom('south_america', event)">Sydamerika</div>
                     </div>
                 </div>
-            </div>
-            <div id="menu_filter_header" class="menu_top_header" onclick="toggle_menu(event, 'menu_sub')">
+            </div><div id="menu_filter_header" class="menu_top_header" onclick="toggle_menu(event, 'menu_sub')">
                 Filter
                 <div id="menu_filter" class="menu_sub">
                     <div class="menu_desc">Världsdelar:</div>
@@ -316,8 +319,7 @@
                         <div class="menu_choice" id="filter_region_south_america" onclick="set_choice(event, 'filter_region_south_america')">Sydamerika</div>
                     </div>
                 </div>
-            </div>
-            <div id="menu_guess_header" class="menu_top_header" onclick="toggle_menu(event, 'menu_sub')">
+            </div><div id="menu_guess_header" class="menu_top_header" onclick="toggle_menu(event, 'menu_sub')">
                 Gissning
                 <div id="menu_guess" class="menu_sub">
                     <div class="menu_choice_group" id="guess_group" onclick="set_choice(event, 'guess')">
@@ -327,8 +329,7 @@
                         <div class="menu_choice" id="guess_flag">Landets flagga</div>
                     </div>
                 </div>
-            </div>
-            <div id="menu_aid_header" class="menu_top_header" onclick="toggle_menu(event, 'menu_sub')">
+            </div><div id="menu_aid_header" class="menu_top_header" onclick="toggle_menu(event, 'menu_sub')">
                 Hjälpmedel
                 <div id="menu_aid" class="menu_sub">
                     <div class="menu_choice_group">
@@ -9918,6 +9919,7 @@ function country_click(evt, country_code)
 function unset_current_country(country_code) {
     if(country_code === 0) return;
     
+    document.getElementById('menu_info_div').style.visibility = 'hidden';
     document.getElementById('menu_info_current_name').innerHTML = '';
     document.getElementById('menu_info_current_capital').innerHTML = '';
     document.getElementById('menu_info_current_flag').src = '';
@@ -9935,6 +9937,7 @@ function set_current_country(type) {
         document.getElementById('menu_info_current_name').innerHTML = decodeURIComponent(g_list[country_code].name.replace(/_/g, ' '));
         document.getElementById('menu_info_current_capital').innerHTML = decodeURIComponent(g_list[country_code].cap.replace(/_/g, ' '));
         document.getElementById('menu_info_current_flag').src = "data:image/png;base64," + g_flag_data[country_code];
+        document.getElementById('menu_info_div').style.visibility = 'visible';
     }
 }
 
@@ -10164,7 +10167,7 @@ function start_game() {
     }
     
     if(g_game_guess == 'guess_name' || g_game_guess == 'guess_capital') {
-        document.getElementById('guess_div').style.display = 'inline';
+        document.getElementById('guess_div').style.display = 'inline-block';
     }
     
     create_game_country_list();
@@ -10199,6 +10202,7 @@ function start_game() {
         }
     }
     
+    document.getElementById('menu_game_aid').style.display = 'inline-block';
     game_show_help();
     document.getElementById('guess_input').focus();
     document.getElementById('guess_input').select();
@@ -10217,9 +10221,7 @@ function stop_game() {
     g_game_state = 'off';
     document.getElementById('menu_start_button').innerHTML = 'STARTA';
     document.getElementById('guess_div').style.display = 'none';
-    document.getElementById('menu_game_aid_flag').style.display = 'none';
-    document.getElementById('menu_game_aid_name').style.display = 'none';
-    document.getElementById('menu_game_aid_capital').style.display = 'none';
+    document.getElementById('menu_game_aid').style.display = 'none';
 }
 
 function toggle_game() {
@@ -10252,16 +10254,13 @@ function game_show_help() {
     
     if(choice_get_id('help_current_location') != undefined) set_country_map_state(id, g_state.highlight);
     if(choice_get_id('help_current_flag') != undefined) {
-        document.getElementById('menu_game_aid_flag').style.display = 'inline';
         document.getElementById('menu_game_aid_flag_img').src = "data:image/png;base64," + g_flag_data[id];
         set_country_flag_state(id, g_state.highlight);
     }
     if(choice_get_id('help_current_name') != undefined) {
-        document.getElementById('menu_game_aid_name').style.display = 'inline';
         document.getElementById('menu_game_aid_name_text').innerHTML = decodeURIComponent(g_list[id].name.replace(/_/g, ' '));
     }
     if(choice_get_id('help_current_capital') != undefined) {
-        document.getElementById('menu_game_aid_capital').style.display = 'inline';
         document.getElementById('menu_game_aid_capital_text').innerHTML = decodeURIComponent(g_list[id].cap.replace(/_/g, ' '));
     }
 }
@@ -10389,7 +10388,7 @@ function init() {
     }
     
     document.getElementById('menu_info').style.display = 'inline';
-    top_padding_size = document.getElementById('main_menu').clientHeight + document.getElementById('menu_info').clientHeight + 4;
+    top_padding_size = document.getElementById('main_menu').clientHeight + document.getElementById('menu_info').clientHeight;
     document.getElementById('menu_info').style.display = 'none';
     list = document.getElementsByClassName('menu_sub_info');
     for(var i = 0; i < list.length; i++) {
