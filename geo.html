@@ -1243,15 +1243,15 @@ function start_game() {
         return;
     }
     
-    if(g_game_guess == 'guess_name' || g_game_guess == 'guess_capital') {
-        document.getElementById('guess_div').style.display = 'inline-block';
-    }
-    
     create_game_country_list();
     
     if(g_game_country_list.length == 0) {
         show_message("Du har filtrerat bort alla länder");
         return;
+    }
+    
+    if(g_game_guess == 'guess_name' || g_game_guess == 'guess_capital') {
+        document.getElementById('guess_div').style.display = 'inline-block';
     }
     
     g_game_state = 'on';
