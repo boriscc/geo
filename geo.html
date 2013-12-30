@@ -28,6 +28,14 @@
     </head>
     <body>
     <style type="text/css">
+* {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+}
+
 .menu_top {
     position:fixed;
     top: 0px;
@@ -9800,11 +9808,11 @@ var g_hover_shade_percent = 30;
 
 var g_flag = {};
 var g_flag_type = "png";
-var g_flag_width = 9.7; // percent of window width
+var g_flag_width = 10; // percent of window width
 var g_flag_width_real;
 var g_flag_border_width = 4; // in px
 calculate_flag_width_real();
-var g_map_width = 95; // percent of window width
+var g_map_width = 98; // percent of window width
 
 var g_mouse_position = 0; // country code
 var g_mouse_place = ''; // 'map' or 'flag'
