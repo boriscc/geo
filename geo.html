@@ -187,10 +187,10 @@
 }
     </style>
         <div id="main_menu" class="menu_top">
-            <div id="menu_info_header" class="menu_top_header" onmousedown="toggle_menu(event, 'menu_sub')">
+            <div id="menu_info_header" class="menu_top_header" onclick="toggle_menu(event, 'menu_sub')">
                 Hjälp/Info
                 <div id="menu_info" class="menu_sub">
-                    <div id="menu_info_help_header" class="menu_info_header" onmousedown="toggle_menu(event, 'menu_sub_info')">
+                    <div id="menu_info_help_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
                         Hjälp
                         <div id="menu_info_help" class="menu_sub_info">
                             <div class="menu_choice_group">
@@ -201,7 +201,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="menu_info_info_header" class="menu_info_header" onmousedown="toggle_menu(event, 'menu_sub_info')">
+                    <div id="menu_info_info_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
                         Info
                         <div id="menu_info_info" class="menu_sub_info">
                             <div class="menu_choice_group">
@@ -212,7 +212,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="menu_info_sources_header" class="menu_info_header" onmousedown="toggle_menu(event, 'menu_sub_info')">
+                    <div id="menu_info_sources_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
                         Källor
                         <div id="menu_info_sources" class="menu_sub_info">
                             <div class="menu_choice_group">
@@ -225,7 +225,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="menu_info_problem_header" class="menu_info_header" onmousedown="toggle_menu(event, 'menu_sub_info')">
+                    <div id="menu_info_problem_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
                         Kända problem
                         <div id="menu_info_problem" class="menu_sub_info">
                             <div class="menu_choice_group">
@@ -235,7 +235,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="menu_info_contact_header" class="menu_info_header" onmousedown="toggle_menu(event, 'menu_sub_info')">
+                    <div id="menu_info_contact_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
                         Kontakt
                         <div id="menu_info_contact" class="menu_sub_info">
                             <div class="menu_choice_group">
@@ -247,7 +247,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="menu_info_compatibility_header" class="menu_info_header" onmousedown="toggle_menu(event, 'menu_sub_info')">
+                    <div id="menu_info_compatibility_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
                         Kompatibilitet
                         <div id="menu_info_compatibility" class="menu_sub_info">
                             <div class="menu_choice_group">
@@ -260,7 +260,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="menu_info_todo_header" class="menu_info_header" onmousedown="toggle_menu(event, 'menu_sub_info')">
+                    <div id="menu_info_todo_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
                         TODO
                         <div id="menu_info_todo" class="menu_sub_info">
                             <div class="menu_choice_group">
@@ -275,44 +275,44 @@
                     </div>
                 </div>
             </div>
-            <div id="menu_display_header" class="menu_top_header" onmousedown="toggle_menu(event, 'menu_sub')">
+            <div id="menu_display_header" class="menu_top_header" onclick="toggle_menu(event, 'menu_sub')">
                 Utseende
                 <div id="menu_display" class="menu_sub">
                     <ul>
-                        <li><div class="menu_desc">Storlek karta i %:</div><input type="text" id="map_size" onkeyup="map_size_evt_key(event)" class="menu_tbox" style="width: 40px" onmousedown="event.stopPropagation()" /></li>
-                        <li><div class="menu_desc">Storlek flaggor i %:</div><input type="text" id="flag_size" onkeyup="flag_size_evt_key(event)" class="menu_tbox" style="width: 40px" onmousedown="event.stopPropagation()" /></li>
+                        <li><div class="menu_desc">Storlek karta i %:</div><input type="text" id="map_size" onkeyup="map_size_evt_key(event)" class="menu_tbox" style="width: 40px" onclick="event.stopPropagation()" /></li>
+                        <li><div class="menu_desc">Storlek flaggor i %:</div><input type="text" id="flag_size" onkeyup="flag_size_evt_key(event)" class="menu_tbox" style="width: 40px" onclick="event.stopPropagation()" /></li>
                     </ul>
-                    <div class="menu_choice" id="set_map_hover" onmousedown="set_choice(event, 'set_map_hover'); update_map_hover()">"Hover"-effekt</div>
+                    <div class="menu_choice" id="set_map_hover" onclick="set_choice(event, 'set_map_hover'); update_map_hover()">"Hover"-effekt</div>
                     <div class="menu_desc">Zoom</div>
                     <div class="menu_choice_group">
-                        <div class="menu_choice" onmousedown="set_zoom('world', event)">Världen</div>
-                        <div class="menu_choice" onmousedown="set_zoom('africa', event)">Afrika</div>
-                        <div class="menu_choice" onmousedown="set_zoom('asia', event)">Asien</div>
-                        <div class="menu_choice" onmousedown="set_zoom('europe', event)">Europa</div>
-                        <div class="menu_choice" onmousedown="set_zoom('north_america', event)">Nordamerika</div>
-                        <div class="menu_choice" onmousedown="set_zoom('oceania', event)">Oceanien</div>
-                        <div class="menu_choice" onmousedown="set_zoom('south_america', event)">Sydamerika</div>
+                        <div class="menu_choice" onclick="set_zoom('world', event)">Världen</div>
+                        <div class="menu_choice" onclick="set_zoom('africa', event)">Afrika</div>
+                        <div class="menu_choice" onclick="set_zoom('asia', event)">Asien</div>
+                        <div class="menu_choice" onclick="set_zoom('europe', event)">Europa</div>
+                        <div class="menu_choice" onclick="set_zoom('north_america', event)">Nordamerika</div>
+                        <div class="menu_choice" onclick="set_zoom('oceania', event)">Oceanien</div>
+                        <div class="menu_choice" onclick="set_zoom('south_america', event)">Sydamerika</div>
                     </div>
                 </div>
             </div>
-            <div id="menu_filter_header" class="menu_top_header" onmousedown="toggle_menu(event, 'menu_sub')">
+            <div id="menu_filter_header" class="menu_top_header" onclick="toggle_menu(event, 'menu_sub')">
                 Filter
                 <div id="menu_filter" class="menu_sub">
                     <div class="menu_desc">Världsdelar:</div>
                     <div class="menu_choice_group">
-                        <div class="menu_choice" id="filter_region_africa" onmousedown="set_choice(event, 'filter_region_africa')">Afrika</div>
-                        <div class="menu_choice" id="filter_region_asia" onmousedown="set_choice(event, 'filter_region_asia')">Asien</div>
-                        <div class="menu_choice" id="filter_region_europe" onmousedown="set_choice(event, 'filter_region_europe')">Europa</div>
-                        <div class="menu_choice" id="filter_region_north_america" onmousedown="set_choice(event, 'filter_region_north_america')">Nordamerika</div>
-                        <div class="menu_choice" id="filter_region_oceania" onmousedown="set_choice(event, 'filter_region_oceania')">Oceanien</div>
-                        <div class="menu_choice" id="filter_region_south_america" onmousedown="set_choice(event, 'filter_region_south_america')">Sydamerika</div>
+                        <div class="menu_choice" id="filter_region_africa" onclick="set_choice(event, 'filter_region_africa')">Afrika</div>
+                        <div class="menu_choice" id="filter_region_asia" onclick="set_choice(event, 'filter_region_asia')">Asien</div>
+                        <div class="menu_choice" id="filter_region_europe" onclick="set_choice(event, 'filter_region_europe')">Europa</div>
+                        <div class="menu_choice" id="filter_region_north_america" onclick="set_choice(event, 'filter_region_north_america')">Nordamerika</div>
+                        <div class="menu_choice" id="filter_region_oceania" onclick="set_choice(event, 'filter_region_oceania')">Oceanien</div>
+                        <div class="menu_choice" id="filter_region_south_america" onclick="set_choice(event, 'filter_region_south_america')">Sydamerika</div>
                     </div>
                 </div>
             </div>
-            <div id="menu_guess_header" class="menu_top_header" onmousedown="toggle_menu(event, 'menu_sub')">
+            <div id="menu_guess_header" class="menu_top_header" onclick="toggle_menu(event, 'menu_sub')">
                 Gissning
                 <div id="menu_guess" class="menu_sub">
-                    <div class="menu_choice_group" id="guess_group" onmousedown="set_choice(event, 'guess')">
+                    <div class="menu_choice_group" id="guess_group" onclick="set_choice(event, 'guess')">
                         <div class="menu_choice" id="guess_name">Landets namn</div>
                         <div class="menu_choice" id="guess_capital">Landets huvudstad</div>
                         <div class="menu_choice" id="guess_location">Landets plats</div>
@@ -320,34 +320,25 @@
                     </div>
                 </div>
             </div>
-            <div id="menu_aid_header" class="menu_top_header" onmousedown="toggle_menu(event, 'menu_sub')">
+            <div id="menu_aid_header" class="menu_top_header" onclick="toggle_menu(event, 'menu_sub')">
                 Hjälpmedel
                 <div id="menu_aid" class="menu_sub">
                     <div class="menu_choice_group">
-                        <div class="menu_choice" id="help_show_active" onmousedown="set_choice(event, 'help_show_active')">Markera aktiva länder</div>
-                        <div class="menu_choice" id="help_show_done" onmousedown="set_choice(event, 'help_show_done')">Markera avklarade länder</div>
+                        <div class="menu_choice" id="help_show_active" onclick="set_choice(event, 'help_show_active')">Markera aktiva länder</div>
+                        <div class="menu_choice" id="help_show_done" onclick="set_choice(event, 'help_show_done')">Markera avklarade länder</div>
                     </div>
                     <div class="menu_desc">Information om nuvarande land:</div>
                     <div class="menu_choice_group">
-                        <div class="menu_choice" id="help_current_name" onmousedown="set_choice(event, 'help_current_name')">Landets namn</div>
-                        <div class="menu_choice" id="help_current_capital" onmousedown="set_choice(event, 'help_current_capital')">Landets huvudstad</div>
-                        <div class="menu_choice" id="help_current_location" onmousedown="set_choice(event, 'help_current_location')">Landets plats</div>
-                        <div class="menu_choice" id="help_current_flag" onmousedown="set_choice(event, 'help_current_flag')">Landes flagga</div>
+                        <div class="menu_choice" id="help_current_name" onclick="set_choice(event, 'help_current_name')">Landets namn</div>
+                        <div class="menu_choice" id="help_current_capital" onclick="set_choice(event, 'help_current_capital')">Landets huvudstad</div>
+                        <div class="menu_choice" id="help_current_location" onclick="set_choice(event, 'help_current_location')">Landets plats</div>
+                        <div class="menu_choice" id="help_current_flag" onclick="set_choice(event, 'help_current_flag')">Landes flagga</div>
                     </div>
                 </div>
             </div>
             <div id="menu_start_button" class="menu_button" onmouseup="toggle_game()">STARTA</div>
             <div id="guess_div" style="display: none">
-                <input class="menu_smallbutton" type="button" value="å" onclick="document.getElementById('guess_input').value += 'å'" />
-                <input class="menu_smallbutton" type="button" value="ä" onclick="document.getElementById('guess_input').value += 'ä'" />
-                <input class="menu_smallbutton" type="button" value="ö" onclick="document.getElementById('guess_input').value += 'ö'" />
-                <input class="menu_smallbutton" type="button" value="ã" onclick="document.getElementById('guess_input').value += 'ã'" />
-                <input class="menu_smallbutton" type="button" value="ă" onclick="document.getElementById('guess_input').value += 'ă'" />
-                <input class="menu_smallbutton" type="button" value="ç" onclick="document.getElementById('guess_input').value += 'ç'" />
-                <input class="menu_smallbutton" type="button" value="é" onclick="document.getElementById('guess_input').value += 'é'" />
-                <input class="menu_smallbutton" type="button" value="í" onclick="document.getElementById('guess_input').value += 'í'" />
-                <input class="menu_smallbutton" type="button" value="ș" onclick="document.getElementById('guess_input').value += 'ș'" />
-                <input class="menu_smallbutton" type="text" class="menu_tbox" id="guess_input" value="Gissningsruta" onclick="this.focus(); this.select()" onkeyup="guess_text(event, this)" >
+                <input class="menu_smallbutton" type="button" value="å" onclick="document.getElementById('guess_input').value += 'å'" /><input class="menu_smallbutton" type="button" value="ä" onclick="document.getElementById('guess_input').value += 'ä'" /><input class="menu_smallbutton" type="button" value="ö" onclick="document.getElementById('guess_input').value += 'ö'" /><input class="menu_smallbutton" type="button" value="ã" onclick="document.getElementById('guess_input').value += 'ã'" /><input class="menu_smallbutton" type="button" value="ă" onclick="document.getElementById('guess_input').value += 'ă'" /><input class="menu_smallbutton" type="button" value="ç" onclick="document.getElementById('guess_input').value += 'ç'" /><input class="menu_smallbutton" type="button" value="é" onclick="document.getElementById('guess_input').value += 'é'" /><input class="menu_smallbutton" type="button" value="í" onclick="document.getElementById('guess_input').value += 'í'" /><input class="menu_smallbutton" type="button" value="ș" onclick="document.getElementById('guess_input').value += 'ș'" /><input class="menu_smallbutton" type="text" class="menu_tbox" id="guess_input" value="Gissningsruta" onclick="this.focus(); this.select()" onkeyup="guess_text(event, this)" >
             </div>
             <div id="menu_info_div" class="menu_country_info">
                 <div class="menu_desc"></div><img id="menu_info_current_flag" src="" height="30" class="menu_info" />
@@ -10018,7 +10009,7 @@ function init_flag(country_code) {
     box.className = "flag_box";
     elem.className = "flag";
     box.style.display = "inline";
-    box.addEventListener("mousedown", create_flag_mousedown(country_code), false);
+    box.addEventListener("click", create_flag_mousedown(country_code), false);
     function create_flag_mouseover(key) { return function(evt) { top.country_hover(evt, key, 'flag'); }; }
     box.addEventListener("mouseover", create_flag_mouseover(country_code), false);
     g_flag[country_code] = { id: id, box: box, elem: elem, ratio: ratio };
@@ -10364,13 +10355,13 @@ function init() {
     function create_country_mouseover(key) { return function(evt) { top.country_hover(evt, key, 'map'); }; }
     for(key in g_list) {
         var cur = document.getElementById(key);
-        cur.addEventListener("mousedown", create_country_mousedown(key), false);
+        cur.addEventListener("click", create_country_mousedown(key), false);
         cur.addEventListener("mouseover", create_country_mouseover(key), false);
         update_country_state(key);
     }
     g_map.addEventListener("mouseover", function(evt) { top.nowhere_hover(evt); }, false);
     document.addEventListener("mouseover", function(evt) { nowhere_hover(evt); }, false);
-    document.addEventListener("mousedown", function(evt) { close_menu(evt, 'menu_sub'); }, false);
+    document.addEventListener("click", function(evt) { close_menu(evt, 'menu_sub'); }, false);
 
     set_choice({target: document.getElementById('set_map_hover') }, 'set_map_hover');
     set_choice({target: document.getElementById('help_show_active') }, 'help_show_active');
