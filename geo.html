@@ -320,6 +320,7 @@ li {
             </div><div id="menu_filter_header" class="menu_top_header" onclick="toggle_menu(event, 'menu_sub')">
                 Filter
                 <div id="menu_filter" class="menu_sub">
+                    <div class="menu_choice" id="filter_fail_list" onclick="set_choice(event, 'filter_fail_list')">Fel-lista</div>
                     <div class="menu_desc">Världsdelar:</div>
                     <div class="menu_choice_group">
                         <div class="menu_choice" id="filter_region_africa" onclick="set_choice(event, 'filter_region_africa')">Afrika</div>
@@ -892,11 +893,13 @@ var g_map = document.getElementById("svg_map");
 var g_game_state = 'off';
 var g_game_guess = undefined;
 var g_game_country_list = [];
+var g_game_fail_list = {};
 var g_game_show_active;
 var g_game_show_done;
 var g_game_correct_nr, g_game_done_nr, g_game_total_nr, g_game_guess_nr;
 var g_game_in_order;
 var g_filter_reg = {};
+var g_filter_fail_list = false;
 
 var g_zoom = {};
 g_zoom.world  = {height: 1403, width: 1, y: 60, x: -53};
@@ -1202,6 +1205,7 @@ function choice_get_id(group_id) {
 
 function game_filter_include(country_code) {
     if(g_filter_reg[g_list[country_code].reg] == false) return false;
+    if(g_filter_fail_list && g_game_fail_list[country_code] == undefined) return false;
     return true;
 }
 
@@ -1212,6 +1216,7 @@ function create_game_country_list() {
     g_filter_reg.Nordamerika = (choice_get_id('filter_region_north_america') != undefined);
     g_filter_reg.Oceanien = (choice_get_id('filter_region_oceania') != undefined);
     g_filter_reg.Sydamerika = (choice_get_id('filter_region_south_america') != undefined);
+    g_filter_fail_list = (choice_get_id('filter_fail_list') != undefined);
     
     var list = [];
     var list_all = [];
@@ -1280,6 +1285,7 @@ function start_game() {
     game_show_help();
     document.getElementById('guess_input').focus();
     document.getElementById('guess_input').select();
+    g_game_fail_list = {};
 }
 
 function stop_game() {
@@ -1388,6 +1394,7 @@ function make_guess(val) {
             }
             show_message('Rätt!', 'good');
         } else {
+            g_game_fail_list[correct.country_code] = true;
             if(g_game_show_done) {
                 set_country_map_state(correct.country_code, g_state.prev_wrong);
                 set_country_flag_state(correct.country_code, g_state.prev_wrong);
