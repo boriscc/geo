@@ -1403,7 +1403,7 @@ function make_guess(val) {
                 set_country_flag_state(correct.country_code, g_state.active);
             }
             if(g_game_guess == 'guess_name' || g_game_guess == 'guess_capital') {
-                show_message('Fel, skulle vara: ' + correct_disp);
+                show_message('Fel, skulle vara: ' + correct.disp);
             } else {
                 show_message('Fel!');
             }
