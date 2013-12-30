@@ -446,7 +446,7 @@ bo :{ eng:"Bolivia",cap:"Sucre",reg:"Sydamerika", name:"Bolivia"},
 ba :{ eng:"Bosnia_and_Herzegovina",cap:"Sarajevo",reg:"Europa", name:"Bosnien_och_Hercegovina"},
 bw :{ eng:"Botswana",cap:"Gaborone",reg:"Afrika", name:"Botswana"},
 br :{ eng:"Brazil",cap:"Brasilia",reg:"Sydamerika", name:"Brasilien"},
-bn :{ eng:"Brunei",cap:"Bandar_Seri_Begawan",reg:"Oceanien", name:"Brunei"},
+bn :{ eng:"Brunei",cap:"Bandar_Seri_Begawan",reg:"Asien", name:"Brunei"},
 bg :{ eng:"Bulgaria",cap:"Sofia",reg:"Europa", name:"Bulgarien"},
 bf :{ eng:"Burkina_Faso",cap:"Ouagadougou",reg:"Afrika", name:"Burkina_Faso"},
 mm :{ eng:"Myanmar",cap:"Naypyidaw",reg:"Asien", name:"Burma"},
@@ -455,7 +455,7 @@ cf :{ eng:"Central_African_Republic",cap:"Bangui",reg:"Afrika", name:"Centralafr
 cl :{ eng:"Chile",cap:"Santiago_de_Chile",reg:"Sydamerika", name:"Chile"},
 co :{ eng:"Colombia",cap:"Bogotá",reg:"Sydamerika", name:"Colombia"},
 cr :{ eng:"Costa_Rica",cap:"San_José",reg:"Nordamerika", name:"Costa_Rica"},
-cy :{ eng:"Cyprus",cap:"Nicosia",reg:"Europa", name:"Cypern"},
+cy :{ eng:"Cyprus",cap:"Nicosia",reg:"Asien", name:"Cypern"},
 dk :{ eng:"Denmark",cap:"Köpenhamn",reg:"Europa", name:"Danmark"},
 dj :{ eng:"Djibouti",cap:"Djibouti",reg:"Afrika", name:"Djibouti"},
 dm :{ eng:"Dominica",cap:"Roseau",reg:"Nordamerika", name:"Dominica"},
@@ -469,7 +469,7 @@ er :{ eng:"Eritrea",cap:"Asmara",reg:"Afrika", name:"Eritrea"},
 ee :{ eng:"Estonia",cap:"Tallinn",reg:"Europa", name:"Estland"},
 et :{ eng:"Ethiopia",cap:"Addis_Abeba",reg:"Afrika", name:"Etiopien"},
 fj :{ eng:"Fiji",cap:"Suva",reg:"Oceanien", name:"Fiji"},
-ph :{ eng:"Philippines",cap:"Manila",reg:"Oceanien", name:"Filippinerna"},
+ph :{ eng:"Philippines",cap:"Manila",reg:"Asien", name:"Filippinerna"},
 fi :{ eng:"Finland",cap:"Helsingfors",reg:"Europa", name:"Finland"},
 fr :{ eng:"France",cap:"Paris",reg:"Europa", name:"Frankrike"},
 ae :{ eng:"United_Arab_Emirates",cap:"Abu_Dhabi",reg:"Asien", name:"F%C3%B6renade_Arabemiraten"},
@@ -486,7 +486,7 @@ gy :{ eng:"Guyana",cap:"Georgetown",reg:"Sydamerika", name:"Guyana"},
 ht :{ eng:"Haiti",cap:"Port-au-Prince",reg:"Nordamerika", name:"Haiti"},
 hn :{ eng:"Honduras",cap:"Tegucigalpa",reg:"Nordamerika", name:"Honduras"},
 in :{ eng:"India",cap:"New_Delhi",reg:"Asien", name:"Indien"},
-id :{ eng:"Indonesia",cap:"Djakarta",reg:"Oceanien", name:"Indonesien"},
+id :{ eng:"Indonesia",cap:"Djakarta",reg:"Asien", name:"Indonesien"},
 iq :{ eng:"Iraq",cap:"Bagdad",reg:"Asien", name:"Irak"},
 ir :{ eng:"Iran",cap:"Teheran",reg:"Asien", name:"Iran"},
 ie :{ eng:"Ireland",cap:"Dublin",reg:"Europa", name:"Irland"},
@@ -524,7 +524,7 @@ lu :{ eng:"Luxembourg",cap:"Luxemburg",reg:"Europa", name:"Luxemburg"},
 mg :{ eng:"Madagascar",cap:"Antananarivo",reg:"Afrika", name:"Madagaskar"},
 mk :{ eng:"Macedonia",cap:"Skopje",reg:"Europa", name:"Makedonien"},
 mw :{ eng:"Malawi",cap:"Lilongwe",reg:"Afrika", name:"Malawi"},
-my :{ eng:"Malaysia",cap:"Kuala_Lumpur",reg:"Oceanien", name:"Malaysia"},
+my :{ eng:"Malaysia",cap:"Kuala_Lumpur",reg:"Asien", name:"Malaysia"},
 mv :{ eng:"Maldives",cap:"Malé",reg:"Asien", name:"Maldiverna"},
 ml :{ eng:"Mali",cap:"Bamako",reg:"Afrika", name:"Mali"},
 mt :{ eng:"Malta",cap:"Valletta",reg:"Europa", name:"Malta"},
@@ -575,7 +575,7 @@ sn :{ eng:"Senegal",cap:"Dakar",reg:"Afrika", name:"Senegal"},
 sc :{ eng:"Seychelles",cap:"Victoria",reg:"Afrika", name:"Seychellerna"},
 rs :{ eng:"Serbia",cap:"Belgrad",reg:"Europa", name:"Serbien"},
 sl :{ eng:"Sierra_Leone",cap:"Freetown",reg:"Afrika", name:"Sierra_Leone"},
-sg :{ eng:"Singapore",cap:"Singapore",reg:"Oceanien", name:"Singapore"},
+sg :{ eng:"Singapore",cap:"Singapore",reg:"Asien", name:"Singapore"},
 sk :{ eng:"Slovakia",cap:"Bratislava",reg:"Europa", name:"Slovakien"},
 si :{ eng:"Slovenia",cap:"Ljubljana",reg:"Europa", name:"Slovenien"},
 so :{ eng:"Somalia",cap:"Mogadishu",reg:"Afrika", name:"Somalia"},
@@ -616,7 +616,7 @@ by :{ eng:"Belarus",cap:"Minsk",reg:"Europa", name:"Vitryssland"},
 zm :{ eng:"Zambia",cap:"Lusaka",reg:"Afrika", name:"Zambia"},
 zw :{ eng:"Zimbabwe",cap:"Harare",reg:"Afrika", name:"Zimbabwe"},
 at :{ eng:"Austria",cap:"Wien",reg:"Europa", name:"%C3%96sterrike"},
-tl :{ eng:"East_Timor",cap:"Dili",reg:"Oceanien", name:"%C3%96sttimor"},
+tl :{ eng:"East_Timor",cap:"Dili",reg:"Asien", name:"%C3%96sttimor"},
 xk :{ eng:"Kosovo",cap:"Pristina",reg:"Europa", name:"Kosovo"},
 tw :{ eng:"Taiwan",cap:"Taipei",reg:"Asien", name:"Taiwan"},
 va :{ eng:"Vatican_City",cap:"Vatikanstaden",reg:"Europa", name:"Vatikanstaten"} };
@@ -904,10 +904,10 @@ var g_filter_fail_list = false;
 var g_zoom = {};
 g_zoom.world  = {height: 1403, width: 1, y: 60, x: -53};
 g_zoom.africa = {height: 640, width: 1, y: 430, x: 1070};
-g_zoom.asia   = {height: 630, width: 1, y: 120, x: 1450};
+g_zoom.asia   = {height: 700, width: 1, y: 160, x: 1450};
 g_zoom.europe = {height: 310, width: 1, y: 160, x: 1150};
 g_zoom.north_america = {height: 550, width: 1, y: 160, x: 250};
-g_zoom.oceania       = {height: 610, width: 1, y: 570, x: 1950};
+g_zoom.oceania       = {height: 560, width: 1, y: 620, x: 2100};
 g_zoom.south_america = {height: 630, width: 1, y: 630, x: 630};
 
 function set_zoom(arg, evt) {
