@@ -1205,7 +1205,7 @@ function choice_get_id(group_id) {
 
 function game_filter_include(country_code) {
     if(g_filter_reg[g_list[country_code].reg] == false) return false;
-    if(g_filter_fail_list && g_game_fail_list[country_code] == undefined) return false;
+    if(g_filter_fail_list && Object.keys(g_game_fail_list).length > 0 && g_game_fail_list[country_code] == undefined) return false;
     return true;
 }
 
