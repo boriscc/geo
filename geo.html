@@ -367,7 +367,7 @@ li {
                 /><input class="menu_smallbutton" type="button" value="é" onclick="obj('guess_input').value += 'é'; obj('guess_input').focus()"
                 /><input class="menu_smallbutton" type="button" value="í" onclick="obj('guess_input').value += 'í'; obj('guess_input').focus()"
                 /><input class="menu_smallbutton" type="button" value="ș" onclick="obj('guess_input').value += 'ș; obj('guess_input').focus()'"
-                /><input type="text" class="menu_tbox" style="display: block" id="guess_input" value="Gissningsruta" onfocus="if(this.value=='Gissningsruta') this.select()" onmouseup="return false" onkeyup="guess_text(event, this)" >
+                /><input type="text" class="menu_tbox" style="display: block" id="guess_input" value="Gissningsruta" onfocus="if(this.value=='Gissningsruta') this.select()" onmouseup="return false" onkeypress="guess_text(event, this)" >
             </div><div id="menu_info_div" class="menu_country_info">
                 <div class="menu_desc"></div><img id="menu_info_current_flag" src="" height="30" class="menu_info" />
                 <div id="menu_info_current_name" class="menu_info"></div>
