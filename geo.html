@@ -1448,7 +1448,7 @@ function guess_text(evt, elem) {
     if(g_game_state == 'off') return;
     var key = get_key(evt);
     if(key == g_key_return) {
-        if((g_game_guess == 'guess_name' || g_game_guess == 'guess_capital') && (!g_game_show_active || g_list[country_code].active) && (!g_game_show_done || g_list[country_code].done == false)) {
+        if(g_game_guess == 'guess_name' || g_game_guess == 'guess_capital') {
             make_guess(elem.value);
             elem.value = '';
         }
