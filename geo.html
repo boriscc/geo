@@ -10063,6 +10063,9 @@ function flag_size_evt_key(evt) {
 var g_menu_elem = document.getElementById('main_menu');
 var g_menu = {};
 function toggle_menu(event, cls) {
+    if(event != undefined && event.stopPropagation != undefined) event.stopPropagation();
+    if(event.currentTarget != event.target) return;
+    
     if(g_menu[cls] == undefined) g_menu[cls] = { checked: { id: undefined, elem: undefined } };
     
     // if the menu is open, close it
@@ -10082,10 +10085,6 @@ function toggle_menu(event, cls) {
     } else {
         g_menu[cls].checked.id = undefined;
         g_menu[cls].checked.elem = undefined;
-    }
-    
-    if(event != undefined && event.stopPropagation != undefined) {
-        event.stopPropagation();
     }
 }
 
