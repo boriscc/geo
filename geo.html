@@ -368,7 +368,6 @@
             </div>
             <div id="message" class="message"></div>
         </div>
-        <div id="top_padding" style="height: 0px"></div>
 
         <svg id="svg_map" width="1500" height="750" viewBox="-53 60 1 1403" preserveAspectRatio="xMinYMin meet" style="border-color:#000000; border-style:solid; margin: 0px; padding: 0px">
   <defs
@@ -10383,7 +10382,7 @@ function init() {
     set_color_of_region("oceanxx", g_water_color);
     
     var top_padding_size = document.getElementById('main_menu').clientHeight;
-    document.getElementById('top_padding').style.height = top_padding_size + "px";
+    document.getElementsByTagName('body')[0].style.marginTop = top_padding_size + "px";
     var list = document.getElementsByClassName('menu_sub');
     for(var i = 0; i < list.length; i++) {
         list[i].style.top = top_padding_size + "px";
