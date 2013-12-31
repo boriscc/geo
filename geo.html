@@ -34,69 +34,53 @@
             box-sizing: border-box;
     margin: 0px;
     padding: 0px;
+    
 }
 
-.menu_top {
-    position:fixed;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    padding-top: 3px;
-    padding-bottom: 3px;
+li {
+    margin-left: 1.5em;
+}
+
+div {
+    display: inline-block;
+}
+
+.menu {
+    display: none;
     background-color: #e0e0e0;
     z-index: 100000;
-}
-
-.menu_top_header {
-    display: inline-block;
-    position: relative;
-    background-color: #e0ffe0;
+    position: absolute;
     border-color: #000000;
-    border-style: solid solid solid none;
-    border-width: 2px;
-    bottom: 0px;
-    padding: 0px 1px 0px 1px;
-}
-
-.menu_top_header:hover {
-    background-color: #b0ffb0;
-    cursor: pointer;
-    cursor: hand;
-}
-
-.menu_sub {
-    display: none;
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    background-color: #e0e0e0;
+    border-style: none solid solid none;
     cursor: default;
 }
 
-.menu_info_header {
-    display: inline-block;
-    position: relative;
+.menu_active {
+    display: block;
+}
+
+#main_menu {
+    position: fixed;
+    width: 100%;
+    top: 0px;
+}
+
+#info_menu {
+    width: 100%;
+}
+
+.menu_header {
     background-color: #e0ffe0;
     border-color: #000000;
     border-style: solid solid solid none;
     border-width: 2px;
     padding: 0px 1px 0px 1px;
-    top: 0px;
 }
 
-.menu_info_header:hover {
+.menu_header:hover {
     background-color: #b0ffb0;
     cursor: pointer;
     cursor: hand;
-}
-
-.menu_sub_info {
-    display: none;
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    background-color: #e0e0e0;
-    cursor: default;
 }
 
 .menu_header_active {
@@ -107,9 +91,18 @@
     background-color: #30ff30;
 }
 
-.menu_desc {
+.menu_title {
+    font-size: 125%;
+    font-weight: bold;
+}
+
+.menu_text {
     display: inline;
     margin-right: 3px;
+    cursor: text;
+}
+
+.menu_text:hover {
     cursor: text;
 }
 
@@ -121,12 +114,14 @@
     margin: 2px;
 }
 
-.menu_choice_group {
+.menu_group {
+    display: block;
     border-color: #000000;
     border-style: solid;
 }
 
 .menu_choice {
+    display: block;
     font-size: 125%;
     background-color: #e0e0ff;
     cursor: pointer;
@@ -160,33 +155,10 @@
     cursor: hand;
 }
 
-.message {
+#message {
     display: inline;
     font-weight: bold;
     color: #ff0000;
-}
-
-.menu_country_info {
-    display: inline-block;
-    visibility: hidden;
-    border-color: #0000ff;
-    border-style: solid;
-}
-
-.menu_info {
-    display: inline;
-    color: #3030ff;
-}
-
-.menu_game_aid_div {
-    display: none;
-    border-color: #ff0000;
-    border-style: solid;
-}
-
-.menu_game_aid_text {
-    display: inline;
-    color: #ff3030;
 }
 
 .menu_smallbutton {
@@ -206,161 +178,41 @@
     background-color: #ffffff;
 }
 
-li {
-    margin-left: 1.5em;
-}
-
 .menu_smallbutton::-moz-focus-inner {
     padding: 0;
     border: 0;
 }
+
+#guess_div {
+    display: none;
+}
+
+#guess_input {
+    display: block;
+}
+
+#country_info {
+    visibility: hidden;
+    border-color: #0000ff;
+    border-style: solid;
+}
+
+#game_aid {
+    display: none;
+    border-color: #ff0000;
+    border-style: solid;
+}
         </style>
-        <div id="main_menu" class="menu_top">
-            <div id="menu_info_header" class="menu_top_header" onclick="toggle_menu(event, 'menu_sub')">
-                Hjälp/Info
-                <div id="menu_info" class="menu_sub">
-                    <div id="menu_info_help_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
-                        Hjälp
-                        <div id="menu_info_help" class="menu_sub_info">
-                            <div class="menu_choice_group">
-                                <ul>
-                                    <li><div class="menu_desc">Använd menyn högst upp för att ställa in, sen kör igång</div>
-                                    <li><div class="menu_desc">Mer hjälp kommer</div>
-                                </ul>
-                            </div>
-                        </div>
-                    </div><div id="menu_info_info_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
-                        Info
-                        <div id="menu_info_info" class="menu_sub_info">
-                            <div class="menu_choice_group">
-                                <ul>
-                                    <li><div class="menu_desc">Vilka områden som räknas som länder är baserat på <a target="_blank" href="https://sv.wikipedia.org/wiki/Lista_%C3%B6ver_sj%C3%A4lvst%C3%A4ndiga_stater">Wikipedia: Lista över självständiga stater</a>. Jag har för närvarande [december 2013] med alla medlemsländer i FN samt Taiwan, Kosovo och Vatikanstaten. Jag har inte med "Den suveräna militära hospitalsorden av sankt Johannes av Jerusalem, av Rhodos och av Malta" (Malteserorden) eftersom de inte har något associerat geografiskt område.</div>
-                                    <li><div class="menu_desc">Information om länderna hämtas automatiskt, så fel kan förekomma och får gärna rapporteras om de upptäcks. Se kontaktinformation nedan.</div></li>
-                                    <li><div class="menu_desc">Jag använde <a target="_blank" href="http://unstats.un.org/unsd/methods/m49/m49regin.htm">unstats.un.org</a> [december 2013] för att avgöra världsdelstillhörighet för länderna. Karibien och Centralamerika lät jag bli en del av Nordamerika.</div></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div><div id="menu_info_sources_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
-                        Källor
-                        <div id="menu_info_sources" class="menu_sub_info">
-                            <div class="menu_choice_group">
-                                <ul>
-                                    <li><div class="menu_desc">Namn på länder och huvudstäder kommer från ländernas respektive sida på svenska wikipedia, hämtade december 2013.</div>
-                                    <li><div class="menu_desc">Lista på länder som ingår i FN hämtade från <a target="_blank" href="https://sv.wikipedia.org/wiki/F%C3%B6renta_nationernas_medlemsstater">Wikipedia: Förenta nationernas medlemsstater</a> december 2013.</div>
-                                    <li><div class="menu_desc">Kartan är en aningen modifierad version av en <a target="_blank" href="http://en.wikipedia.org/wiki/File:BlankMap-World-Microstates.svg">karta från wikipedia</a> hämtad december 2013.</div>
-                                    <li><div class="menu_desc">Flaggorna är hämtade via <a target="_blank" href="https://sv.wikipedia.org/wiki/F%C3%B6renta_nationernas_medlemsstater">Wikipedia: Förenta nationernas medlemsstater</a> december 2013.</div>
-                                </ul>
-                            </div>
-                        </div>
-                    </div><div id="menu_info_problem_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
-                        Kända problem
-                        <div id="menu_info_problem" class="menu_sub_info">
-                            <div class="menu_choice_group">
-                                <ul>
-                                    <li><div class="menu_desc">Kartan kan vara ganska slö i vissa webbläsare. Avaktivering av "Hover"-effekten under Utseende-menyn förbättrar situationen lite.</div></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div><div id="menu_info_contact_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
-                        Kontakt
-                        <div id="menu_info_contact" class="menu_sub_info">
-                            <div class="menu_choice_group">
-                                <ul>
-                                    <li><div class="menu_desc">Kontakt-adress finns längst ner på sidan.</div></li>
-                                    <li><div class="menu_desc">För närvarande finns ingen hemsida för spelet. Senaste versionen kan laddas ner på <a target="_blank" href="https://github.com/boriscc/geo/releases">github-sidan</a>.</div></li>
-                                    <li><div class="menu_desc">Problem kan rapporteras via <a target="_blank" href="https://github.com/boriscc/geo/issues/new">githubs Issue</a> eller via mail-adressen längst ner på sidan.</div></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div><div id="menu_info_compatibility_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
-                        Kompatibilitet
-                        <div id="menu_info_compatibility" class="menu_sub_info">
-                            <div class="menu_choice_group">
-                                <ul>
-                                    <li><div class="menu_desc">Chrome 31.0, Windows 8.1: Fungerar bra</div></li>
-                                    <li><div class="menu_desc">Firefox 26.0, Windows 8.1: Fungerar bra</div></li>
-                                    <li><div class="menu_desc">Safari 5.1.7, Windows 8.1: Fungerar bra</div></li>
-                                    <li><div class="menu_desc">Opera 18.0, Windows 8.1: Fungerar bra</div></li>
-                                    <li><div class="menu_desc">Internet Explorer 11.0, Windows 8.1: Fungerar, men kartan visas inte korrekt när man zoomar in</div></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div><div id="menu_info_todo_header" class="menu_info_header" onclick="toggle_menu(event, 'menu_sub_info')">
-                        TODO
-                        <div id="menu_info_todo" class="menu_sub_info">
-                            <div class="menu_choice_group">
-                                <ul>
-                                    <li><div class="menu_desc">Lägga till fler filter och val av vilka länder som (inte) ska vara med, t ex "FN-länder", "ö-länder", mm.</div>
-                                    <li><div class="menu_desc">Lägga till numerisk data hämtad automatiskt från lämpliga källor, t ex antal invånare och areal på länder, så att det kan användas för att filtrera länder, t ex endast länder med mer än 100 000 invånare.</div>
-                                    <li><div class="menu_desc">Använda numerisk data till fler saker, t ex färga kartan efter den numeriska datan. Borde vara enkelt att implementera och skulle vara väldigt intressant att få igång.</div>
-                                    <li><div class="menu_desc">Göra så att man kan filtrera på "endast länder jag inte klarade" så att man kan repetera.</div>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div><div id="menu_display_header" class="menu_top_header" onclick="toggle_menu(event, 'menu_sub')">
-                Utseende
-                <div id="menu_display" class="menu_sub">
-                    <ul>
-                        <li><div class="menu_desc">Storlek karta i %:</div><input type="text" id="map_size" onkeyup="map_size_evt_key(event)" class="menu_tbox" style="width: 40px" onclick="event.stopPropagation()" /></li>
-                        <li><div class="menu_desc">Storlek flaggor i %:</div><input type="text" id="flag_size" onkeyup="flag_size_evt_key(event)" class="menu_tbox" style="width: 40px" onclick="event.stopPropagation()" /></li>
-                    </ul>
-                    <div class="menu_choice" id="set_map_hover" onclick="set_choice(event, 'set_map_hover'); update_map_hover()">"Hover"-effekt</div>
-                    <div class="menu_desc">Zoom</div>
-                    <div class="menu_choice_group">
-                        <div class="menu_choice" onclick="set_zoom('world', event)">Världen</div>
-                        <div class="menu_choice" onclick="set_zoom('africa', event)">Afrika</div>
-                        <div class="menu_choice" onclick="set_zoom('asia', event)">Asien</div>
-                        <div class="menu_choice" onclick="set_zoom('europe', event)">Europa</div>
-                        <div class="menu_choice" onclick="set_zoom('north_america', event)">Nordamerika</div>
-                        <div class="menu_choice" onclick="set_zoom('oceania', event)">Oceanien</div>
-                        <div class="menu_choice" onclick="set_zoom('south_america', event)">Sydamerika</div>
-                    </div>
-                </div>
-            </div><div id="menu_filter_header" class="menu_top_header" onclick="toggle_menu(event, 'menu_sub')">
-                Filter
-                <div id="menu_filter" class="menu_sub">
-                    <div class="menu_choice" id="filter_fail_list" onclick="set_choice(event, 'filter_fail_list')">Fel-lista</div>
-                    <div class="menu_desc">Världsdelar:</div>
-                    <div class="menu_choice_group">
-                        <div class="menu_choice" id="filter_region_africa" onclick="set_choice(event, 'filter_region_africa')">Afrika</div>
-                        <div class="menu_choice" id="filter_region_asia" onclick="set_choice(event, 'filter_region_asia')">Asien</div>
-                        <div class="menu_choice" id="filter_region_europe" onclick="set_choice(event, 'filter_region_europe')">Europa</div>
-                        <div class="menu_choice" id="filter_region_north_america" onclick="set_choice(event, 'filter_region_north_america')">Nordamerika</div>
-                        <div class="menu_choice" id="filter_region_oceania" onclick="set_choice(event, 'filter_region_oceania')">Oceanien</div>
-                        <div class="menu_choice" id="filter_region_south_america" onclick="set_choice(event, 'filter_region_south_america')">Sydamerika</div>
-                    </div>
-                </div>
-            </div><div id="menu_guess_header" class="menu_top_header" onclick="toggle_menu(event, 'menu_sub')">
-                Gissning
-                <div id="menu_guess" class="menu_sub">
-                    <div class="menu_choice_group" id="guess_group" onclick="set_choice(event, 'guess')">
-                        <div class="menu_choice" id="guess_name">Landets namn</div>
-                        <div class="menu_choice" id="guess_capital">Landets huvudstad</div>
-                        <div class="menu_choice" id="guess_location">Landets plats</div>
-                        <div class="menu_choice" id="guess_flag">Landets flagga</div>
-                    </div>
-                    <div class="menu_choice" id="guess_in_order" onclick="set_choice(event, 'guess_in_order')">Förbestämd ordning</div>
-                </div>
-            </div><div id="menu_aid_header" class="menu_top_header" onclick="toggle_menu(event, 'menu_sub')">
-                Hjälpmedel
-                <div id="menu_aid" class="menu_sub">
-                    <div class="menu_choice_group">
-                        <div class="menu_choice" id="help_show_active" onclick="set_choice(event, 'help_show_active')">Markera aktiva länder</div>
-                        <div class="menu_choice" id="help_show_done" onclick="set_choice(event, 'help_show_done')">Markera avklarade länder</div>
-                    </div>
-                    <div class="menu_desc">Information om nuvarande land:</div>
-                    <div class="menu_choice_group">
-                        <div class="menu_choice" id="help_current_name" onclick="set_choice(event, 'help_current_name')">Landets namn</div>
-                        <div class="menu_choice" id="help_current_capital" onclick="set_choice(event, 'help_current_capital')">Landets huvudstad</div>
-                        <div class="menu_choice" id="help_current_location" onclick="set_choice(event, 'help_current_location')">Landets plats</div>
-                        <div class="menu_choice" id="help_current_flag" onclick="set_choice(event, 'help_current_flag')">Landes flagga</div>
-                    </div>
-                </div>
-            </div><div id="menu_start_button" class="menu_button" onmouseup="toggle_game()">
-                STARTA
-            </div><div id="guess_div" style="display: none">
+        <div id="main_menu" class="menu menu_active">
+            <div class="menu_header" onclick="toggle_menu(event, 'main', 'info_menu')">Hjälp/Info
+            </div><div class="menu_header" onclick="toggle_menu(event, 'main', 'display_menu')">Utseende
+            </div><div class="menu_header" onclick="toggle_menu(event, 'main', 'filter_menu')">Filter
+            </div><div class="menu_header" onclick="toggle_menu(event, 'main', 'guess_menu')">Gissning
+            </div><div class="menu_header" onclick="toggle_menu(event, 'main', 'aid_menu')">Hjälpmedel
+            
+            </div><div id="start_button" class="menu_button" onclick="toggle_game()">STARTA
+            
+            </div><div id="guess_div">
                 <input class="menu_smallbutton" type="button" value="å" onclick="obj('guess_input').value += 'å'; obj('guess_input').focus()"
                 /><input class="menu_smallbutton" type="button" value="ä" onclick="obj('guess_input').value += 'ä'; obj('guess_input').focus()"
                 /><input class="menu_smallbutton" type="button" value="ö" onclick="obj('guess_input').value += 'ö'; obj('guess_input').focus()"
@@ -370,18 +222,120 @@ li {
                 /><input class="menu_smallbutton" type="button" value="é" onclick="obj('guess_input').value += 'é'; obj('guess_input').focus()"
                 /><input class="menu_smallbutton" type="button" value="í" onclick="obj('guess_input').value += 'í'; obj('guess_input').focus()"
                 /><input class="menu_smallbutton" type="button" value="ș" onclick="obj('guess_input').value += 'ș; obj('guess_input').focus()'"
-                /><input type="text" class="menu_tbox" style="display: block" id="guess_input" value="Gissningsruta" onfocus="if(this.value=='Gissningsruta') this.select()" onmouseup="return false" onkeypress="guess_text(event, this)" >
-            </div><div id="menu_info_div" class="menu_country_info">
-                <div class="menu_desc"></div><img id="menu_info_current_flag" src="" height="30" class="menu_info" />
-                <div id="menu_info_current_name" class="menu_info"></div>
-                <div class="menu_desc">&nbsp;-&nbsp;</div>
-                <div id="menu_info_current_capital" class="menu_info"></div>
-            </div><div id="menu_game_aid" class="menu_game_aid_div">
-                <img id="menu_game_aid_flag_img" src="" height="30" class="menu_game_aid_text" />
-                <div id="menu_game_aid_name_text" class="menu_game_aid_text"></div>
-                <div class="menu_desc">&nbsp;-&nbsp;</div>
-                <div id="menu_game_aid_capital_text" class="menu_game_aid_text"></div>
-            </div><div id="message" class="message"></div>
+                /><input type="text" class="menu_tbox" id="guess_input" value="Gissningsruta" onfocus="if(this.value=='Gissningsruta') this.select()" onmouseup="return false" onkeypress="guess_text(event, this)" >
+                
+            </div><div id="country_info">
+                <img id="country_info_flag" src="" height="30" />
+                <div id="country_info_name" class="country_info_text"></div>
+                <div class="country_info_text">&nbsp;-&nbsp;</div>
+                <div id="country_info_capital" class="country_info_text"></div>
+            </div><div id="game_aid">
+                <img id="game_aid_flag" src="" height="30" />
+                <div id="game_aid_name" class="game_aid_text"></div>
+                <div class="game_aid_text">&nbsp;-&nbsp;</div>
+                <div id="game_aid_capital" class="game_aid_text"></div>
+            </div><div id="message">
+            </div><div id="info_menu" class="menu">
+                <div class="menu_header" onclick="toggle_menu(event, 'info', 'info_help_menu')">Hjälp
+                </div><div class="menu_header" onclick="toggle_menu(event, 'info', 'info_info_menu')">Info
+                </div><div class="menu_header" onclick="toggle_menu(event, 'info', 'info_sources_menu')">Källor
+                </div><div class="menu_header" onclick="toggle_menu(event, 'info', 'info_problem_menu')">Kända problem
+                </div><div class="menu_header" onclick="toggle_menu(event, 'info', 'info_contact_menu')">Kontakt
+                </div><div class="menu_header" onclick="toggle_menu(event, 'info', 'info_compatibility_menu')">Kompatibilitet
+                </div><div class="menu_header" onclick="toggle_menu(event, 'info', 'info_todo_menu')">TODO
+                
+                </div><div id="info_help_menu" class="menu">
+                    <ul>
+                        <li><div class="menu_text">Använd menyn högst upp för att ställa in, sen kör igång.</div></li>
+                        <li><div class="menu_text">Mer hjälp kommer</div></li>
+                    </ul>
+                </div><div id="info_info_menu" class="menu">
+                    <ul>
+                        <li><div class="menu_text">Vilka områden som räknas som länder är baserat på <a target="_blank" href="https://sv.wikipedia.org/wiki/Lista_%C3%B6ver_sj%C3%A4lvst%C3%A4ndiga_stater">Wikipedia: Lista över självständiga stater</a>. Jag har för närvarande [december 2013] med alla medlemsländer i FN samt Taiwan, Kosovo och Vatikanstaten. Jag har inte med "Den suveräna militära hospitalsorden av sankt Johannes av Jerusalem, av Rhodos och av Malta" (Malteserorden) eftersom de inte har något associerat geografiskt område.</div></li>
+                        <li><div class="menu_text">Information om länderna hämtas automatiskt, så fel kan förekomma och får gärna rapporteras om de upptäcks. Se kontaktinformation nedan.</div></li>
+                        <li><div class="menu_text">Jag använde <a target="_blank" href="http://unstats.un.org/unsd/methods/m49/m49regin.htm">unstats.un.org</a> [december 2013] för att avgöra världsdelstillhörighet för länderna. Karibien och Centralamerika lät jag bli en del av Nordamerika.</div></li>
+                    </ul>
+                </div><div id="info_sources_menu" class="menu">
+                    <ul>
+                        <li><div class="menu_text">Namn på länder och huvudstäder kommer från ländernas respektive sida på svenska wikipedia, hämtade december 2013.</div></li>
+                        <li><div class="menu_text">Lista på länder som ingår i FN hämtade från <a target="_blank" href="https://sv.wikipedia.org/wiki/F%C3%B6renta_nationernas_medlemsstater">Wikipedia: Förenta nationernas medlemsstater</a> december 2013.</div></li>
+                        <li><div class="menu_text">Kartan är en aningen modifierad version av en <a target="_blank" href="http://en.wikipedia.org/wiki/File:BlankMap-World-Microstates.svg">karta från wikipedia</a> hämtad december 2013.</div></li>
+                        <li><div class="menu_text">Flaggorna är hämtade via <a target="_blank" href="https://sv.wikipedia.org/wiki/F%C3%B6renta_nationernas_medlemsstater">Wikipedia: Förenta nationernas medlemsstater</a> december 2013.</div></li>
+                    </ul>
+                </div><div id="info_problem_menu" class="menu">
+                    <ul>
+                        <li><div class="menu_text">Kartan kan vara ganska slö i vissa webbläsare. Avaktivering av "Hover"-effekten under Utseende-menyn förbättrar situationen lite.</div></li>
+                    </ul>
+                </div><div id="info_contact_menu" class="menu">
+                    <ul>
+                        <li><div class="menu_text">Kontakt-adress finns längst ner på sidan.</div></li>
+                        <li><div class="menu_text">För närvarande finns ingen hemsida för spelet. Senaste versionen kan laddas ner på <a target="_blank" href="https://github.com/boriscc/geo/releases">github-sidan</a>.</div></li>
+                        <li><div class="menu_text">Problem kan rapporteras via <a target="_blank" href="https://github.com/boriscc/geo/issues/new">githubs Issue</a> eller via mail-adressen längst ner på sidan.</div></li>
+                    </ul>
+                </div><div id="info_compatibility_menu" class="menu">
+                    <ul>
+                        <li><div class="menu_text">Chrome 31.0, Windows 8.1: Fungerar bra</div></li>
+                        <li><div class="menu_text">Firefox 26.0, Windows 8.1: Fungerar bra</div></li>
+                        <li><div class="menu_text">Safari 5.1.7, Windows 8.1: Fungerar bra</div></li>
+                        <li><div class="menu_text">Opera 18.0, Windows 8.1: Fungerar bra</div></li>
+                        <li><div class="menu_text">Internet Explorer 11.0, Windows 8.1: Fungerar, men kartan visas inte korrekt när man zoomar in</div></li>
+                    </ul>
+                </div><div id="info_todo_menu" class="menu">
+                    <ul>
+                        <li><div class="menu_text">Lägga till fler filter och val av vilka länder som (inte) ska vara med, t ex "FN-länder", "ö-länder", mm.</div></li>
+                        <li><div class="menu_text">Lägga till numerisk data hämtad automatiskt från lämpliga källor, t ex antal invånare och areal på länder, så att det kan användas för att filtrera länder, t ex endast länder med mer än 100 000 invånare.</div></li>
+                        <li><div class="menu_text">Använda numerisk data till fler saker, t ex färga kartan efter den numeriska datan. Borde vara enkelt att implementera och skulle vara väldigt intressant att få igång.</div></li>
+                        <li><div class="menu_text">Göra så att man kan filtrera på "endast länder jag inte klarade" så att man kan repetera.</div></li>
+                    </ul>
+                </div>
+            </div><div id="display_menu" class="menu">
+                <div class="menu_group">
+                    <div class="menu_choice">Storlek karta i %:<input type="text" id="map_size" onkeyup="map_size_evt_key(event)" class="menu_tbox" style="width: 40px"/></div>
+                    <div class="menu_choice">Storlek flaggor i %:<input type="text" id="flag_size" onkeyup="flag_size_evt_key(event)" class="menu_tbox" style="width: 40px"/></div>
+                </div>
+                <div class="menu_choice" id="set_map_hover" onclick="set_choice(event, 'set_map_hover'); update_map_hover()">"Hover"-effekt</div>
+                <div class="menu_title">Zoom:</div>
+                <div class="menu_group">
+                    <div class="menu_choice" onclick="set_zoom('world', event)">Världen</div>
+                    <div class="menu_choice" onclick="set_zoom('africa', event)">Afrika</div>
+                    <div class="menu_choice" onclick="set_zoom('asia', event)">Asien</div>
+                    <div class="menu_choice" onclick="set_zoom('europe', event)">Europa</div>
+                    <div class="menu_choice" onclick="set_zoom('north_america', event)">Nordamerika</div>
+                    <div class="menu_choice" onclick="set_zoom('oceania', event)">Oceanien</div>
+                    <div class="menu_choice" onclick="set_zoom('south_america', event)">Sydamerika</div>
+                </div>
+            </div><div id="filter_menu" class="menu">
+                <div class="menu_choice" id="filter_fail_list" onclick="set_choice(event, 'filter_fail_list')">Fel-lista</div>
+                <div class="menu_title">Världsdelar:</div>
+                <div class="menu_group">
+                    <div class="menu_choice" id="filter_region_africa" onclick="set_choice(event, 'filter_region_africa')">Afrika</div>
+                    <div class="menu_choice" id="filter_region_asia" onclick="set_choice(event, 'filter_region_asia')">Asien</div>
+                    <div class="menu_choice" id="filter_region_europe" onclick="set_choice(event, 'filter_region_europe')">Europa</div>
+                    <div class="menu_choice" id="filter_region_north_america" onclick="set_choice(event, 'filter_region_north_america')">Nordamerika</div>
+                    <div class="menu_choice" id="filter_region_oceania" onclick="set_choice(event, 'filter_region_oceania')">Oceanien</div>
+                    <div class="menu_choice" id="filter_region_south_america" onclick="set_choice(event, 'filter_region_south_america')">Sydamerika</div>
+                </div>
+            </div><div id="guess_menu" class="menu">
+                <div class="menu_group" onclick="set_choice(event, 'guess')">
+                    <div class="menu_choice" id="guess_name">Landets namn</div>
+                    <div class="menu_choice" id="guess_capital">Landets huvudstad</div>
+                    <div class="menu_choice" id="guess_location">Landets plats</div>
+                    <div class="menu_choice" id="guess_flag">Landets flagga</div>
+                </div>
+                <div class="menu_choice" id="guess_in_order" onclick="set_choice(event, 'guess_in_order')">Förbestämd ordning</div>
+            </div><div id="aid_menu" class="menu">
+                <div class="menu_group">
+                    <div class="menu_choice" id="help_show_active" onclick="set_choice(event, 'help_show_active')">Markera aktiva länder</div>
+                    <div class="menu_choice" id="help_show_done" onclick="set_choice(event, 'help_show_done')">Markera avklarade länder</div>
+                </div>
+                <div class="menu_title">Information om nuvarande land:</div>
+                <div class="menu_group">
+                    <div class="menu_choice" id="help_current_name" onclick="set_choice(event, 'help_current_name')">Landets namn</div>
+                    <div class="menu_choice" id="help_current_capital" onclick="set_choice(event, 'help_current_capital')">Landets huvudstad</div>
+                    <div class="menu_choice" id="help_current_location" onclick="set_choice(event, 'help_current_location')">Landets plats</div>
+                    <div class="menu_choice" id="help_current_flag" onclick="set_choice(event, 'help_current_flag')">Landes flagga</div>
+                </div>
+            </div>
         </div>
 
         <svg id="svg_map" width="1500" height="750" viewBox="-53 60 1 1403" preserveAspectRatio="xMinYMin meet" style="border-color:#000000; border-style:solid solid solid none;">
@@ -994,10 +948,10 @@ function country_click(evt, country_code)
 function unset_current_country(country_code) {
     if(country_code === 0) return;
     
-    document.getElementById('menu_info_div').style.visibility = 'hidden';
-    document.getElementById('menu_info_current_name').innerHTML = '';
-    document.getElementById('menu_info_current_capital').innerHTML = '';
-    document.getElementById('menu_info_current_flag').src = '';
+    document.getElementById('country_info').style.visibility = 'hidden';
+    document.getElementById('country_info_name').innerHTML = '';
+    document.getElementById('country_info_capital').innerHTML = '';
+    document.getElementById('country_info_flag').src = '';
 
     update_country_state(country_code);
 }
@@ -1009,10 +963,10 @@ function set_current_country(type) {
     update_country_state(country_code);
     
     if(state.show_info == 1) {
-        document.getElementById('menu_info_current_name').innerHTML = decodeURIComponent(g_list[country_code].name.replace(/_/g, ' '));
-        document.getElementById('menu_info_current_capital').innerHTML = decodeURIComponent(g_list[country_code].cap.replace(/_/g, ' '));
-        document.getElementById('menu_info_current_flag').src = "data:image/png;base64," + g_flag_data[country_code];
-        document.getElementById('menu_info_div').style.visibility = 'visible';
+        document.getElementById('country_info_name').innerHTML = decodeURIComponent(g_list[country_code].name.replace(/_/g, ' '));
+        document.getElementById('country_info_capital').innerHTML = decodeURIComponent(g_list[country_code].cap.replace(/_/g, ' '));
+        document.getElementById('country_info_flag').src = "data:image/png;base64," + g_flag_data[country_code];
+        document.getElementById('country_info').style.visibility = 'visible';
     }
 }
 
@@ -1139,44 +1093,45 @@ function flag_size_evt_key(evt) {
 
 var g_menu_elem = document.getElementById('main_menu');
 var g_menu = {};
-function toggle_menu(event, cls) {
+function toggle_menu(event, group, menu_id) {
+    if(event == undefined) alert('Internal error 12');
     if(event != undefined && event.stopPropagation != undefined) event.stopPropagation();
-    if(event.currentTarget != event.target) return;
+    if(event.currentTarget != event.target && event.target != undefined) return;
     
-    if(g_menu[cls] == undefined) g_menu[cls] = { checked: { id: undefined, elem: undefined } };
+    if(g_menu[group] == undefined) g_menu[group] = { open: false, header: undefined, menu: undefined };
     
     // if the menu is open, close it
-    if(g_menu[cls].checked.id != undefined) {
-        var elem = g_menu[cls].checked.elem;
-        elem.classList.remove('menu_header_active');
-        elem.getElementsByClassName(cls)[0].style.display = 'none';
+    if(g_menu[group].open) {
+        g_menu[group].header.classList.remove('menu_header_active');
+        g_menu[group].menu.classList.remove('menu_active');
     }
     
     // if a new menu should be opened
-    if(event != undefined && event.currentTarget.id != g_menu[cls].checked.id) {
-        var elem = event.currentTarget;
-        elem.classList.add('menu_header_active');
-        elem.getElementsByClassName(cls)[0].style.display = 'block';
-        g_menu[cls].checked.id = elem.id;
-        g_menu[cls].checked.elem = elem;
+    if(g_menu[group].menu == undefined || menu_id != g_menu[group].menu.id) {
+        g_menu[group].open = true;
+        g_menu[group].header = event.currentTarget;
+        g_menu[group].menu = obj(menu_id);
+        
+        g_menu[group].header.classList.add('menu_header_active');
+        g_menu[group].menu.classList.add('menu_active');
     } else {
-        g_menu[cls].checked.id = undefined;
-        g_menu[cls].checked.elem = undefined;
+        g_menu[group].open = false;
+        g_menu[group].header = undefined;
+        g_menu[group].menu = undefined;
     }
 }
 
-function close_menu(event, cls) {
-    if(g_menu[cls] == undefined) g_menu[cls] = { checked: { id: undefined, elem: undefined } };
+function close_menu(group) {
+    if(g_menu[group] == undefined) g_menu[group] = { open: false, header: undefined, menu: undefined };
     
-    if(g_menu[cls].checked.id) {
-        var elem = g_menu[cls].checked.elem;
-        elem.classList.remove('menu_header_active');
-        elem.getElementsByClassName(cls)[0].style.display = 'none';
+    if(g_menu[group].open) {
+        g_menu[group].header.classList.remove('menu_header_active');
+        g_menu[group].menu.classList.remove('menu_active');
     }
-    g_menu[cls].checked.id = undefined;
-    g_menu[cls].checked.elem = undefined;
     
-    if(event != undefined && event.stopPropagation != undefined) event.stopPropagation();
+    g_menu[group].open = false;
+    g_menu[group].header = undefined;
+    g_menu[group].menu = undefined;
 }
 
 var g_choice = {};
@@ -1251,12 +1206,16 @@ function start_game() {
         return;
     }
     
+    document.getElementById('game_aid_name').innerHTML = '';
+    document.getElementById('game_aid_capital').innerHTML = '';
+    document.getElementById('game_aid_flag').src = '';
+    
     if(g_game_guess == 'guess_name' || g_game_guess == 'guess_capital') {
         document.getElementById('guess_div').style.display = 'inline-block';
     }
     
     g_game_state = 'on';
-    document.getElementById('menu_start_button').innerHTML = 'AVSLUTA';
+    document.getElementById('start_button').innerHTML = 'AVSLUTA';
     g_game_show_active = (choice_get_id('help_show_active') != undefined);
     g_game_show_done = (choice_get_id('help_show_done') != undefined);
     g_game_in_order = (choice_get_id('guess_in_order') != undefined);
@@ -1282,7 +1241,7 @@ function start_game() {
         }
     }
     
-    document.getElementById('menu_game_aid').style.display = 'inline-block';
+    document.getElementById('game_aid').style.display = 'inline-block';
     game_show_help();
     document.getElementById('guess_input').focus();
     document.getElementById('guess_input').select();
@@ -1300,9 +1259,9 @@ function stop_game() {
         set_country_flag_state(key, g_state.paused);
     }
     g_game_state = 'off';
-    document.getElementById('menu_start_button').innerHTML = 'STARTA';
+    document.getElementById('start_button').innerHTML = 'STARTA';
     document.getElementById('guess_div').style.display = 'none';
-    document.getElementById('menu_game_aid').style.display = 'none';
+    document.getElementById('game_aid').style.display = 'none';
 }
 
 function toggle_game() {
@@ -1343,14 +1302,14 @@ function game_show_help() {
     
     if(choice_get_id('help_current_location') != undefined) set_country_map_state(id, g_state.highlight);
     if(choice_get_id('help_current_flag') != undefined) {
-        document.getElementById('menu_game_aid_flag_img').src = "data:image/png;base64," + g_flag_data[id];
+        document.getElementById('game_aid_flag').src = "data:image/png;base64," + g_flag_data[id];
         set_country_flag_state(id, g_state.highlight);
     }
     if(choice_get_id('help_current_name') != undefined) {
-        document.getElementById('menu_game_aid_name_text').innerHTML = decodeURIComponent(g_list[id].name.replace(/_/g, ' '));
+        document.getElementById('game_aid_name').innerHTML = decodeURIComponent(g_list[id].name.replace(/_/g, ' '));
     }
     if(choice_get_id('help_current_capital') != undefined) {
-        document.getElementById('menu_game_aid_capital_text').innerHTML = decodeURIComponent(g_list[id].cap.replace(/_/g, ' '));
+        document.getElementById('game_aid_capital').innerHTML = decodeURIComponent(g_list[id].cap.replace(/_/g, ' '));
     }
 }
 
@@ -1493,7 +1452,7 @@ function init() {
     }
     g_map.addEventListener("mouseover", function(evt) { top.nowhere_hover(evt); }, false);
     document.addEventListener("mouseover", function(evt) { nowhere_hover(evt); }, false);
-    document.addEventListener("click", function(evt) { close_menu(evt, 'menu_sub'); }, false);
+    document.addEventListener("click", function(evt) { close_menu('main'); }, false);
 
     set_choice({target: document.getElementById('set_map_hover') }, 'set_map_hover');
     set_choice({target: document.getElementById('help_show_active') }, 'help_show_active');
@@ -1510,18 +1469,6 @@ function init() {
     
     var top_padding_size = document.getElementById('main_menu').clientHeight;
     document.getElementsByTagName('body')[0].style.marginTop = top_padding_size + "px";
-    var list = document.getElementsByClassName('menu_sub');
-    for(var i = 0; i < list.length; i++) {
-        list[i].style.top = top_padding_size + "px";
-    }
-    
-    document.getElementById('menu_info').style.display = 'inline';
-    top_padding_size = document.getElementById('main_menu').clientHeight + document.getElementById('menu_info').clientHeight;
-    document.getElementById('menu_info').style.display = 'none';
-    list = document.getElementsByClassName('menu_sub_info');
-    for(var i = 0; i < list.length; i++) {
-        list[i].style.top = top_padding_size + "px";
-    }
 }
 
 init();
