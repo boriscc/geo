@@ -327,6 +327,13 @@ div {
                     <div class="menu_choice" id="filter_region_oceania" onclick="set_choice(event, 'filter_region_oceania')">Oceanien</div>
                     <div class="menu_choice" id="filter_region_south_america" onclick="set_choice(event, 'filter_region_south_america')">Sydamerika</div>
                 </div>
+                <div class="menu_title">Population:</div>
+                <div class="menu_group">
+                    <input type="text" id="filter_pop_min" class="menu_tbox" value="" style="width: 50px"/>
+                    -
+                    <input type="text" id="filter_pop_max" class="menu_tbox" value="" style="width: 50px"/>
+                </div>
+                <div id="filter_show" class="menu_button" onclick="filter_show()">Visa aktiva</div>
             </div><div id="guess_menu" class="menu" onclick="event.stopPropagation()">
                 <div class="menu_group" onclick="set_choice(event, 'guess')">
                     <div class="menu_choice" id="guess_name">Landets namn</div>
@@ -876,6 +883,7 @@ var g_game_correct_nr, g_game_done_nr, g_game_total_nr, g_game_guess_nr;
 var g_game_in_order;
 var g_filter_reg = {};
 var g_filter_fail_list = false;
+var g_filter_pop_min, g_filter_pop_max;
 
 var g_zoom = {};
 g_zoom.world  = {height: 1403, width: 1, y: 60, x: -53};
@@ -1185,6 +1193,8 @@ function choice_get_id(group_id) {
 function game_filter_include(country_code) {
     if(g_filter_reg[g_list[country_code].reg] == false) return false;
     if(g_filter_fail_list && Object.keys(g_game_fail_list).length > 0 && g_game_fail_list[country_code] == undefined) return false;
+    if(!isNaN(g_filter_pop_min) && g_list[country_code].pop < g_filter_pop_min) return false;
+    if(!isNaN(g_filter_pop_max) && g_list[country_code].pop > g_filter_pop_max) return false;
     return true;
 }
 
@@ -1196,6 +1206,8 @@ function create_game_country_list() {
     g_filter_reg.Oceanien = (choice_get_id('filter_region_oceania') != undefined);
     g_filter_reg.Sydamerika = (choice_get_id('filter_region_south_america') != undefined);
     g_filter_fail_list = (choice_get_id('filter_fail_list') != undefined);
+    g_filter_pop_min = parseInt(obj('filter_pop_min').value.replace(/[,\.]/g, ''));
+    g_filter_pop_max = parseInt(obj('filter_pop_max').value.replace(/[,\.]/g, ''));
     
     var list = [];
     var list_all = [];
