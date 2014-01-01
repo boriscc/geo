@@ -329,11 +329,14 @@ div {
                 </div>
                 <div class="menu_title">Population:</div>
                 <div class="menu_group">
-                    min:<input type="text" id="filter_pop_min" class="menu_tbox" value="" style="width: 60pt"/>
-                    <br />
-                    max:<input type="text" id="filter_pop_max" class="menu_tbox" value="" style="width: 60pt"/>
+                    <div class="menu_choice">min:<input type="text" id="filter_pop_min" class="menu_tbox" value="" style="width: 70pt; float: right"/></div>
+                    <div class="menu_choice">max:<input type="text" id="filter_pop_max" class="menu_tbox" value="" style="width: 70pt; float: right"/></div>
                 </div>
                 <div id="filter_show" class="menu_button" onclick="filter_show()">Visa aktiva</div>
+                <div id="filter_show" class="menu_button" onclick="filter_show_all()">Visa alla</div>
+                <div class="menu_group" style="display: none" id="filter_list_active_div">
+                    Aktiva länder: <div id="filter_list_active"></div>
+                </div>
             </div><div id="guess_menu" class="menu" onclick="event.stopPropagation()">
                 <div class="menu_group" onclick="set_choice(event, 'guess')">
                     <div class="menu_choice" id="guess_name">Landets namn</div>
@@ -1231,6 +1234,45 @@ function create_game_country_list() {
     g_game_country_list_all = shuffle(list_all);
 }
 
+function filter_show() {
+    create_game_country_list();
+
+    if(g_game_country_list.length == 0) {
+        show_message("Du har filtrerat bort alla länder");
+    }
+    
+    clear_flags();
+    for(key in g_list) {
+        init_flag(key);
+    }
+
+    obj('filter_list_active_div').style.display = 'block';
+    obj('filter_list_active').innerHTML = g_game_country_list.length + ' av ' + g_game_country_list_all.length;
+    for(key in g_list) {
+        if(g_list[key].active == false) {
+            set_country_map_state(key, g_state.inactive);
+            set_country_flag_state(key, g_state.inactive);
+            g_flag[key].elem.style.display = 'none';
+        } else {
+            set_country_map_state(key, g_state.paused);
+            set_country_flag_state(key, g_state.paused);
+        }
+    }
+}
+
+function filter_show_all() {
+    clear_flags();
+    for(key in g_list) {
+        init_flag(key);
+    }
+
+    obj('filter_list_active_div').style.display = 'none';
+    for(key in g_list) {
+        set_country_map_state(key, g_state.paused);
+        set_country_flag_state(key, g_state.paused);
+    }
+}
+
 function start_game() {
     g_game_guess = choice_get_id('guess');
     if(g_game_guess == undefined) {
@@ -1255,6 +1297,7 @@ function start_game() {
     
     g_game_state = 'on';
     obj('start_button').innerHTML = 'AVSLUTA';
+    obj('filter_list_active_div').style.display = 'none';
     g_game_show_active = (choice_get_id('help_show_active') != undefined);
     g_game_show_done = (choice_get_id('help_show_done') != undefined);
     g_game_in_order = (choice_get_id('guess_in_order') != undefined);
@@ -1299,6 +1342,7 @@ function stop_game() {
     }
     g_game_state = 'off';
     obj('start_button').innerHTML = 'STARTA';
+    obj('filter_list_active_div').style.display = 'none';
     obj('guess_div').style.display = 'none';
     obj('game_aid').style.display = 'none';
 }
