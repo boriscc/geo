@@ -247,7 +247,7 @@ div {
                 <div class="game_aid_text">&nbsp;-&nbsp;</div>
                 <div id="game_aid_capital" class="game_aid_text"></div>
             </div><div id="message">
-            </div><div id="info_menu" class="menu">
+            </div><div id="info_menu" class="menu" onclick="event.stopPropagation()">
                 <div class="menu_header" onclick="toggle_menu(event, 'info', 'info_help_menu')">Hjälp
                 </div><div class="menu_header" onclick="toggle_menu(event, 'info', 'info_info_menu')">Info
                 </div><div class="menu_header" onclick="toggle_menu(event, 'info', 'info_sources_menu')">Källor
@@ -300,7 +300,7 @@ div {
                         <li><div class="menu_text">Göra så att man kan filtrera på "endast länder jag inte klarade" så att man kan repetera.</div></li>
                     </ul>
                 </div>
-            </div><div id="display_menu" class="menu">
+            </div><div id="display_menu" class="menu" onclick="event.stopPropagation()">
                 <div class="menu_group">
                     <div class="menu_choice">Storlek karta i %:<input type="text" id="map_size" onkeyup="map_size_evt_key(event)" class="menu_tbox" style="width: 40px"/></div>
                     <div class="menu_choice">Storlek flaggor i %:<input type="text" id="flag_size" onkeyup="flag_size_evt_key(event)" class="menu_tbox" style="width: 40px"/></div>
@@ -316,7 +316,7 @@ div {
                     <div class="menu_choice" onclick="set_zoom('oceania', event)">Oceanien</div>
                     <div class="menu_choice" onclick="set_zoom('south_america', event)">Sydamerika</div>
                 </div>
-            </div><div id="filter_menu" class="menu">
+            </div><div id="filter_menu" class="menu" onclick="event.stopPropagation()">
                 <div class="menu_choice" id="filter_fail_list" onclick="set_choice(event, 'filter_fail_list')">Fel-lista</div>
                 <div class="menu_title">Världsdelar:</div>
                 <div class="menu_group">
@@ -327,7 +327,7 @@ div {
                     <div class="menu_choice" id="filter_region_oceania" onclick="set_choice(event, 'filter_region_oceania')">Oceanien</div>
                     <div class="menu_choice" id="filter_region_south_america" onclick="set_choice(event, 'filter_region_south_america')">Sydamerika</div>
                 </div>
-            </div><div id="guess_menu" class="menu">
+            </div><div id="guess_menu" class="menu" onclick="event.stopPropagation()">
                 <div class="menu_group" onclick="set_choice(event, 'guess')">
                     <div class="menu_choice" id="guess_name">Landets namn</div>
                     <div class="menu_choice" id="guess_capital">Landets huvudstad</div>
@@ -335,7 +335,7 @@ div {
                     <div class="menu_choice" id="guess_flag">Landets flagga</div>
                 </div>
                 <div class="menu_choice" id="guess_in_order" onclick="set_choice(event, 'guess_in_order')">Förbestämd ordning</div>
-            </div><div id="aid_menu" class="menu">
+            </div><div id="aid_menu" class="menu" onclick="event.stopPropagation()">
                 <div class="menu_group">
                     <div class="menu_choice" id="help_show_active" onclick="set_choice(event, 'help_show_active')">Markera aktiva länder</div>
                     <div class="menu_choice" id="help_show_done" onclick="set_choice(event, 'help_show_done')">Markera avklarade länder</div>
