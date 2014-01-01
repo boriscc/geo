@@ -819,7 +819,7 @@ function numberWithCommas(x) {
 }
 
 function geo_parse_int(str) {
-    return parseInt(parseFloat(str.toLowerCase().replace(/\./g, '').replace(/,/g, '.').replace(/miljoner/g, 'e6').replace(/miljarder/g, 'e9').replace(/milj/g, 'e6').replace(/tusen/g, 'e3').replace(/ /g, '')));
+    return parseInt(parseFloat(str.toLowerCase().replace(/\./g, '').replace(/,/g, '.').replace(/miljoner/g, 'e6').replace(/miljarder/g, 'e9').replace(/miljon/g, 'e6').replace(/miljard/g, 'e9').replace(/milj/g, 'e6').replace(/tusen/g, 'e3').replace(/ /g, '')));
 }
 
 var g_timer_clock = {};
