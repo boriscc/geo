@@ -329,9 +329,9 @@ div {
                 </div>
                 <div class="menu_title">Population:</div>
                 <div class="menu_group">
-                    <input type="text" id="filter_pop_min" class="menu_tbox" value="" style="width: 50px"/>
-                    -
-                    <input type="text" id="filter_pop_max" class="menu_tbox" value="" style="width: 50px"/>
+                    min:<input type="text" id="filter_pop_min" class="menu_tbox" value="" style="width: 60pt"/>
+                    <br />
+                    max:<input type="text" id="filter_pop_max" class="menu_tbox" value="" style="width: 60pt"/>
                 </div>
                 <div id="filter_show" class="menu_button" onclick="filter_show()">Visa aktiva</div>
             </div><div id="guess_menu" class="menu" onclick="event.stopPropagation()">
@@ -812,6 +812,10 @@ function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+function geo_parse_int(str) {
+    return parseInt(parseFloat(str.toLowerCase().replace(/\./g, '').replace(/,/g, '.').replace(/miljoner/g, 'e6').replace(/miljarder/g, 'e9').replace(/milj/g, 'e6').replace(/tusen/g, 'e3').replace(/ /g, '')));
+}
+
 var g_timer_clock = {};
 function timer(onReady, ID, waitTime)
 {
@@ -1206,8 +1210,8 @@ function create_game_country_list() {
     g_filter_reg.Oceanien = (choice_get_id('filter_region_oceania') != undefined);
     g_filter_reg.Sydamerika = (choice_get_id('filter_region_south_america') != undefined);
     g_filter_fail_list = (choice_get_id('filter_fail_list') != undefined);
-    g_filter_pop_min = parseInt(obj('filter_pop_min').value.replace(/[,\.]/g, ''));
-    g_filter_pop_max = parseInt(obj('filter_pop_max').value.replace(/[,\.]/g, ''));
+    g_filter_pop_min = geo_parse_int(obj('filter_pop_min').value);
+    g_filter_pop_max = geo_parse_int(obj('filter_pop_max').value);
     
     var list = [];
     var list_all = [];
