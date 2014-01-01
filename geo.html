@@ -843,7 +843,7 @@ var g_map_width = 98; // percent of window width
 var g_mouse_position = 0; // country code
 var g_mouse_place = ''; // 'map' or 'flag'
 
-var g_map = document.getElementById("svg_map");
+var g_map = obj("svg_map");
 
 var g_game_state = 'off';
 var g_game_guess = undefined;
@@ -882,9 +882,9 @@ function set_zoom(arg, evt) {
 
 function show_message(msg, type) {
     if(type == undefined) type = 'bad';
-    document.getElementById('message').innerHTML = decodeURIComponent(msg.replace(/_/g, ' '));
-    if(type == 'good') document.getElementById('message').style.color = '#0000ff';
-    else document.getElementById('message').style.color = '#ff0000';
+    obj('message').innerHTML = decodeURIComponent(msg.replace(/_/g, ' '));
+    if(type == 'good') obj('message').style.color = '#0000ff';
+    else obj('message').style.color = '#ff0000';
 }
 
 function set_map_width(width) {
@@ -892,7 +892,7 @@ function set_map_width(width) {
     if(isNaN(width) || width <= 0) width = g_map_width;
     g_map_width = width;
     var width_real = g_map_width * window.innerWidth / 100.0;
-    document.getElementById('map_size').value = g_map_width + "";
+    obj('map_size').value = g_map_width + "";
     g_map.setAttribute("width", width_real);
     g_map.setAttribute("height", width_real / 2);
 }
@@ -948,10 +948,10 @@ function country_click(evt, country_code)
 function unset_current_country(country_code) {
     if(country_code === 0) return;
     
-    document.getElementById('country_info').style.visibility = 'hidden';
-    document.getElementById('country_info_name').innerHTML = '';
-    document.getElementById('country_info_capital').innerHTML = '';
-    document.getElementById('country_info_flag').src = '';
+    obj('country_info').style.visibility = 'hidden';
+    obj('country_info_name').innerHTML = '';
+    obj('country_info_capital').innerHTML = '';
+    obj('country_info_flag').src = '';
 
     update_country_state(country_code);
 }
@@ -963,10 +963,10 @@ function set_current_country(type) {
     update_country_state(country_code);
     
     if(state.show_info == 1) {
-        document.getElementById('country_info_name').innerHTML = decodeURIComponent(g_list[country_code].name.replace(/_/g, ' '));
-        document.getElementById('country_info_capital').innerHTML = decodeURIComponent(g_list[country_code].cap.replace(/_/g, ' '));
-        document.getElementById('country_info_flag').src = "data:image/png;base64," + g_flag_data[country_code];
-        document.getElementById('country_info').style.visibility = 'visible';
+        obj('country_info_name').innerHTML = decodeURIComponent(g_list[country_code].name.replace(/_/g, ' '));
+        obj('country_info_capital').innerHTML = decodeURIComponent(g_list[country_code].cap.replace(/_/g, ' '));
+        obj('country_info_flag').src = "data:image/png;base64," + g_flag_data[country_code];
+        obj('country_info').style.visibility = 'visible';
     }
 }
 
@@ -998,14 +998,14 @@ function flag_click(evt, country_code) {
 }
 
 function clear_flags() {
-    document.getElementById('flag').innerHTML = "";
+    obj('flag').innerHTML = "";
     g_flag = {};
 }
 
 function create_flag_mousedown(key) { return function(evt) { top.flag_click(evt, key); }; }
 function init_flag(country_code) {
     if(g_flag_type == "png") {
-        var container = document.getElementById('flag');
+        var container = obj('flag');
         var id = "flag_" + country_code;
         var elem = document.createElement('img')
         
@@ -1019,7 +1019,7 @@ function init_flag(country_code) {
         box = elem;
     } else if(g_flag_type == "svg") {
         var id = "flag_" + country_code;
-        var box = document.getElementById(id)
+        var box = obj(id)
         var elem = div.getElementsByTagName("svg")[0];
         var w = parseFloat(elem.getAttribute("width"));
         var h = parseFloat(elem.getAttribute("height"));
@@ -1063,7 +1063,7 @@ function set_flag_width(width) {
     if(isNaN(width) || width <= 0) width = g_flag_width;
     g_flag_width = width;
     calculate_flag_width_real();
-    document.getElementById('flag_size').value = g_flag_width + "";
+    obj('flag_size').value = g_flag_width + "";
     for(key in g_flag) {
         g_flag[key].elem.setAttribute("width", g_flag_width_real);
         if(g_flag[key].ratio != undefined) g_flag[key].elem.setAttribute("height", g_flag_width_real * g_flag[key].ratio);
@@ -1077,7 +1077,7 @@ function get_key(evt) {
 
 function map_size_evt_key(evt) {
     var key = get_key(evt);
-    var size = parseFloat(document.getElementById('map_size').value);
+    var size = parseFloat(obj('map_size').value);
     
     if(key == g_key_return) { timerAbort('map_size'); set_map_width(size); }
     else timer(function(){ set_map_width(size); }, "map_size", 1500);
@@ -1085,13 +1085,13 @@ function map_size_evt_key(evt) {
 
 function flag_size_evt_key(evt) {
     var key = get_key(evt);
-    var size = parseFloat(document.getElementById('flag_size').value);
+    var size = parseFloat(obj('flag_size').value);
     
     if(key == g_key_return) { timerAbort('flag_size'); set_flag_width(size); }
     else timer(function(){ set_flag_width(size); }, "flag_size", 1500);
 }
 
-var g_menu_elem = document.getElementById('main_menu');
+var g_menu_elem = obj('main_menu');
 var g_menu = {};
 function toggle_menu(event, group, menu_id) {
     if(event == undefined) alert('Internal error 12');
@@ -1206,16 +1206,16 @@ function start_game() {
         return;
     }
     
-    document.getElementById('game_aid_name').innerHTML = '';
-    document.getElementById('game_aid_capital').innerHTML = '';
-    document.getElementById('game_aid_flag').src = '';
+    obj('game_aid_name').innerHTML = '';
+    obj('game_aid_capital').innerHTML = '';
+    obj('game_aid_flag').src = '';
     
     if(g_game_guess == 'guess_name' || g_game_guess == 'guess_capital') {
-        document.getElementById('guess_div').style.display = 'inline-block';
+        obj('guess_div').style.display = 'inline-block';
     }
     
     g_game_state = 'on';
-    document.getElementById('start_button').innerHTML = 'AVSLUTA';
+    obj('start_button').innerHTML = 'AVSLUTA';
     g_game_show_active = (choice_get_id('help_show_active') != undefined);
     g_game_show_done = (choice_get_id('help_show_done') != undefined);
     g_game_in_order = (choice_get_id('guess_in_order') != undefined);
@@ -1241,10 +1241,10 @@ function start_game() {
         }
     }
     
-    document.getElementById('game_aid').style.display = 'inline-block';
+    obj('game_aid').style.display = 'inline-block';
     game_show_help();
-    document.getElementById('guess_input').focus();
-    document.getElementById('guess_input').select();
+    obj('guess_input').focus();
+    obj('guess_input').select();
     g_game_fail_list = {};
 }
 
@@ -1259,9 +1259,9 @@ function stop_game() {
         set_country_flag_state(key, g_state.paused);
     }
     g_game_state = 'off';
-    document.getElementById('start_button').innerHTML = 'STARTA';
-    document.getElementById('guess_div').style.display = 'none';
-    document.getElementById('game_aid').style.display = 'none';
+    obj('start_button').innerHTML = 'STARTA';
+    obj('guess_div').style.display = 'none';
+    obj('game_aid').style.display = 'none';
 }
 
 function toggle_game() {
@@ -1302,14 +1302,14 @@ function game_show_help() {
     
     if(choice_get_id('help_current_location') != undefined) set_country_map_state(id, g_state.highlight);
     if(choice_get_id('help_current_flag') != undefined) {
-        document.getElementById('game_aid_flag').src = "data:image/png;base64," + g_flag_data[id];
+        obj('game_aid_flag').src = "data:image/png;base64," + g_flag_data[id];
         set_country_flag_state(id, g_state.highlight);
     }
     if(choice_get_id('help_current_name') != undefined) {
-        document.getElementById('game_aid_name').innerHTML = decodeURIComponent(g_list[id].name.replace(/_/g, ' '));
+        obj('game_aid_name').innerHTML = decodeURIComponent(g_list[id].name.replace(/_/g, ' '));
     }
     if(choice_get_id('help_current_capital') != undefined) {
-        document.getElementById('game_aid_capital').innerHTML = decodeURIComponent(g_list[id].cap.replace(/_/g, ' '));
+        obj('game_aid_capital').innerHTML = decodeURIComponent(g_list[id].cap.replace(/_/g, ' '));
     }
 }
 
@@ -1423,7 +1423,7 @@ function guess_text(evt, elem) {
 }
 
 function init() {
-    document.getElementById('flag').style.backgroundColor = g_state.inactive.color;
+    obj('flag').style.backgroundColor = g_state.inactive.color;
     
     for(var key in g_list) {
         g_list[key].map_state = g_state.paused;
@@ -1445,7 +1445,7 @@ function init() {
     function create_country_mousedown(key) { return function(evt) { top.country_click(evt, key); }; }
     function create_country_mouseover(key) { return function(evt) { top.country_hover(evt, key, 'map'); }; }
     for(key in g_list) {
-        var cur = document.getElementById(key);
+        var cur = obj(key);
         cur.addEventListener("click", create_country_mousedown(key), false);
         cur.addEventListener("mouseover", create_country_mouseover(key), false);
         update_country_state(key);
@@ -1454,9 +1454,9 @@ function init() {
     document.addEventListener("mouseover", function(evt) { nowhere_hover(evt); }, false);
     document.addEventListener("click", function(evt) { close_menu('main'); }, false);
 
-    set_choice({target: document.getElementById('set_map_hover') }, 'set_map_hover');
-    set_choice({target: document.getElementById('help_show_active') }, 'help_show_active');
-    set_choice({target: document.getElementById('guess_in_order') }, 'guess_in_order');
+    set_choice({target: obj('set_map_hover') }, 'set_map_hover');
+    set_choice({target: obj('help_show_active') }, 'help_show_active');
+    set_choice({target: obj('guess_in_order') }, 'guess_in_order');
     
     update_map_hover();
     
@@ -1467,7 +1467,7 @@ function init() {
     set_color_of_region("circlexx", g_stroke_color, "stroke");
     set_color_of_region("oceanxx", g_water_color);
     
-    var top_padding_size = document.getElementById('main_menu').clientHeight;
+    var top_padding_size = obj('main_menu').clientHeight;
     document.getElementsByTagName('body')[0].style.marginTop = top_padding_size + "px";
 }
 
