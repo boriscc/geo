@@ -7,7 +7,7 @@
 <!--
     geo - Swedish geography game to learn about the worlds countries
     Copyright (C) 2013, 2014  Boris D. Carlsson
-    
+
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -20,9 +20,9 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     ---------------------------------------------------------------------
-    
+
     Contact: Boris Carlsson
              [first name] dot [last name] at gmail
 -->
@@ -34,7 +34,7 @@
             box-sizing: border-box;
     margin: 0px;
     padding: 0px;
-    
+
 }
 
 li {
@@ -289,7 +289,7 @@ div {
                 /><input class="menu_smallbutton" type="button" value="í" onclick="obj('guess_input').value += 'í'; obj('guess_input').focus()"
                 /><input class="menu_smallbutton" type="button" value="ș" onclick="obj('guess_input').value += 'ș'; obj('guess_input').focus()"
                 /><input type="text" class="menu_tbox" id="guess_input" value="Gissningsruta" onfocus="if(this.value=='Gissningsruta') this.select()" onmouseup="return false" onkeypress="guess_text(event, this)" >
-                
+
             </div><div id="country_info">
                 <img id="country_info_flag" src="" height="30" />
                 <div id="country_info_name" class="country_info_text"></div>
@@ -311,7 +311,7 @@ div {
                 </div><div class="menu_header" onclick="toggle_menu(event, 'info', 'info_contact_menu')">Kontakt
                 </div><div class="menu_header" onclick="toggle_menu(event, 'info', 'info_compatibility_menu')">Kompatibilitet
                 </div><div class="menu_header" onclick="toggle_menu(event, 'info', 'info_todo_menu')">TODO
-                
+
                 </div><div id="info_help_menu" class="menu">
                     <ul>
                         <li><div class="menu_text">Använd menyn högst upp för att ställa in, sen kör igång.</div></li>
@@ -1034,14 +1034,14 @@ g_zoom.south_america = {height: 630, width: 1, y: 630, x: 630};
 
 function set_zoom(arg, evt) {
     var zoom;
-    
+
     if(typeof arg == 'string') {
         if(g_zoom[arg] == undefined) alert('Internal error 2: "' + arg + '"');
         zoom = g_zoom[arg];
     } else {
         zoom = arg;
     }
-    
+
     g_map.viewBox.baseVal.x = zoom.x;
     g_map.viewBox.baseVal.y = zoom.y;
     g_map.viewBox.baseVal.height = zoom.height;
@@ -1087,7 +1087,7 @@ function update_country_state(country_code) {
 function set_country_map_state(country_code, state) {
     if(state == undefined) state = g_list[country_code].map_state;
     else g_list[country_code].map_state = state;
-    
+
     if(g_use_hover && g_mouse_position == country_code && state.show_hover == 1 && (g_game_state == 'off' || g_mouse_place == 'map')) {
         set_color_of_region(country_code, shade_color(g_list[country_code].map_state, g_hover_shade_percent));
     } else {
@@ -1098,7 +1098,7 @@ function set_country_map_state(country_code, state) {
 function set_country_flag_state(country_code, state) {
     if(state == undefined) state = g_list[country_code].flag_state;
     else g_list[country_code].flag_state = state;
-    
+
     if(g_mouse_position == country_code && state.show_hover == 1 && (g_game_state == 'off' || g_mouse_place == 'flag')) {
         set_color_of_flag(country_code, g_list[country_code].flag_state.color, g_hover_shade_percent / 100.0);
     } else {
@@ -1133,7 +1133,7 @@ function country_click(evt, country_code)
 
 function unset_current_country(country_code) {
     if(country_code === 0) return;
-    
+
     obj('country_info').style.visibility = 'hidden';
     obj('country_info_name').innerHTML = '';
     obj('country_info_capital').innerHTML = '';
@@ -1146,9 +1146,9 @@ function unset_current_country(country_code) {
 function set_current_country(type) {
     var country_code = g_mouse_position;
     var state = g_list[country_code].map_state;
-    
+
     update_country_state(country_code);
-    
+
     if(state.show_info == 1) {
         obj('country_info_name').innerHTML = decodeURIComponent(g_list[country_code].name.replace(/_/g, ' '));
         obj('country_info_capital').innerHTML = decodeURIComponent(g_list[country_code].cap.replace(/_/g, ' '));
@@ -1167,7 +1167,7 @@ function country_hover(evt, country_code, type)
         unset_current_country(old);
         set_current_country(type);
     }
-    
+
     if(evt != undefined) evt.stopPropagation();
 }
 
@@ -1177,7 +1177,7 @@ function nowhere_hover(evt)
     g_mouse_position = 0;
     g_mouse_place = '';
     unset_current_country(old);
-    
+
     if(evt != undefined) evt.stopPropagation();
 }
 
@@ -1196,7 +1196,7 @@ function init_flag(country_code) {
         var container = obj('flag');
         var id = "flag_" + country_code;
         var elem = document.createElement('img')
-        
+
         elem.setAttribute("id", id);
         elem.setAttribute("width", g_flag_width_real);
         elem.setAttribute("src", "data:image/png;base64," + g_flag_data[country_code]);
@@ -1205,7 +1205,7 @@ function init_flag(country_code) {
         elem.style.borderWidth = g_flag_border_width + "px";
         container.appendChild(elem);
     }
-    
+
     elem.className = "flag";
     elem.addEventListener("click", create_flag_mousedown(country_code), false);
     function create_flag_mouseover(key) { return function(evt) { top.country_hover(evt, key, 'flag'); }; }
@@ -1235,7 +1235,7 @@ function get_key(evt) {
 function map_size_evt_key(evt) {
     var key = get_key(evt);
     var size = parseFloat(obj('map_size').value);
-    
+
     if(key == g_key_return) { timerAbort('map_size'); set_map_width(size); }
     else timer(function(){ set_map_width(size); }, "map_size", 1500);
 }
@@ -1243,7 +1243,7 @@ function map_size_evt_key(evt) {
 function flag_size_evt_key(evt) {
     var key = get_key(evt);
     var size = parseFloat(obj('flag_size').value);
-    
+
     if(key == g_key_return) { timerAbort('flag_size'); set_flag_width(size); }
     else timer(function(){ set_flag_width(size); }, "flag_size", 1500);
 }
@@ -1269,7 +1269,7 @@ function game_mode_click(event, mode) {
             obj('guess_' + key).classList.remove('menu_choice_disabled');
         }
     }
-    
+
     toggle_menu({currentTarget: obj('guess_menu_header')}, 'main', 'guess_menu');
 }
 
@@ -1294,21 +1294,21 @@ function toggle_menu(event, group, menu_id) {
     if(event != undefined && event.stopPropagation != undefined) event.stopPropagation();
     if(event.currentTarget != event.target && event.target != undefined) return;
     if(event.currentTarget.classList != undefined && event.currentTarget.classList.contains('menu_header_disabled')) return;
-    
+
     if(g_menu[group] == undefined) g_menu[group] = { open: false, header: undefined, menu: undefined };
-    
+
     // if the menu is open, close it
     if(g_menu[group].open) {
         g_menu[group].header.classList.remove('menu_header_active');
         g_menu[group].menu.classList.remove('menu_active');
     }
-    
+
     // if a new menu should be opened
     if(g_menu[group].menu == undefined || menu_id != g_menu[group].menu.id) {
         g_menu[group].open = true;
         g_menu[group].header = event.currentTarget;
         g_menu[group].menu = obj(menu_id);
-        
+
         g_menu[group].header.classList.add('menu_header_active');
         g_menu[group].menu.classList.add('menu_active');
     } else {
@@ -1320,12 +1320,12 @@ function toggle_menu(event, group, menu_id) {
 
 function close_menu(group) {
     if(g_menu[group] == undefined) g_menu[group] = { open: false, header: undefined, menu: undefined };
-    
+
     if(g_menu[group].open) {
         g_menu[group].header.classList.remove('menu_header_active');
         g_menu[group].menu.classList.remove('menu_active');
     }
-    
+
     g_menu[group].open = false;
     g_menu[group].header = undefined;
     g_menu[group].menu = undefined;
@@ -1336,7 +1336,7 @@ function set_choice(evt, group_id, type) {
     var id = evt.target.id;
     var elem = evt.target;
     if(g_choice[group_id] == undefined) g_choice[group_id] = {};
-    
+
     if(type == 'many') {
         if(id in g_choice[group_id]) {
             elem.classList.remove("menu_choice_checked");
@@ -1362,7 +1362,7 @@ function set_choice(evt, group_id, type) {
             }
         }
     }
-                
+
     if(evt.stopPropagation != undefined) evt.stopPropagation();
 }
 function choice_get_id(group_id) {
@@ -1379,7 +1379,7 @@ function choice_get_id(group_id) {
 
 function game_filter_include(prefix, country_code) {
     if(g_filter_fail_list && Object.keys(g_game_fail_list).length > 0 && g_game_fail_list[country_code] == undefined) return false;
-    
+
     for(var key in g_country_prop) {
         if(g_country_prop[key].unique == true) continue;
         if(g_country_prop[key].type == 'text') {
@@ -1387,20 +1387,20 @@ function game_filter_include(prefix, country_code) {
         } else if(g_country_prop[key].type == 'numeric') {
             var cur_min = g_country_prop[key]['filter' + prefix + '_val_min'];
             var cur_max = g_country_prop[key]['filter' + prefix + '_val_max'];
-            
+
             if(!isNaN(cur_min) && g_list[country_code][key] < cur_min) return false;
             if(!isNaN(cur_max) && g_list[country_code][key] > cur_max) return false;
         } else {
             alert('Internal error 18');
         }
     }
-    
+
     return true;
 }
 
 function create_game_country_list(prefix) {
     g_filter_fail_list = (choice_get_id(prefix + 'fail_list') != undefined);
-    
+
     for(var key in g_country_prop) {
         if(g_country_prop[key].unique == true) continue;
         if(g_country_prop[key].type == 'text') {
@@ -1418,7 +1418,7 @@ function create_game_country_list(prefix) {
             alert('Internal error 17');
         }
     }
-    
+
     var list = [];
     for(key in g_list) {
         if(game_filter_include(prefix, key)) {
@@ -1430,7 +1430,7 @@ function create_game_country_list(prefix) {
             g_list[key].done = false;
         }
     }
-    
+
     g_game_country_list = shuffle(list);
 }
 
@@ -1440,7 +1440,7 @@ function filter_show() {
     if(g_game_country_list.length == 0) {
         show_message("Du har filtrerat bort alla länder");
     }
-    
+
     clear_flags();
     for(key in g_list) {
         init_flag(key);
@@ -1478,44 +1478,44 @@ function start_game() {
         show_message("Du måste välja något att gissa på");
         return;
     }
-    
+
     create_game_country_list('filter_');
-    
+
     if(g_game_country_list.length == 0) {
         show_message("Du har filtrerat bort alla länder");
         return;
     }
-    
+
     for(var key in g_country_prop) {
         if(g_country_prop[key].type == 'image') obj('game_aid_' + key).src = '';
         else if(g_country_prop[key].type == 'text' ||
                 g_country_prop[key].type == 'numeric') obj('game_aid_' + key).innerHTML = '';
     }
-    
+
     if(g_country_prop[g_game_guess].type == 'text' ||
        g_country_prop[g_game_guess].type == 'numeric') {
         obj('guess_div').classList.remove('removed');
     }
-    
+
     g_game_state = 'on';
     obj('start_button').innerHTML = 'AVSLUTA';
     obj('filter_list_active_div').style.display = 'none';
-    
+
     g_game_show_done = (choice_get_id('help_show_done') != undefined);
-    
+
     g_game_correct_nr = 0;
     g_game_done_nr = 0;
     g_game_guess_nr = 0;
     g_game_total_nr = g_game_country_list.length;
-    
+
     for(var key in g_country_prop) {
         obj(key).classList.remove('removed');
-        
+
         var game_show = choice_get_id('game_show_' + key);
         if(game_show == undefined) game_show = 'none';
         else game_show = game_show.replace('game_show_' + key + '_', '');
         g_country_prop[key].game_show = game_show;
-        
+
         if(g_country_prop[key].type == 'map') {
             if(game_show == 'none') obj(key).classList.add('removed');
             else {
@@ -1551,8 +1551,8 @@ function start_game() {
             alert('Internal error 20');
         }
     }
-    
-    
+
+
     obj('game_aid').style.display = 'inline-block';
     game_show_help();
     obj('guess_input').focus();
@@ -1575,7 +1575,7 @@ function stop_game() {
             obj(key).classList.add('removed');
         }
     }
-    
+
     for(var key in g_list) {
         set_country_map_state(key, g_state.paused);
         set_country_flag_state(key, g_state.paused);
@@ -1604,9 +1604,9 @@ function update_map_hover() {
 
 function game_show_results() {
     if(g_game_state != 'on' || g_game_done_nr != g_game_total_nr) alert('Internal error 5');
-    
+
     var state;
-    
+
     if(g_game_mode == 'specific') {
         if(g_game_correct_nr < g_game_total_nr) state = 'bad';
         else state = 'good';
@@ -1621,9 +1621,9 @@ function game_show_results() {
 function game_show_help() {
     if(g_game_state != 'on' || g_game_done_nr == g_game_total_nr) alert('Internal error 6');
     if(g_game_mode == 'subset') return;
-    
+
     var id = g_game_country_list[g_game_done_nr].country_code;
-    
+
     if(choice_get_id('game_aid_current_map') != undefined) set_country_map_state(id, g_state.highlight);
     if(choice_get_id('game_aid_current_flag') != undefined) {
         obj('game_aid_flag').src = "data:image/png;base64," + g_flag_data[id];
@@ -1650,9 +1650,9 @@ function game_get_correct(id) {
     } else {
         correct = g_game_country_list[id].country_code;
     }
-    
+
     var country_code = g_game_country_list[id].country_code;
-    
+
     return { country_code: country_code, val: correct, disp: correct_disp };
 }
 
@@ -1683,7 +1683,7 @@ function game_guess_correctness(correct, guess, type) {
         if(guess > correct) return correct / guess;
         return guess / correct;
     }
-    
+
     alert('Internal error 21');
     return false;
 }
@@ -1692,15 +1692,15 @@ function make_guess(val) {
     if(g_game_state == 'off' || g_game_done_nr == g_game_total_nr) return;
 
     var prop = g_game_guess;
-    
+
     if(g_country_prop[prop].type == 'numeric') {
         val = geo_parse_int(val);
     } else {
         val = encodeURIComponent((val + "").trim().replace(/ /g, '_').toLowerCase()).toLowerCase();
     }
-    
+
     var correct, is_correct;
-    
+
     if(g_game_mode == 'specific') {
         correct = game_get_correct(g_game_done_nr);
         is_correct = game_is_correct(correct.val, val, g_country_prop[g_game_guess].type);
@@ -1730,13 +1730,13 @@ function make_guess(val) {
                 show_message('Fel!');
             }
         }
-        
+
         if(g_game_show_done && g_game_done_nr >= 1 && g_game_country_list[g_game_done_nr - 1].correct == 0) {
             var id_prev = g_game_country_list[g_game_done_nr - 1].country_code;
             set_country_map_state(id_prev, g_state.wrong);
             set_country_flag_state(id_prev, g_state.wrong);
         }
-        
+
         g_game_done_nr++;
         g_list[correct.country_code].done = true;
     } else {
@@ -1765,7 +1765,7 @@ function make_guess(val) {
             show_message('Fel!');
         }
     }
-    
+
     if(g_game_done_nr == g_game_total_nr) {
         game_show_results();
     } else {
@@ -1787,7 +1787,7 @@ function guess_text(evt, elem) {
 
 function create_filter_object(parent_id, prefix) {
     var parent_div = obj(parent_id);
-    
+
     var elem = document.createElement('div');
     elem.classList.add('menu_choice');
     elem.id = prefix + 'fail_list';
@@ -1795,19 +1795,19 @@ function create_filter_object(parent_id, prefix) {
     elem.addEventListener("click", create_click_set_choice(prefix + 'fail_list', 'one'), false);
     elem.innerHTML = 'Fel-lista';
     parent_div.appendChild(elem);
-    
+
     for(var key in g_country_prop) {
         if(g_country_prop[key].unique == true) continue;
-        
+
         elem = document.createElement('div');
         elem.classList.add('menu_title');
         elem.innerHTML = g_country_prop[key].disp_name;
         parent_div.appendChild(elem);
-        
+
         elem = document.createElement('div');
         elem.classList.add('menu_group');
         parent_div.appendChild(elem);
-        
+
         if(g_country_prop[key].type == 'text') {
             elem.addEventListener("click", create_click_set_choice(prefix + key, 'many'), false);
             for(var key2 in g_country_prop[key].val) {
@@ -1840,20 +1840,20 @@ function create_filter_object(parent_id, prefix) {
 function create_aid_div() {
     var div = obj('aid_div');
     function create_click_set_choice(group_id, type) { return function(evt) { top.set_choice(evt, group_id, type); }; }
-    
+
     var elem;
     var c1 = document.createElement('div');
     var c3 = document.createElement('div');
     var c4 = document.createElement('div');
-    
+
     div.innerHTML = '';
-    
+
     div.appendChild(c1);
     elem = document.createElement('div');
     elem.classList.add('menu_title');
     elem.innerHTML = 'Hjälpmedel';
     c1.appendChild(elem);
-    
+
     if(g_game_mode == 'specific') {
         var c2 = document.createElement('div');
         div.appendChild(c2);
@@ -1863,21 +1863,21 @@ function create_aid_div() {
         elem.innerHTML = 'Aktuellt';
         c2.appendChild(elem);
     }
-    
+
     div.appendChild(c3);
     elem = document.createElement('div');
     elem.classList.add('menu_title');
     elem.classList.add('menu_title_side_margin');
     elem.innerHTML = 'Aktiva';
     c3.appendChild(elem);
-    
+
     div.appendChild(c4);
     elem = document.createElement('div');
     elem.classList.add('menu_title');
     elem.classList.add('menu_title_side_margin');
     elem.innerHTML = 'Alla';
     c4.appendChild(elem);
-    
+
     for(var key in g_country_prop) {
         elem = document.createElement('div');
         elem.classList.add('menu_title');
@@ -1887,7 +1887,7 @@ function create_aid_div() {
         }
         elem.innerHTML = g_country_prop[key].disp_name;
         c1.appendChild(elem);
-        
+
         if(g_game_mode == 'specific') {
             elem = document.createElement('div');
             elem.classList.add('menu_choice');
@@ -1901,9 +1901,9 @@ function create_aid_div() {
                 set_choice({target: elem}, 'game_aid_current_' + key, 'one');
             }
         }
-        
+
         g_choice['game_show_' + key] = undefined;
-        
+
         elem = document.createElement('div');
         elem.classList.add('menu_choice');
         elem.classList.add('center_horizontal');
@@ -1914,7 +1914,7 @@ function create_aid_div() {
         if((g_game_mode == 'specific' || g_game_guess != key) && g_country_prop[key].type != 'text' && g_country_prop[key].type != 'numeric') {
             set_choice({target: elem}, 'game_show_' + key, 'one');
         }
-        
+
         elem = document.createElement('div');
         elem.classList.add('menu_choice');
         elem.classList.add('center_horizontal');
@@ -1935,34 +1935,56 @@ function sort_by_key(e1, e2, key) {
     return 0;
 }
 
-function init() {
-    for(var key in g_list) {
-        g_country_sort.push({country_code: key, name: g_list[key].name});
+function set_country_sorting(mode) {
+    // Create list used to determine sorting
+    g_country_sort = [];
+    for(var cc in g_list) {
+        g_country_sort.push({country_code: cc, name: g_list[cc].name});
     }
-    g_country_sort.sort(function(e1, e2){ return sort_by_key(e1, e2, 'name');});
-    
+    if(mode == 'random') {
+        shuffle(g_country_sort);
+    } else {
+        g_country_sort.sort(function(e1, e2){ return sort_by_key(e1, e2, mode);});
+    }
+
+    for(var i = 0; i < g_country_sort.length; i++) {
+        for(var prop in g_country_prop) {
+            if(g_country_prop[prop].type == 'map') continue;
+            obj(prop + '_' + g_country_sort[i].country_code).style.order = i;
+        }
+    }
+}
+
+function set_prop_div_visibility() {
+    for(var prop in g_country_prop) {
+        if(g_game_state == 'on') g_country_prop[prop].show = g_country_prop[prop].game_show;
+        else g_country_prop[prop].show = g_country_prop[prop].paused_show;
+
+        if(g_country_prop[prop].show) {
+            obj(prop).classList.remove('removed');
+        } else {
+            obj(prop).classList.add('removed');
+        }
+    }
+}
+
+function init() {
     var div = obj('guess_group');
     for(var key in g_country_prop) {
+        // Create guess_group content
         var item = document.createElement('div');
         item.classList.add('menu_choice');
         item.id = 'guess_' + key;
         item.innerHTML = g_country_prop[key].disp_name;
         div.appendChild(item);
-        
+
+        // set paused_show
         g_country_prop[key].paused_show = g_country_prop[key].show;
-        if(g_country_prop[key].paused_show) {
-            obj(key).classList.remove('removed');
-        } else {
-            obj(key).classList.add('removed');
-        }
     }
-    
-    for(var cc in g_list) {
-        for(var prop in g_country_prop) {
-            window['init_' + prop](cc);
-        }
-    }
-    
+
+    set_prop_div_visibility();
+
+    // Set available values for non unique text properties
     for(var key in g_country_prop) {
         if(g_country_prop[key].unique == true) continue;
         if(g_country_prop[key].type == 'text') {
@@ -1970,9 +1992,21 @@ function init() {
             for(var key2 in g_list) {
                 g_country_prop[key].val[g_list[key2][key]] = true;
             }
+        } else if(g_country_prop[key].type == 'numeric') {
+        } else {
+            alert('Internal error 25');
         }
     }
-    
+
+    for(var cc in g_list) {
+        for(var prop in g_country_prop) {
+            window['init_' + prop](cc);
+            window['set_state_' + prop](cc, 'paused');
+        }
+    }
+
+    set_country_sorting('name');
+
     create_filter_object('filter_div', 'filter_');
 
     function create_country_mousedown(key) { return function(evt) { top.country_click(evt, key); }; }
@@ -1994,14 +2028,14 @@ function init() {
     set_choice({target: obj('set_map_hover') }, 'set_map_hover', 'one');
 
     update_map_hover();
-    
+
     set_map_width(g_map_width);
     set_flag_width(g_flag_width);
 
     set_color_of_region("landxx", g_stroke_color, "stroke");
     set_color_of_region("circlexx", g_stroke_color, "stroke");
     set_color_of_region("oceanxx", g_water_color);
-    
+
     var top_padding_size = obj('main_menu').clientHeight;
     document.getElementsByTagName('body')[0].style.marginTop = top_padding_size + "px";
 }
