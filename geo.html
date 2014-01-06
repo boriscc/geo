@@ -1843,10 +1843,7 @@ function game_guess_correctness(correct, guess, type) {
         if(err > tol) return 0;
         return 1 + (tol - err);
     } else if(type == 'numeric') {
-        var fact = parseInt(obj('setting_num_factor').value);
-        if(guess / fact > correct || guess * fact < correct) return 0;
-        if(guess > correct) return correct / guess;
-        return guess / correct;
+        return 1 * (correct >= guess.min && correct <= guess.max);
     }
 
     alert('Internal error 21');
@@ -1857,12 +1854,6 @@ function make_guess(val) {
     if(g_game_state == 'off' || g_game_done_nr == g_game_total_nr) return;
 
     var prop = g_game_guess;
-
-    if(g_prop[prop].type == 'numeric') {
-        val = geo_parse_int(val);
-    } else {
-        val = encodeURIComponent((val + "").trim().replace(/ /g, '_').toLowerCase()).toLowerCase();
-    }
 
     var correct, is_correct;
 
@@ -1942,11 +1933,14 @@ function guess_text(evt, elem) {
     if(g_game_state == 'off') return;
     var key = get_key(evt);
     if(key == g_key_return) {
-        if(g_prop[g_game_guess].type == 'text' ||
-           g_prop[g_game_guess].type == 'numeric') {
-            make_guess(elem.value);
-            elem.value = '';
+        if(g_prop[g_game_guess].type == 'text') {
+            make_guess(encodeURIComponent((elem.value + "").trim().replace(/ /g, '_').toLowerCase()).toLowerCase();
+        } else if(g_prop[g_game_guess].type == 'numeric') {
+            var val = geo_parse_int(elem.value);
+            var factor = parseInt(obj('setting_num_factor').value);
+            make_guess({ val: val, min: val / factor, max: val * factor });
         }
+        elem.value = '';
     }
 }
 
