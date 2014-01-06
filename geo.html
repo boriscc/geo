@@ -1984,15 +1984,33 @@ function init() {
 
     set_prop_div_visibility();
 
-    // Set available values for non unique text properties
-    for(var key in g_country_prop) {
-        if(g_country_prop[key].unique == true) continue;
-        if(g_country_prop[key].type == 'text') {
-            g_country_prop[key].val = {};
-            for(var key2 in g_list) {
-                g_country_prop[key].val[g_list[key2][key]] = true;
+    // Set available values for non unique properties
+    for(var prop in g_country_prop) {
+        if(g_country_prop[prop].unique == true) continue;
+        if(g_country_prop[prop].type == 'text') {
+            g_country_prop[prop].val = {};
+            for(var cc in g_list) {
+                g_country_prop[prop].val[g_list[cc][prop]] = true;
             }
-        } else if(g_country_prop[key].type == 'numeric') {
+        } else if(g_country_prop[prop].type == 'numeric') {
+            var list = [];
+            var interval_nr = 10;
+            for(var cc in g_list) list.push(g_list[cc][prop]);
+            list.sort();
+            if(list.length < interval_nr) interval_nr = list.length;
+            g_country_prop[prop].val = [];
+            for(var i = 0; i < interval_nr; i++) {
+                g_country_prop[prop].val[i] = {};
+            }
+            for(var i = 0; i < list.length; i++) {
+                var interval = Math.floor((interval_nr * i) / list.length);
+                if(g_country_prop[prop].val[interval].min == undefined) {
+                    g_country_prop[prop].val[interval] = { min: list[i], max: list[i] };
+                } else {
+                    if(list[i] < g_country_prop[prop].val[interval].min) g_country_prop[prop].val[interval].min = list[i];
+                    else if(list[i] > g_country_prop[prop].val[interval].max) g_country_prop[prop].val[interval].max = list[i];
+                }
+            }
         } else {
             alert('Internal error 25');
         }
