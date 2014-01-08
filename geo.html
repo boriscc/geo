@@ -1119,12 +1119,12 @@ function shade_color(state, percent) {
     return "#" + (0x1000000 + (R<255?R<1?0:R:255)*0x10000 + (G<255?G<1?0:G:255)*0x100 + (B<255?B<1?0:B:255)).toString(16).slice(1);
 }
 
-var g_prop = { cap : { disp_name: "Huvudstad" , unique: true , type: "text"    , show: true},
-                       reg : { disp_name: "Världsdel" , unique: false, type: "text"    , show: true},
-                       name: { disp_name: "Namn"      , unique: true , type: "text"    , show: true},
-                       pop : { disp_name: "Population", unique: false, type: "numeric" , show: true},
-                       flag: { disp_name: "Flagga"    , unique: true , type: "image"   , show: true, img_data: g_flag_data },
-                       map : { disp_name: "Plats"     , unique: true , type: "map"     , show: true} };
+var g_prop = { cap : { disp_name: "Huvudstad" , unique: true , type: "text"    , show: false},
+               reg : { disp_name: "Världsdel" , unique: false, type: "text"    , show: true },
+               name: { disp_name: "Namn"      , unique: true , type: "text"    , show: false},
+               pop : { disp_name: "Population", unique: false, type: "numeric" , show: true },
+               flag: { disp_name: "Flagga"    , unique: true , type: "image"   , show: true, img_data: g_flag_data },
+               map : { disp_name: "Plats"     , unique: true , type: "map"     , show: true } };
 var g_key_return = 13;
 
 var g_use_map_hover = false;
@@ -2467,7 +2467,7 @@ function init() {
         item.id = 'prop_show_when_paused_' + key;
         item.addEventListener('click', function(event) { set_prop_show_when_paused(event); }, false);
         obj('prop_show_when_paused').appendChild(item);
-        set_choice({target: item}, 'prop_show_when_paused', 'many');
+        if(g_prop[key].paused_show) set_choice({target: item}, 'prop_show_when_paused', 'many');
     }
 
     set_prop_show_when_paused();
