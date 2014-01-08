@@ -1858,7 +1858,7 @@ function start_game() {
         }
     }
 
-    obj('game_aid').style.display = 'inline-block';
+    if(g_game_mode == 'specific') obj('game_aid').style.display = 'inline-block';
     game_show_help();
     obj('guess_input').focus();
     obj('guess_input').select();
@@ -1866,6 +1866,10 @@ function start_game() {
 }
 
 function stop_game() {
+    for(var i = 0; i < g_game_country_list.length; i++) {
+        if(g_game_country_list[i].correct) continue;
+        g_game_fail_list[g_game_country_list[i].country_code] = true;
+    }
     g_game_state = 'off';
     clear_type_match();
     obj('filter_menu_header').classList.remove('menu_header_disabled');
@@ -1899,12 +1903,17 @@ function update_map_hover() {
     }
 }
 
+function game_done() {
+    return (g_game_guess_until_correct && g_game_done_nr == g_game_total_nr) ||
+           (g_game_guess_until_correct == false && g_game_guess_nr == g_game_total_nr);
+}
+
 function game_show_results() {
-    if(g_game_state != 'on' || g_game_done_nr != g_game_total_nr) alert('Internal error 5');
+    if(g_game_state != 'on' || !game_done()) alert('Internal error 5');
 
     var state;
 
-    if(g_game_mode == 'specific' && g_game_guess_until_correct == false) {
+    if(g_game_guess_until_correct == false) {
         if(g_game_correct_nr < g_game_total_nr) state = 'bad';
         else state = 'good';
         show_message('Du hade ' + g_game_correct_nr + ' av ' + g_game_total_nr + ' rätt.', state);
@@ -1916,7 +1925,7 @@ function game_show_results() {
 }
 
 function game_show_help() {
-    if(g_game_state != 'on' || g_game_done_nr == g_game_total_nr) alert('Internal error 6');
+    if(g_game_state != 'on' || game_done()) alert('Internal error 6');
     if(g_game_mode == 'subset') return;
 
     var cc = g_game_country_list[g_game_done_nr].country_code;
@@ -1997,7 +2006,7 @@ function game_guess_correctness(correct, guess, type) {
 }
 
 function make_guess(val) {
-    if(g_game_state == 'off' || g_game_done_nr == g_game_total_nr) return;
+    if(g_game_state == 'off' || game_done()) return;
 
     var prop = g_game_guess;
 
@@ -2039,7 +2048,7 @@ function make_guess(val) {
             is_correct = correctness;
         }
         
-        if(correctness == 1 || (correctness > 0 && choice_get_id('setting_typo_response') == 'setting_typo_response_correct')) {
+        if(is_correct) {
             g_game_correct_nr++;
             g_game_country_list[g_game_done_nr].correct = 1;
             var state;
@@ -2061,7 +2070,6 @@ function make_guess(val) {
             g_game_done_nr++;
             g_list[correct.country_code].done = true;
         } else if(correctness == 0) {
-            g_game_fail_list[correct.country_code] = true;
             if(g_game_guess_until_correct) {
                 show_message('Fel, försök igen!');
             } else {
@@ -2108,32 +2116,79 @@ function make_guess(val) {
             }
         }
     } else {
+        var max_active = -1;
+        var correct_id;
+        var max_other = -1;
         is_correct = false;
-        var id;
-        for(var i = 0; i < g_game_total_nr; i++) {
-            correct = game_get_correct(i);
-            if(game_is_correct(val, correct.val, g_prop[g_game_guess].type) && g_list[correct.country_code].active == true && g_list[correct.country_code].done == false) {
-                is_correct = true;
-                id = i;
-                break;
+        if(choice_get_id('setting_typo') != 'setting_typo_none' && g_prop[g_game_guess].type == 'text') {
+            for(var i = 0; i < g_game_country_list.length; i++) {
+                var cc = g_game_country_list[i].country_code;
+                correct = game_get_correct(i);
+                correctness = game_guess_correctness(correct.val, val, g_prop[g_game_guess].type);
+                if(g_list[cc].active && g_list[cc].done == false) {
+                    if(correctness > max_active) {
+                        max_active = correctness;
+                        correct_id = i;
+                    }
+                } else {
+                    if(correctness > max_other) max_other = correctness;
+                }
             }
-        }
-        if(is_correct) {
-            g_game_country_list[id].correct = true;
-            g_list[correct.country_code].done = true;
-            g_game_correct_nr++;
-            g_game_done_nr++;
-            show_message('Rätt!', 'good');
-            if(g_game_show_done) {
-                set_country_map_state(correct.country_code, g_state.correct);
-                set_country_flag_state(correct.country_code, g_state.correct);
+            if(max_other <= max_active && max_active > 0) {
+                is_correct = true;
+                correctness = max_active;
+                correct = game_get_correct(correct_id);
             }
         } else {
-            show_message('Fel!');
+            for(var i = 0; i < g_game_country_list.length; i++) {
+                var cc = g_game_country_list[i].country_code;
+                if(g_list[cc].active && g_list[cc].done == false) {
+                    correct = game_get_correct(i);
+                    correctness = game_guess_correctness(correct.val, val, g_prop[g_game_guess].type);
+                    if(correctness == 1) {
+                        correct_id = i;
+                        is_correct = true;
+                        break;
+                    }
+                }
+            }
+        }
+                
+        if(is_correct) {
+            g_game_correct_nr++;
+            g_game_country_list[correct_id].correct = 1;
+            var state;
+            if(g_game_show_done) state = 'correct';
+            else state = 'active';
+            for(var prop2 in g_prop) {
+                if(g_prop[prop2].show == false) continue;
+                if(g_prop[prop2].unique) {
+                    window['set_state_' + prop2](correct.country_code, state);
+                } else {
+                    window['set_state_' + prop2](g_list[correct.country_code].val_idx[prop2], 'active');
+                }
+            }
+            if(correctness < 1) show_message('Rätt. Korrekt stavning är dock "' + correct.disp + '"', 'good');
+            else show_message('Rätt!', 'good');
+            g_game_done_nr++;
+            g_list[correct.country_code].done = true;
+        } else if(correctness == 0) {
+            if(g_game_guess_until_correct) {
+                show_message('Fel, försök igen!');
+            } else {
+                show_message('Fel!');
+            }
+        } else {
+            if(g_prop[prop].type == 'text') {
+                g_game_guess_nr--;
+                show_message('Nästan! Försök igen!', 'good');
+            } else {
+                alert('Internal error 30');
+            }
         }
     }
 
-    if(g_game_done_nr == g_game_total_nr) {
+    if(game_done()) {
         game_show_results();
     } else {
         game_show_help();
