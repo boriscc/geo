@@ -522,9 +522,8 @@ div {
                     <div class="menu_choice" id="setting_typo_response_again" title="Om detta alternativ är markerat och man gör ett godkänt stavfel, får man försöka igen tills man stavat helt rätt, utan att det räknas som fel.">Nytt försök</div>
                     <div class="menu_choice" id="setting_typo_response_correct" title="Om detta alternativ är markerat och man gör ett godkänt stavfel, får man rätt trots stavfel.">Godkänn svar</div>
                 </div>
-                <div class="menu_group">
-                    <div class="menu_choice" id="setting_num_factor_div" title="Hur mycket numeriska svar får avvika från det korrekta. T ex om man har en faktor 2 och det rätta svaret är 10, så räknas alla svar i intervallet (10/2 = 5) till (10*2 = 20) som rätt.">Maximal faktor för numeriska svar:<input type="text" id="setting_num_factor" class="menu_tbox" style="width: 40px" value="2"/></div>
-                </div>
+                <div class="menu_choice" id="setting_num_factor_div" title="Hur mycket numeriska svar får avvika från det korrekta. T ex om man har en faktor 2 och det rätta svaret är 10, så räknas alla svar i intervallet (10/2 = 5) till (10*2 = 20) som rätt.">Maximal faktor för numeriska svar:<input type="text" id="setting_num_factor" class="menu_tbox" style="width: 40px" value="2"/></div>
+                <div class="menu_choice" id="setting_use_hints" onclick="set_choice(event, 'setting_use_hints', 'one')" title="Om detta är markerat, och man svarar fel på landets namn, huvudstad eller världsdel och man har aktiverat att gissa tills man har rätt, så får man mer och mer hjälp varje gång man svarar fel.">Aktivera ledtrådar</div>
             </div><div id="display_menu" class="menu" onclick="event.stopPropagation()">
                 <div class="menu_group">
                     <div class="menu_choice">Bredd på karta i %:<input type="text" id="map_size" onkeyup="map_size_evt_key(event)" class="menu_tbox" style="width: 40px"/></div>
@@ -2013,6 +2012,7 @@ function make_guess(val) {
 
     var correct, correctness, is_correct;
 
+    if(g_game_guess_nr == 0) make_guess.nr_wrong_cur = 0;
     g_game_guess_nr++;
     
     if(g_game_mode == 'specific') {
@@ -2050,6 +2050,7 @@ function make_guess(val) {
         }
         
         if(is_correct) {
+            make_guess.nr_wrong_cur = 0;
             g_game_correct_nr++;
             g_game_country_list[g_game_done_nr].correct = 1;
             var state;
@@ -2071,8 +2072,13 @@ function make_guess(val) {
             g_game_done_nr++;
             g_list[correct.country_code].done = true;
         } else if(correctness == 0) {
+            make_guess.nr_wrong_cur++;
             if(g_game_guess_until_correct) {
-                show_message('Fel, försök igen!');
+                if(choice_get_id('setting_use_hints') != undefined) {
+                    show_message('Fel, försök igen! Ledtråd: Svaret börjar med "' + correct.disp.substring(0, make_guess.nr_wrong_cur) + '"');
+                } else {
+                    show_message('Fel, försök igen!');
+                }
             } else {
                 var state;
                 if(g_game_show_done) state = 'prev_wrong';
