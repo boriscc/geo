@@ -402,16 +402,16 @@ div {
         <div id="main_menu" class="menu menu_active">
             <div>
                 <div class="menu_header menu_header_highlight" onclick="toggle_menu(event, 'main', 'info_menu')">Hjälp/Info
-                </div><div class="menu_header menu_header_highlight" onclick="toggle_menu(event, 'main', 'settings_menu')">Inställningar
-                </div><div class="menu_header menu_header_highlight" onclick="toggle_menu(event, 'main', 'display_menu')">Utseende
+                </div><div class="menu_header menu_header_highlight" onclick="toggle_menu(event, 'main', 'settings_menu')" title="Generella inställningar som får effekt omedelbart, även medan spelet pågår.">Inställningar
+                </div><div class="menu_header menu_header_highlight" onclick="toggle_menu(event, 'main', 'display_menu')" title="Styr vad och hur olika delar visas">Utseende
                 </div><div style="display: block">
-                    <div class="menu_header" onclick="toggle_menu(event, 'main', 'filter_menu')" id="filter_menu_header">1. Länder
+                    <div class="menu_header" onclick="toggle_menu(event, 'main', 'filter_menu')" id="filter_menu_header" title="Ställ in vilka länder som ska användas i spelet. Under 'Världsdel' kan du markera de världsdelar du vill träna på. Under 'Population' kan du välja att endast träna på länder med invånarantal inom ett visst intervall. Om min/max lämnas tomt så betyder det att det inte finns någon undre/övre gräns.">1. Länder
                     </div><div class="menu_header" onclick="toggle_menu(event, 'main', 'game_mode_menu')" id="game_mode_menu_header">2. Spelsätt
-                    </div><div class="menu_header menu_header_disabled" onclick="toggle_menu(event, 'main', 'guess_menu'); if(!this.classList.contains('menu_header_disabled')) { obj('aid_menu_header').classList.add('menu_header_disabled'); obj('start_button').classList.add('menu_button_disabled'); }" id="guess_menu_header">3. Gissning
-                    </div><div class="menu_header menu_header_disabled" onclick="toggle_menu(event, 'main', 'aid_menu'); if(!this.classList.contains('menu_header_disabled')) obj('start_button').classList.add('menu_button_disabled');" id="aid_menu_header">4. Hjälpmedel
+                    </div><div class="menu_header menu_header_disabled" onclick="toggle_menu(event, 'main', 'guess_menu'); if(!this.classList.contains('menu_header_disabled')) { obj('aid_menu_header').classList.add('menu_header_disabled'); obj('start_button').classList.add('menu_button_disabled'); }" id="guess_menu_header" title="Välj vad du ska gissa på">3. Gissning
+                    </div><div class="menu_header menu_header_disabled" onclick="toggle_menu(event, 'main', 'aid_menu'); if(!this.classList.contains('menu_header_disabled')) obj('start_button').classList.add('menu_button_disabled');" id="aid_menu_header" title="Välj vad man ska veta om landet man gissar på och om de land som är med i spelet">4. Hjälpmedel
                 </div></div>
             </div><div id="start_button" class="menu_button menu_button_disabled" onclick="toggle_game(event)">STARTA
-            </div><div id="guess_div" class="removed">
+            </div><div id="guess_div" class="removed" title="Infoga specialbokstäver">
                 <input class="menu_smallbutton" type="button" value="å" onclick="obj('guess_input').value += 'å'; obj('guess_input').focus()"
                 /><input class="menu_smallbutton" type="button" value="ä" onclick="obj('guess_input').value += 'ä'; obj('guess_input').focus()"
                 /><input class="menu_smallbutton" type="button" value="ö" onclick="obj('guess_input').value += 'ö'; obj('guess_input').focus()"
@@ -421,7 +421,7 @@ div {
                 /><input class="menu_smallbutton" type="button" value="é" onclick="obj('guess_input').value += 'é'; obj('guess_input').focus()"
                 /><input class="menu_smallbutton" type="button" value="í" onclick="obj('guess_input').value += 'í'; obj('guess_input').focus()"
                 /><input class="menu_smallbutton" type="button" value="ș" onclick="obj('guess_input').value += 'ș'; obj('guess_input').focus()"
-                /><input type="text" class="menu_tbox" id="guess_input" value="Gissningsruta" onfocus="if(this.value=='Gissningsruta') this.select()" onmouseup="return false" onkeyup="guess_text(event, this)" >
+                /><input type="text" class="menu_tbox" id="guess_input" value="Gissningsruta" onfocus="if(this.value=='Gissningsruta') this.select()" onmouseup="return false" onkeyup="guess_text(event, this)" title="Skriv in svar här. Stora/små bokstäver spelar ingen roll. Använd knapparna ovan för att infoga specialbokstäver. Vilka stavfel som är tillåtna kan ställas in under 'Inställningar'. Numeriska svar kan skrivas in som t ex '10.000.000', '10 miljoner', '10000 tusen', '0,01 miljarder', '10M', '1e7'.">
 
             </div><div id="country_info">
                 <img id="country_info_flag" src="" height="30" />
@@ -432,7 +432,7 @@ div {
                 <div id="country_info_pop" class="country_info_text"></div>
                 <div class="country_info_text">&nbsp;V&auml;rldsdel:&nbsp;</div>
                 <div id="country_info_reg" class="country_info_text"></div>
-            </div><div id="game_aid">
+            </div><div id="game_aid" title="Information om landet du ska gissa på nu">
                 <img id="game_aid_flag" src="" height="30" />
                 <div id="game_aid_name" class="game_aid_text"></div>
                 <div class="game_aid_text">&nbsp;-&nbsp;</div>
@@ -441,7 +441,7 @@ div {
                 <div id="game_aid_pop" class="game_aid_text"></div>
                 <div class="game_aid_text">&nbsp;V&auml;rldsdel:&nbsp;</div>
                 <div id="game_aid_reg" class="game_aid_text"></div>
-            </div><div id="message">
+            </div><div id="message" title="Senaste statusmeddelandet">
             </div><div id="info_menu" class="menu" onclick="event.stopPropagation()">
                 <div class="menu_header" onclick="toggle_menu(event, 'info', 'info_help_menu')">Hjälp
                 </div><div class="menu_header" onclick="toggle_menu(event, 'info', 'info_info_menu')">Info
@@ -453,8 +453,9 @@ div {
 
                 </div><div id="info_help_menu" class="menu">
                     <ul>
-                        <li><div class="menu_text">Använd menyn högst upp för att ställa in, sen kör igång.</div></li>
-                        <li><div class="menu_text">Mer hjälp kommer</div></li>
+                        <li><div class="menu_text">Använd menyn vid toppen för att ställa in spelet.</div></li>
+                        <li><div class="menu_text">Börja med "1. Länder" där du väljer vilka länder som du vill träna på. Till exempel kan man välja alla länder i Europa eller alla länder med minst 100 miljoner invånare</div></li>
+                        <li><div class="menu_text">Mer hjälp kan fås om vissa funktioner genom att hålla musen över knappen/rutan/området så dyker en hjälptext upp.</div></li>
                     </ul>
                 </div><div id="info_info_menu" class="menu">
                     <ul>
@@ -510,7 +511,7 @@ div {
                     </ul>
                 </div>
             </div><div id="settings_menu" class="menu" onclick="event.stopPropagation()">
-                <div class="menu_title">Tillåtna stavfel:</div>
+                <div class="menu_title" title="Här väljer du vilka, om några, stavfel som ska vara tillåtna.">Tillåtna stavfel:</div>
                 <div class="menu_group" onclick="set_choice(event, 'setting_typo', 'exactly one')">
                     <div class="menu_choice" id="setting_typo_none">Inga</div>
                     <div class="menu_choice" id="setting_typo_small">Enklare stavfel</div>
@@ -518,19 +519,19 @@ div {
                 </div>
                 <div class="menu_title">Åtgärd vid stavfel:</div>
                 <div class="menu_group" onclick="set_choice(event, 'setting_typo_response', 'exactly one')">
-                    <div class="menu_choice" id="setting_typo_response_again">Nytt försök</div>
-                    <div class="menu_choice" id="setting_typo_response_correct">Godkänn svar</div>
+                    <div class="menu_choice" id="setting_typo_response_again" title="Om detta alternativ är markerat och man gör ett godkänt stavfel, får man försöka igen tills man stavat helt rätt, utan att det räknas som fel.">Nytt försök</div>
+                    <div class="menu_choice" id="setting_typo_response_correct" title="Om detta alternativ är markerat och man gör ett godkänt stavfel, får man rätt trots stavfel.">Godkänn svar</div>
                 </div>
                 <div class="menu_group">
-                    <div class="menu_choice" id="setting_num_factor_div">Maximal faktor för numeriska svar:<input type="text" id="setting_num_factor" class="menu_tbox" style="width: 40px" value="2"/></div>
+                    <div class="menu_choice" id="setting_num_factor_div" title="Hur mycket numeriska svar får avvika från det korrekta. T ex om man har en faktor 2 och det rätta svaret är 10, så räknas alla svar i intervallet (10/2 = 5) till (10*2 = 20) som rätt.">Maximal faktor för numeriska svar:<input type="text" id="setting_num_factor" class="menu_tbox" style="width: 40px" value="2"/></div>
                 </div>
             </div><div id="display_menu" class="menu" onclick="event.stopPropagation()">
                 <div class="menu_group">
-                    <div class="menu_choice">Storlek karta i %:<input type="text" id="map_size" onkeyup="map_size_evt_key(event)" class="menu_tbox" style="width: 40px"/></div>
-                    <div class="menu_choice">Storlek flaggor i %:<input type="text" id="flag_size" onkeyup="flag_size_evt_key(event)" class="menu_tbox" style="width: 40px"/></div>
+                    <div class="menu_choice">Bredd på karta i %:<input type="text" id="map_size" onkeyup="map_size_evt_key(event)" class="menu_tbox" style="width: 40px"/></div>
+                    <div class="menu_choice">Bredd på flaggor i %:<input type="text" id="flag_size" onkeyup="flag_size_evt_key(event)" class="menu_tbox" style="width: 40px"/></div>
                 </div>
-                <div class="menu_choice" id="set_map_hover" onclick="set_choice(event, 'set_map_hover', 'one'); update_map_hover()">"Hover"-effekt</div>
-                <div class="menu_title">Zoom:</div>
+                <div class="menu_choice" id="set_map_hover" onclick="set_choice(event, 'set_map_hover', 'one'); update_map_hover()" title="Om detta avmarkeras, så byter inte land-områdena på kartan som är under muspekaren färg.">"Hover"-effekt</div>
+                <div class="menu_title" title="Zooma in kartan på ett visst område. Detta påverkar endast utseendet av kartan. Vilka länder som du vill träna på väljer du under '1. Länder'.">Zoom:</div>
                 <div class="menu_group">
                     <div class="menu_choice" onclick="set_zoom('world', event)">Världen</div>
                     <div class="menu_choice" onclick="set_zoom('africa', event)">Afrika</div>
@@ -540,31 +541,31 @@ div {
                     <div class="menu_choice" onclick="set_zoom('oceania', event)">Oceanien</div>
                     <div class="menu_choice" onclick="set_zoom('south_america', event)">Sydamerika</div>
                 </div>
-                <div class="menu_title">Synlig information (i pausat l&auml;ge):</div>
+                <div class="menu_title" title="Här väljer du vad som ska visas när spelet inte är igång.">Synlig information (i pausat l&auml;ge):</div>
                 <div id='prop_show_when_paused' class="menu_group">
                 </div>
             </div><div id="filter_menu" class="menu" onclick="event.stopPropagation()">
                 <div id="filter_div" style="display: block">
                 </div>
-                <div id="filter_show_active" class="menu_button" onclick="filter_show()">Visa aktiva</div>
-                <div id="filter_show_all" class="menu_button" onclick="filter_show_all()">Visa alla</div>
+                <div id="filter_show_active" class="menu_button" onclick="filter_show()" title="Tryck här för att på kartan markera vilka länder som kommer inkluderas.">Visa aktiva</div>
+                <div id="filter_show_all" class="menu_button" onclick="filter_show_all()" title="Tryck här för att visa alla länder igen">Visa alla</div>
                 <div class="menu_group" style="display: none" id="filter_list_active_div">
                     Aktiva länder: <div id="filter_list_active"></div>
                 </div>
             </div><div id="game_mode_menu" class="menu" onclick="event.stopPropagation()">
                 <div class="menu_group">
-                    <div class="menu_choice" id="game_mode_specific" onclick="game_mode_click(event, 'specific')">Ett i taget</div>
-                    <div class="menu_choice" id="game_mode_subset" onclick="game_mode_click(event, 'subset')">Hitta delmängd</div>
+                    <div class="menu_choice" id="game_mode_specific" onclick="game_mode_click(event, 'specific')" title="Med detta spelsätt så ska man gissa på ett land i taget, i slumpmässig ordning.">Ett i taget</div>
+                    <div class="menu_choice" id="game_mode_subset" onclick="game_mode_click(event, 'subset')" title="Med detta spelsätt så ska man i godtycklig ordning försöka gissa rätt på vilka länder som är med. T ex om man valt Europas länder och väljer att gissa på landets namn, så ska man i godtyklig ordning skriva in namnen på alla europas länder.">Hitta delmängd</div>
                 </div>
             </div><div id="guess_menu" class="menu" onclick="event.stopPropagation()">
-                <div class="menu_choice" id="guess_until_correct" onclick="set_choice(event, 'guess_until_correct', 'one')"></div>
+                <div class="menu_choice" id="guess_until_correct" onclick="set_choice(event, 'guess_until_correct', 'one')" title="Om detta är markerat, så får man gissa tills man har rätt. I annat fall får man bara en gissning per land."></div>
                 <div class="menu_group" onclick="game_guess_done(event)" id='guess_group'>
                 </div>
             </div><div id="aid_menu" class="menu" onclick="event.stopPropagation()">
-                <div class="menu_choice" id="help_show_done" onclick="set_choice(event, 'help_show_done', 'one')">Markera avklarade länder</div>
+                <div class="menu_choice" id="help_show_done" onclick="set_choice(event, 'help_show_done', 'one')" title="Om detta är aktiverat så färgas avklarade länder gröna eller röda beroende på om man hade rätt eller fel. I annat fall ser man inte skillnad på länder man redan är klar med och de som är kvar, vilket kan göra det lite svårare.">Markera avklarade länder</div>
                 <div class="menu_group" id="aid_div">
                 </div>
-                <div id="aid_done" class="menu_button" onclick="game_aid_done(event)">Klar</div>
+                <div id="aid_done" class="menu_button" onclick="game_aid_done(event)" title="Tryck här när du är klar med dina val">Klar</div>
             </div>
         </div>
 
@@ -2253,6 +2254,7 @@ function create_filter_object(parent_id) {
     function create_click_set_choice(group_id, type) { return function(evt) { top.set_choice(evt, group_id, type); }; }
     elem.addEventListener("click", create_click_set_choice('filter_fail_list', 'one'), false);
     elem.innerHTML = 'Fel-lista';
+    elem.title = 'Markera detta för att endast inkludera de länder som du hade fel på sist. Har du inte spelat tidigare så har denna knapp ingen effekt.';
     parent_div.appendChild(elem);
 
     for(var prop in g_prop) {
@@ -2286,6 +2288,7 @@ function create_filter_object(parent_id) {
                 elem3.id = 'filter_' + prop + '_' + lim;
                 elem3.classList.add('menu_tbox');
                 elem3.value = '';
+                elem3.title = "Värden kan skrivas in som t ex '10.000.000', '10 miljoner', '10000 tusen', '0,01 miljarder', '10M', '1e7'.";
                 elem3.style = 'width: 70pt; float: right';
                 elem2.appendChild(elem3);
                 elem.appendChild(elem2);
@@ -2320,6 +2323,7 @@ function create_aid_div() {
         elem.classList.add('menu_title');
         elem.classList.add('menu_title_side_margin');
         elem.innerHTML = 'Aktuellt';
+        elem.title = 'Om Aktuellt är markerat, så får du veta motsvarande egenskap för det land du ska gissa på. T ex, om du valt att gissa på landets namn och markerar att Huvudstad ska synas för aktuellt land, så kan det t ex stå "London" när rätt svar är "Storbritannien"';
         c2.appendChild(elem);
     }
 
@@ -2328,6 +2332,7 @@ function create_aid_div() {
     elem.classList.add('menu_title');
     elem.classList.add('menu_title_side_margin');
     elem.innerHTML = 'Aktiva';
+    elem.title = 'Om Aktiva är markerat så kommer alla länder du valt att träna på att synas, medan de som du inte tränar på döljs.';
     c3.appendChild(elem);
 
     div.appendChild(c4);
@@ -2335,6 +2340,7 @@ function create_aid_div() {
     elem.classList.add('menu_title');
     elem.classList.add('menu_title_side_margin');
     elem.innerHTML = 'Alla';
+    elem.title = 'Om Alla är markerat så kommer alla länder att synas, och det går inte att se skillnad på de du tränar på och inte, vilket kan göra det svårare.';
     c4.appendChild(elem);
 
     for(var key in g_prop) {
