@@ -190,6 +190,29 @@ div {
 .reg_highlight_hover:hover { border-color: #ff60ff }
 .reg_type_match { border-color: #ff60ff }
 
+.gov {
+    border-style: solid;
+    border-width: 0.2em;
+    padding: 0em 0.1em 0em 0.1em;
+    margin: 0em 0.1em 0.1em 0em;
+    cursor: pointer;
+    cursor: hand;
+}
+.gov_inactive { display: none }
+.gov_active { background-color: #00a050 }
+.gov_active_hover:hover { border-color: #ff60ff }
+.gov_paused { background-color: #00c060 }
+.gov_paused_hover { border-color: #ff60ff }
+.gov_wrong { background-color: #ff6060 }
+.gov_wrong_hover { border-color: #ff60ff }
+.gov_correct { background-color: #00ff00 }
+.gov_correct_hover { border-color: #ff60ff }
+.gov_prev_wrong { background-color: #ff2020 }
+.gov_prev_wrong_hover { border-color: #ff60ff }
+.gov_highlight { background-color: #ff00ff }
+.gov_highlight_hover:hover { border-color: #ff60ff }
+.gov_type_match { border-color: #ff60ff }
+
 .name {
     border-style: solid;
     border-width: 0.2em;
@@ -444,6 +467,8 @@ div {
                 <div id="country_info_pop" class="country_info_text"></div>
                 <div class="country_info_text">&nbsp;V&auml;rldsdel:&nbsp;</div>
                 <div id="country_info_reg" class="country_info_text"></div>
+                <div class="country_info_text">&nbsp;Statsskick:&nbsp;</div>
+                <div id="country_info_gov" class="country_info_text"></div>
             </div><div id="game_aid" title="Information om landet du ska gissa på nu">
                 <img id="game_aid_flag" src="" height="30" />
                 <div id="game_aid_name" class="game_aid_text"></div>
@@ -453,6 +478,8 @@ div {
                 <div id="game_aid_pop" class="game_aid_text"></div>
                 <div class="game_aid_text">&nbsp;V&auml;rldsdel:&nbsp;</div>
                 <div id="game_aid_reg" class="game_aid_text"></div>
+                <div class="game_aid_text">&nbsp;Statsskick:&nbsp;</div>
+                <div id="game_aid_gov" class="game_aid_text"></div>
             </div><div id="message" title="Senaste statusmeddelandet">
             </div><div id="info_menu" class="menu" onclick="event.stopPropagation()">
                 <div class="menu_header" onclick="toggle_menu(event, 'info', 'info_help_menu')">Hjälp
@@ -482,6 +509,7 @@ div {
                         <li><div class="menu_text">Kartan är en aningen modifierad version av en <a target="_blank" href="http://en.wikipedia.org/wiki/File:BlankMap-World-Microstates.svg">karta från wikipedia</a> hämtad december 2013.</div></li>
                         <li><div class="menu_text">Flaggorna är hämtade via <a target="_blank" href="https://sv.wikipedia.org/wiki/F%C3%B6renta_nationernas_medlemsstater">Wikipedia: Förenta nationernas medlemsstater</a> december 2013.</div></li>
                         <li><div class="menu_text">Invånar-värdena är tagna från olika källor. För att se referensen och året då värdet gäller så håll över landet när spelet är pausat. De fulla referenserna står längst ner på sidan. I skrivande stund [januari 2014] är Nauru tagen från [2]; Kosovo, Taiwan och Vatikanstaten från [3] och resten från [1].</div></li>
+                        <li><div class="menu_text">Vilket statsskick de olika länderna har är svårt att kategorisera, för det kan se väldigt olika ut i olika länder. Som källa har jag använt en <a target="_blank" href="http://en.wikipedia.org/wiki/File:Forms_of_government.svg">karta från wikipedia</a> hämtad 2014-01-09. De länder som där betecknades som "Republics with an executive president dependent on a parliament" betecknar jag med parlamentarisk republik. Östtimor fick bli semipresidentiell republik för det är vad <a target="_blank" href="https://en.wikipedia.org/wiki/East_Timor">wikipedia-sidan för Östtimor</a> påstår (hämtad 2014-01-09).</div></li>
                     </ul>
                 </div><div id="info_problem_menu" class="menu">
                     <ul>
@@ -623,208 +651,210 @@ id="path5520"/></g><circle class="circlexx vi" cx="778.383" cy="608.82" id="vi."
         </div>
         <div id="reg">
         </div>
+        <div id="gov">
+        </div>
         <div id="pop">
         </div>
         <div id="flag">
         </div>
         <script type="text/javascript">
 var g_list = {
-af :{ eng:"Afghanistan",cap:"Kabul",reg:"Asien",name:"Afghanistan",pop:29824536,pop_ref:"[1]",pop_year:2012},
-al :{ eng:"Albania",cap:"Tirana",reg:"Europa",name:"Albanien",pop:3162083,pop_ref:"[1]",pop_year:2012},
-dz :{ eng:"Algeria",cap:"Alger",reg:"Afrika",name:"Algeriet",pop:38481705,pop_ref:"[1]",pop_year:2012},
-ad :{ eng:"Andorra",cap:"Andorra_la_Vella",reg:"Europa",name:"Andorra",pop:78360,pop_ref:"[1]",pop_year:2012},
-ao :{ eng:"Angola",cap:"Luanda",reg:"Afrika",name:"Angola",pop:20820525,pop_ref:"[1]",pop_year:2012},
-ag :{ eng:"Antigua_and_Barbuda",cap:"Saint_John's",reg:"Nordamerika",name:"Antigua_och_Barbuda",pop:89069,pop_ref:"[1]",pop_year:2012},
-ar :{ eng:"Argentina",cap:"Buenos_Aires",reg:"Sydamerika",name:"Argentina",pop:41086927,pop_ref:"[1]",pop_year:2012},
-am :{ eng:"Armenia",cap:"Jerevan",reg:"Asien",name:"Armenien",pop:2969081,pop_ref:"[1]",pop_year:2012},
-au :{ eng:"Australia",cap:"Canberra",reg:"Oceanien",name:"Australien",pop:22683600,pop_ref:"[1]",pop_year:2012},
-az :{ eng:"Azerbaijan",cap:"Baku",reg:"Asien",name:"Azerbajdzjan",pop:9297507,pop_ref:"[1]",pop_year:2012},
-bs :{ eng:"The_Bahamas",cap:"Nassau",reg:"Nordamerika",name:"Bahamas",pop:371960,pop_ref:"[1]",pop_year:2012},
-bh :{ eng:"Bahrain",cap:"Manama",reg:"Asien",name:"Bahrain",pop:1317827,pop_ref:"[1]",pop_year:2012},
-bd :{ eng:"Bangladesh",cap:"Dhaka",reg:"Asien",name:"Bangladesh",pop:154695368,pop_ref:"[1]",pop_year:2012},
-bb :{ eng:"Barbados",cap:"Bridgetown",reg:"Nordamerika",name:"Barbados",pop:283221,pop_ref:"[1]",pop_year:2012},
-be :{ eng:"Belgium",cap:"Bryssel",reg:"Europa",name:"Belgien",pop:11142157,pop_ref:"[1]",pop_year:2012},
-bz :{ eng:"Belize",cap:"Belmopan",reg:"Nordamerika",name:"Belize",pop:324060,pop_ref:"[1]",pop_year:2012},
-bj :{ eng:"Benin",cap:"Porto-Novo",reg:"Afrika",name:"Benin",pop:10050702,pop_ref:"[1]",pop_year:2012},
-bt :{ eng:"Bhutan",cap:"Thimphu",reg:"Asien",name:"Bhutan",pop:741822,pop_ref:"[1]",pop_year:2012},
-bo :{ eng:"Bolivia",cap:"Sucre",reg:"Sydamerika",name:"Bolivia",pop:10496285,pop_ref:"[1]",pop_year:2012},
-ba :{ eng:"Bosnia_and_Herzegovina",cap:"Sarajevo",reg:"Europa",name:"Bosnien_och_Hercegovina",pop:3833916,pop_ref:"[1]",pop_year:2012},
-bw :{ eng:"Botswana",cap:"Gaborone",reg:"Afrika",name:"Botswana",pop:2003910,pop_ref:"[1]",pop_year:2012},
-br :{ eng:"Brazil",cap:"Brasilia",reg:"Sydamerika",name:"Brasilien",pop:198656019,pop_ref:"[1]",pop_year:2012},
-bn :{ eng:"Brunei",cap:"Bandar_Seri_Begawan",reg:"Asien",name:"Brunei",pop:412238,pop_ref:"[1]",pop_year:2012},
-bg :{ eng:"Bulgaria",cap:"Sofia",reg:"Europa",name:"Bulgarien",pop:7304632,pop_ref:"[1]",pop_year:2012},
-bf :{ eng:"Burkina_Faso",cap:"Ouagadougou",reg:"Afrika",name:"Burkina_Faso",pop:16460141,pop_ref:"[1]",pop_year:2012},
-mm :{ eng:"Myanmar",cap:"Naypyidaw",reg:"Asien",name:"Burma",pop:52797319,pop_ref:"[1]",pop_year:2012},
-bi :{ eng:"Burundi",cap:"Bujumbura",reg:"Afrika",name:"Burundi",pop:9849569,pop_ref:"[1]",pop_year:2012},
-cf :{ eng:"Central_African_Republic",cap:"Bangui",reg:"Afrika",name:"Centralafrikanska_republiken",pop:4525209,pop_ref:"[1]",pop_year:2012},
-cl :{ eng:"Chile",cap:"Santiago_de_Chile",reg:"Sydamerika",name:"Chile",pop:17464814,pop_ref:"[1]",pop_year:2012},
-co :{ eng:"Colombia",cap:"Bogot%C3%A1",reg:"Sydamerika",name:"Colombia",pop:47704427,pop_ref:"[1]",pop_year:2012},
-cr :{ eng:"Costa_Rica",cap:"San_Jos%C3%A9",reg:"Nordamerika",name:"Costa_Rica",pop:4805295,pop_ref:"[1]",pop_year:2012},
-cy :{ eng:"Cyprus",cap:"Nicosia",reg:"Asien",name:"Cypern",pop:1128994,pop_ref:"[1]",pop_year:2012},
-dk :{ eng:"Denmark",cap:"K%C3%B6penhamn",reg:"Europa",name:"Danmark",pop:5590478,pop_ref:"[1]",pop_year:2012},
-dj :{ eng:"Djibouti",cap:"Djibouti",reg:"Afrika",name:"Djibouti",pop:859652,pop_ref:"[1]",pop_year:2012},
-dm :{ eng:"Dominica",cap:"Roseau",reg:"Nordamerika",name:"Dominica",pop:71684,pop_ref:"[1]",pop_year:2012},
-do :{ eng:"Dominican_Republic",cap:"Santo_Domingo",reg:"Nordamerika",name:"Dominikanska_republiken",pop:10276621,pop_ref:"[1]",pop_year:2012},
-ec :{ eng:"Ecuador",cap:"Quito",reg:"Sydamerika",name:"Ecuador",pop:15492264,pop_ref:"[1]",pop_year:2012},
-eg :{ eng:"Egypt",cap:"Kairo",reg:"Afrika",name:"Egypten",pop:80721874,pop_ref:"[1]",pop_year:2012},
-gq :{ eng:"Equatorial_Guinea",cap:"Malabo",reg:"Afrika",name:"Ekvatorialguinea",pop:736296,pop_ref:"[1]",pop_year:2012},
-ci :{ eng:"Ivory_Coast",cap:"Yamoussoukro",reg:"Afrika",name:"Elfenbenskusten",pop:19839750,pop_ref:"[1]",pop_year:2012},
-sv :{ eng:"El_Salvador",cap:"San_Salvador",reg:"Nordamerika",name:"El_Salvador",pop:6297394,pop_ref:"[1]",pop_year:2012},
-er :{ eng:"Eritrea",cap:"Asmara",reg:"Afrika",name:"Eritrea",pop:6130922,pop_ref:"[1]",pop_year:2012},
-ee :{ eng:"Estonia",cap:"Tallinn",reg:"Europa",name:"Estland",pop:1339396,pop_ref:"[1]",pop_year:2012},
-et :{ eng:"Ethiopia",cap:"Addis_Abeba",reg:"Afrika",name:"Etiopien",pop:91728849,pop_ref:"[1]",pop_year:2012},
-fj :{ eng:"Fiji",cap:"Suva",reg:"Oceanien",name:"Fiji",pop:874742,pop_ref:"[1]",pop_year:2012},
-ph :{ eng:"Philippines",cap:"Manila",reg:"Asien",name:"Filippinerna",pop:96706764,pop_ref:"[1]",pop_year:2012},
-fi :{ eng:"Finland",cap:"Helsingfors",reg:"Europa",name:"Finland",pop:5414293,pop_ref:"[1]",pop_year:2012},
-fr :{ eng:"France",cap:"Paris",reg:"Europa",name:"Frankrike",pop:65696689,pop_ref:"[1]",pop_year:2012},
-ae :{ eng:"United_Arab_Emirates",cap:"Abu_Dhabi",reg:"Asien",name:"F%C3%B6renade_Arabemiraten",pop:9205651,pop_ref:"[1]",pop_year:2012},
-ga :{ eng:"Gabon",cap:"Libreville",reg:"Afrika",name:"Gabon",pop:1632572,pop_ref:"[1]",pop_year:2012},
-gm :{ eng:"Gambia",cap:"Banjul",reg:"Afrika",name:"Gambia",pop:1791225,pop_ref:"[1]",pop_year:2012},
-ge :{ eng:"Georgia",cap:"Tbilisi",reg:"Asien",name:"Georgien",pop:4511800,pop_ref:"[1]",pop_year:2012},
-gh :{ eng:"Ghana",cap:"Accra",reg:"Afrika",name:"Ghana",pop:25366462,pop_ref:"[1]",pop_year:2012},
-gr :{ eng:"Greece",cap:"Aten",reg:"Europa",name:"Grekland",pop:11280167,pop_ref:"[1]",pop_year:2012},
-gd :{ eng:"Grenada",cap:"Saint_George's",reg:"Nordamerika",name:"Grenada",pop:105483,pop_ref:"[1]",pop_year:2012},
-gt :{ eng:"Guatemala",cap:"Guatemala_City",reg:"Nordamerika",name:"Guatemala",pop:15082831,pop_ref:"[1]",pop_year:2012},
-gn :{ eng:"Guinea",cap:"Conakry",reg:"Afrika",name:"Guinea",pop:11451273,pop_ref:"[1]",pop_year:2012},
-gw :{ eng:"Guinea-Bissau",cap:"Bissau",reg:"Afrika",name:"Guinea-Bissau",pop:1663558,pop_ref:"[1]",pop_year:2012},
-gy :{ eng:"Guyana",cap:"Georgetown",reg:"Sydamerika",name:"Guyana",pop:795369,pop_ref:"[1]",pop_year:2012},
-ht :{ eng:"Haiti",cap:"Port-au-Prince",reg:"Nordamerika",name:"Haiti",pop:10173775,pop_ref:"[1]",pop_year:2012},
-hn :{ eng:"Honduras",cap:"Tegucigalpa",reg:"Nordamerika",name:"Honduras",pop:7935846,pop_ref:"[1]",pop_year:2012},
-in :{ eng:"India",cap:"New_Delhi",reg:"Asien",name:"Indien",pop:1236686732,pop_ref:"[1]",pop_year:2012},
-id :{ eng:"Indonesia",cap:"Djakarta",reg:"Asien",name:"Indonesien",pop:246864191,pop_ref:"[1]",pop_year:2012},
-iq :{ eng:"Iraq",cap:"Bagdad",reg:"Asien",name:"Irak",pop:32578209,pop_ref:"[1]",pop_year:2012},
-ir :{ eng:"Iran",cap:"Teheran",reg:"Asien",name:"Iran",pop:76424443,pop_ref:"[1]",pop_year:2012},
-ie :{ eng:"Ireland",cap:"Dublin",reg:"Europa",name:"Irland",pop:4588798,pop_ref:"[1]",pop_year:2012},
-is :{ eng:"Iceland",cap:"Reykjavik",reg:"Europa",name:"Island",pop:320137,pop_ref:"[1]",pop_year:2012},
-il :{ eng:"Israel",cap:"Jerusalem",reg:"Asien",name:"Israel",pop:7907900,pop_ref:"[1]",pop_year:2012},
-it :{ eng:"Italy",cap:"Rom",reg:"Europa",name:"Italien",pop:60917978,pop_ref:"[1]",pop_year:2012},
-jm :{ eng:"Jamaica",cap:"Kingston",reg:"Nordamerika",name:"Jamaica",pop:2712100,pop_ref:"[1]",pop_year:2012},
-jp :{ eng:"Japan",cap:"Tokyo",reg:"Asien",name:"Japan",pop:127561489,pop_ref:"[1]",pop_year:2012},
-ye :{ eng:"Yemen",cap:"Sana",reg:"Asien",name:"Jemen",pop:23852409,pop_ref:"[1]",pop_year:2012},
-jo :{ eng:"Jordan",cap:"Amman",reg:"Asien",name:"Jordanien",pop:6318000,pop_ref:"[1]",pop_year:2012},
-kh :{ eng:"Cambodia",cap:"Phnom_Penh",reg:"Asien",name:"Kambodja",pop:14864646,pop_ref:"[1]",pop_year:2012},
-cm :{ eng:"Cameroon",cap:"Yaound%C3%A9",reg:"Afrika",name:"Kamerun",pop:21699631,pop_ref:"[1]",pop_year:2012},
-ca :{ eng:"Canada",cap:"Ottawa",reg:"Nordamerika",name:"Kanada",pop:34880491,pop_ref:"[1]",pop_year:2012},
-cv :{ eng:"Cape_Verde",cap:"Praia",reg:"Afrika",name:"Kap_Verde",pop:494401,pop_ref:"[1]",pop_year:2012},
-kz :{ eng:"Kazakhstan",cap:"Astana",reg:"Asien",name:"Kazakstan",pop:16797459,pop_ref:"[1]",pop_year:2012},
-ke :{ eng:"Kenya",cap:"Nairobi",reg:"Afrika",name:"Kenya",pop:43178141,pop_ref:"[1]",pop_year:2012},
-cn :{ eng:"China",cap:"Peking",reg:"Asien",name:"Kina",pop:1350695000,pop_ref:"[1]",pop_year:2012},
-kg :{ eng:"Kyrgyzstan",cap:"Bisjkek",reg:"Asien",name:"Kirgizistan",pop:5582100,pop_ref:"[1]",pop_year:2012},
-ki :{ eng:"Kiribati",cap:"S%C3%B6dra_Tarawa",reg:"Oceanien",name:"Kiribati",pop:100786,pop_ref:"[1]",pop_year:2012},
-km :{ eng:"Comoros",cap:"Moroni",reg:"Afrika",name:"Komorerna",pop:717503,pop_ref:"[1]",pop_year:2012},
-cg :{ eng:"Congo-Brazzaville",cap:"Brazzaville",reg:"Afrika",name:"Kongo-Brazzaville",pop:4337051,pop_ref:"[1]",pop_year:2012},
-cd :{ eng:"Congo-Kinshasa",cap:"Kinshasa",reg:"Afrika",name:"Kongo-Kinshasa",pop:65705093,pop_ref:"[1]",pop_year:2012},
-hr :{ eng:"Croatia",cap:"Zagreb",reg:"Europa",name:"Kroatien",pop:4267000,pop_ref:"[1]",pop_year:2012},
-cu :{ eng:"Cuba",cap:"Havanna",reg:"Nordamerika",name:"Kuba",pop:11270957,pop_ref:"[1]",pop_year:2012},
-kw :{ eng:"Kuwait",cap:"Kuwait",reg:"Asien",name:"Kuwait",pop:3250496,pop_ref:"[1]",pop_year:2012},
-la :{ eng:"Laos",cap:"Vientiane",reg:"Asien",name:"Laos",pop:6645827,pop_ref:"[1]",pop_year:2012},
-ls :{ eng:"Lesotho",cap:"Maseru",reg:"Afrika",name:"Lesotho",pop:2051545,pop_ref:"[1]",pop_year:2012},
-lv :{ eng:"Latvia",cap:"Riga",reg:"Europa",name:"Lettland",pop:2025473,pop_ref:"[1]",pop_year:2012},
-lb :{ eng:"Lebanon",cap:"Beirut",reg:"Asien",name:"Libanon",pop:4424888,pop_ref:"[1]",pop_year:2012},
-lr :{ eng:"Liberia",cap:"Monrovia",reg:"Afrika",name:"Liberia",pop:4190435,pop_ref:"[1]",pop_year:2012},
-ly :{ eng:"Libya",cap:"Tripoli",reg:"Afrika",name:"Libyen",pop:6154623,pop_ref:"[1]",pop_year:2012},
-li :{ eng:"Liechtenstein",cap:"Vaduz",reg:"Europa",name:"Liechtenstein",pop:36656,pop_ref:"[1]",pop_year:2012},
-lt :{ eng:"Lithuania",cap:"Vilnius",reg:"Europa",name:"Litauen",pop:2985509,pop_ref:"[1]",pop_year:2012},
-lu :{ eng:"Luxembourg",cap:"Luxemburg",reg:"Europa",name:"Luxemburg",pop:531441,pop_ref:"[1]",pop_year:2012},
-mg :{ eng:"Madagascar",cap:"Antananarivo",reg:"Afrika",name:"Madagaskar",pop:22293914,pop_ref:"[1]",pop_year:2012},
-mk :{ eng:"Macedonia",cap:"Skopje",reg:"Europa",name:"Makedonien",pop:2105575,pop_ref:"[1]",pop_year:2012},
-mw :{ eng:"Malawi",cap:"Lilongwe",reg:"Afrika",name:"Malawi",pop:15906483,pop_ref:"[1]",pop_year:2012},
-my :{ eng:"Malaysia",cap:"Kuala_Lumpur",reg:"Asien",name:"Malaysia",pop:29239927,pop_ref:"[1]",pop_year:2012},
-mv :{ eng:"Maldives",cap:"Mal%C3%A9",reg:"Asien",name:"Maldiverna",pop:338442,pop_ref:"[1]",pop_year:2012},
-ml :{ eng:"Mali",cap:"Bamako",reg:"Afrika",name:"Mali",pop:14853572,pop_ref:"[1]",pop_year:2012},
-mt :{ eng:"Malta",cap:"Valletta",reg:"Europa",name:"Malta",pop:418366,pop_ref:"[1]",pop_year:2012},
-ma :{ eng:"Morocco",cap:"Rabat",reg:"Afrika",name:"Marocko",pop:32521143,pop_ref:"[1]",pop_year:2012},
-mh :{ eng:"Marshall_Islands",cap:"Majuro",reg:"Oceanien",name:"Marshall%C3%B6arna",pop:52555,pop_ref:"[1]",pop_year:2012},
-mr :{ eng:"Mauritania",cap:"Nouakchott",reg:"Afrika",name:"Mauretanien",pop:3796141,pop_ref:"[1]",pop_year:2012},
-mu :{ eng:"Mauritius",cap:"Port_Louis",reg:"Afrika",name:"Mauritius",pop:1291456,pop_ref:"[1]",pop_year:2012},
-mx :{ eng:"Mexico",cap:"Mexico_City",reg:"Nordamerika",name:"Mexiko",pop:120847477,pop_ref:"[1]",pop_year:2012},
-fm :{ eng:"Federated_States_of_Micronesia",cap:"Palikir",reg:"Oceanien",name:"Mikronesiens_federerade_stater",pop:103395,pop_ref:"[1]",pop_year:2012},
-mz :{ eng:"Mozambique",cap:"Maputo",reg:"Afrika",name:"Mo%C3%A7ambique",pop:25203395,pop_ref:"[1]",pop_year:2012},
-md :{ eng:"Moldova",cap:"Chi%C8%99in%C4%83u",reg:"Europa",name:"Moldavien",pop:3559541,pop_ref:"[1]",pop_year:2012},
-mc :{ eng:"Monaco",cap:"Monaco",reg:"Europa",name:"Monaco",pop:37579,pop_ref:"[1]",pop_year:2012},
-me :{ eng:"Montenegro",cap:"Podgorica",reg:"Europa",name:"Montenegro",pop:621081,pop_ref:"[1]",pop_year:2012},
-mn :{ eng:"Mongolia",cap:"Ulan_Bator",reg:"Asien",name:"Mongoliet",pop:2796484,pop_ref:"[1]",pop_year:2012},
-na :{ eng:"Namibia",cap:"Windhoek",reg:"Afrika",name:"Namibia",pop:2259393,pop_ref:"[1]",pop_year:2012},
-nr :{ eng:"Nauru",cap:"saknar_huvudstad",reg:"Oceanien",name:"Nauru",pop:10185,pop_ref:"[2]",pop_year:2011},
-nl :{ eng:"Netherlands",cap:"Amsterdam",reg:"Europa",name:"Nederl%C3%A4nderna",pop:16767705,pop_ref:"[1]",pop_year:2012},
-np :{ eng:"Nepal",cap:"Kathmandu",reg:"Asien",name:"Nepal",pop:27474377,pop_ref:"[1]",pop_year:2012},
-ni :{ eng:"Nicaragua",cap:"Managua",reg:"Nordamerika",name:"Nicaragua",pop:5991733,pop_ref:"[1]",pop_year:2012},
-ne :{ eng:"Niger",cap:"Niamey",reg:"Afrika",name:"Niger",pop:17157042,pop_ref:"[1]",pop_year:2012},
-ng :{ eng:"Nigeria",cap:"Abuja",reg:"Afrika",name:"Nigeria",pop:168833776,pop_ref:"[1]",pop_year:2012},
-kp :{ eng:"North_Korea",cap:"Pyongyang",reg:"Asien",name:"Nordkorea",pop:24763188,pop_ref:"[1]",pop_year:2012},
-no :{ eng:"Norway",cap:"Oslo",reg:"Europa",name:"Norge",pop:5018869,pop_ref:"[1]",pop_year:2012},
-nz :{ eng:"New_Zealand",cap:"Wellington",reg:"Oceanien",name:"Nya_Zeeland",pop:4433100,pop_ref:"[1]",pop_year:2012},
-om :{ eng:"Oman",cap:"Muskat",reg:"Asien",name:"Oman",pop:3314001,pop_ref:"[1]",pop_year:2012},
-pk :{ eng:"Pakistan",cap:"Islamabad",reg:"Asien",name:"Pakistan",pop:179160111,pop_ref:"[1]",pop_year:2012},
-pw :{ eng:"Palau",cap:"Melekeok",reg:"Oceanien",name:"Palau",pop:20754,pop_ref:"[1]",pop_year:2012},
-pa :{ eng:"Panama",cap:"Panama_City",reg:"Nordamerika",name:"Panama",pop:3802281,pop_ref:"[1]",pop_year:2012},
-pg :{ eng:"Papua_New_Guinea",cap:"Port_Moresby",reg:"Oceanien",name:"Papua_Nya_Guinea",pop:7167010,pop_ref:"[1]",pop_year:2012},
-py :{ eng:"Paraguay",cap:"Asunci%C3%B3n",reg:"Sydamerika",name:"Paraguay",pop:6687361,pop_ref:"[1]",pop_year:2012},
-pe :{ eng:"Peru",cap:"Lima",reg:"Sydamerika",name:"Peru",pop:29987800,pop_ref:"[1]",pop_year:2012},
-pl :{ eng:"Poland",cap:"Warszawa",reg:"Europa",name:"Polen",pop:38542737,pop_ref:"[1]",pop_year:2012},
-pt :{ eng:"Portugal",cap:"Lissabon",reg:"Europa",name:"Portugal",pop:10526703,pop_ref:"[1]",pop_year:2012},
-qa :{ eng:"Qatar",cap:"Doha",reg:"Asien",name:"Qatar",pop:2050514,pop_ref:"[1]",pop_year:2012},
-ro :{ eng:"Romania",cap:"Bukarest",reg:"Europa",name:"Rum%C3%A4nien",pop:21326905,pop_ref:"[1]",pop_year:2012},
-rw :{ eng:"Rwanda",cap:"Kigali",reg:"Afrika",name:"Rwanda",pop:11457801,pop_ref:"[1]",pop_year:2012},
-ru :{ eng:"Russia",cap:"Moskva",reg:"Asien",name:"Ryssland",pop:143533000,pop_ref:"[1]",pop_year:2012},
-kn :{ eng:"Saint_Kitts_and_Nevis",cap:"Basseterre",reg:"Nordamerika",name:"Saint_Kitts_och_Nevis",pop:53584,pop_ref:"[1]",pop_year:2012},
-lc :{ eng:"Saint_Lucia",cap:"Castries",reg:"Nordamerika",name:"Saint_Lucia",pop:180870,pop_ref:"[1]",pop_year:2012},
-vc :{ eng:"Saint_Vincent_and_the_Grenadines",cap:"Kingstown",reg:"Nordamerika",name:"Saint_Vincent_och_Grenadinerna",pop:109373,pop_ref:"[1]",pop_year:2012},
-sb :{ eng:"Solomon_Islands",cap:"Honiara",reg:"Oceanien",name:"Salomon%C3%B6arna",pop:549598,pop_ref:"[1]",pop_year:2012},
-ws :{ eng:"Samoa",cap:"Apia",reg:"Oceanien",name:"Samoa",pop:188889,pop_ref:"[1]",pop_year:2012},
-sm :{ eng:"San_Marino",cap:"San_Marino",reg:"Europa",name:"San_Marino",pop:31247,pop_ref:"[1]",pop_year:2012},
-st :{ eng:"S%C3%A3o_Tom%C3%A9_and_Pr%C3%ADncipe",cap:"S%C3%A3o_Tom%C3%A9",reg:"Afrika",name:"S%C3%A3o_Tom%C3%A9_och_Pr%C3%ADncipe",pop:188098,pop_ref:"[1]",pop_year:2012},
-sa :{ eng:"Saudi_Arabia",cap:"Riyadh",reg:"Asien",name:"Saudiarabien",pop:28287855,pop_ref:"[1]",pop_year:2012},
-ch :{ eng:"Switzerland",cap:"Bern",reg:"Europa",name:"Schweiz",pop:7997152,pop_ref:"[1]",pop_year:2012},
-sn :{ eng:"Senegal",cap:"Dakar",reg:"Afrika",name:"Senegal",pop:13726021,pop_ref:"[1]",pop_year:2012},
-sc :{ eng:"Seychelles",cap:"Victoria",reg:"Afrika",name:"Seychellerna",pop:87785,pop_ref:"[1]",pop_year:2012},
-rs :{ eng:"Serbia",cap:"Belgrad",reg:"Europa",name:"Serbien",pop:7223887,pop_ref:"[1]",pop_year:2012},
-sl :{ eng:"Sierra_Leone",cap:"Freetown",reg:"Afrika",name:"Sierra_Leone",pop:5978727,pop_ref:"[1]",pop_year:2012},
-sg :{ eng:"Singapore",cap:"Singapore",reg:"Asien",name:"Singapore",pop:5312400,pop_ref:"[1]",pop_year:2012},
-sk :{ eng:"Slovakia",cap:"Bratislava",reg:"Europa",name:"Slovakien",pop:5410267,pop_ref:"[1]",pop_year:2012},
-si :{ eng:"Slovenia",cap:"Ljubljana",reg:"Europa",name:"Slovenien",pop:2058152,pop_ref:"[1]",pop_year:2012},
-so :{ eng:"Somalia",cap:"Mogadishu",reg:"Afrika",name:"Somalia",pop:10195134,pop_ref:"[1]",pop_year:2012},
-es :{ eng:"Spain",cap:"Madrid",reg:"Europa",name:"Spanien",pop:46217961,pop_ref:"[1]",pop_year:2012},
-lk :{ eng:"Sri_Lanka",cap:"Sri_Jayawardenapura",reg:"Asien",name:"Sri_Lanka",pop:20328000,pop_ref:"[1]",pop_year:2012},
-gb :{ eng:"United_Kingdom",cap:"London",reg:"Europa",name:"Storbritannien",pop:63227526,pop_ref:"[1]",pop_year:2012},
-sd :{ eng:"Sudan",cap:"Khartoum",reg:"Afrika",name:"Sudan",pop:37195349,pop_ref:"[1]",pop_year:2012},
-sr :{ eng:"Suriname",cap:"Paramaribo",reg:"Sydamerika",name:"Surinam",pop:534541,pop_ref:"[1]",pop_year:2012},
-se :{ eng:"Sweden",cap:"Stockholm",reg:"Europa",name:"Sverige",pop:9516617,pop_ref:"[1]",pop_year:2012},
-sz :{ eng:"Swaziland",cap:"Mbabane",reg:"Afrika",name:"Swaziland",pop:1230985,pop_ref:"[1]",pop_year:2012},
-za :{ eng:"South_Africa",cap:"Kapstaden",reg:"Afrika",name:"Sydafrika",pop:51189307,pop_ref:"[1]",pop_year:2012},
-kr :{ eng:"South_Korea",cap:"Seoul",reg:"Asien",name:"Sydkorea",pop:50004000,pop_ref:"[1]",pop_year:2012},
-ss :{ eng:"South_Sudan",cap:"Juba",reg:"Afrika",name:"Sydsudan",pop:10837527,pop_ref:"[1]",pop_year:2012},
-sy :{ eng:"Syria",cap:"Damaskus",reg:"Asien",name:"Syrien",pop:22399254,pop_ref:"[1]",pop_year:2012},
-tj :{ eng:"Tajikistan",cap:"Dusjanbe",reg:"Asien",name:"Tadzjikistan",pop:8008990,pop_ref:"[1]",pop_year:2012},
-tz :{ eng:"Tanzania",cap:"Dodoma",reg:"Afrika",name:"Tanzania",pop:47783107,pop_ref:"[1]",pop_year:2012},
-td :{ eng:"Chad",cap:"N'Djamena",reg:"Afrika",name:"Tchad",pop:12448175,pop_ref:"[1]",pop_year:2012},
-th :{ eng:"Thailand",cap:"Bangkok",reg:"Asien",name:"Thailand",pop:66785001,pop_ref:"[1]",pop_year:2012},
-cz :{ eng:"Czech_Republic",cap:"Prag",reg:"Europa",name:"Tjeckien",pop:10514810,pop_ref:"[1]",pop_year:2012},
-tg :{ eng:"Togo",cap:"Lom%C3%A9",reg:"Afrika",name:"Togo",pop:6642928,pop_ref:"[1]",pop_year:2012},
-to :{ eng:"Tonga",cap:"Nuku'alofa",reg:"Oceanien",name:"Tonga",pop:104941,pop_ref:"[1]",pop_year:2012},
-tt :{ eng:"Trinidad_and_Tobago",cap:"Port_of_Spain",reg:"Nordamerika",name:"Trinidad_och_Tobago",pop:1337439,pop_ref:"[1]",pop_year:2012},
-tn :{ eng:"Tunisia",cap:"Tunis",reg:"Afrika",name:"Tunisien",pop:10777500,pop_ref:"[1]",pop_year:2012},
-tr :{ eng:"Turkey",cap:"Ankara",reg:"Asien",name:"Turkiet",pop:73997128,pop_ref:"[1]",pop_year:2012},
-tm :{ eng:"Turkmenistan",cap:"Asjchabad",reg:"Asien",name:"Turkmenistan",pop:5172931,pop_ref:"[1]",pop_year:2012},
-tv :{ eng:"Tuvalu",cap:"Funafuti",reg:"Oceanien",name:"Tuvalu",pop:9860,pop_ref:"[1]",pop_year:2012},
-de :{ eng:"Germany",cap:"Berlin",reg:"Europa",name:"Tyskland",pop:81889839,pop_ref:"[1]",pop_year:2012},
-ug :{ eng:"Uganda",cap:"Kampala",reg:"Afrika",name:"Uganda",pop:36345860,pop_ref:"[1]",pop_year:2012},
-ua :{ eng:"Ukraine",cap:"Kiev",reg:"Europa",name:"Ukraina",pop:45593300,pop_ref:"[1]",pop_year:2012},
-hu :{ eng:"Hungary",cap:"Budapest",reg:"Europa",name:"Ungern",pop:9943755,pop_ref:"[1]",pop_year:2012},
-uy :{ eng:"Uruguay",cap:"Montevideo",reg:"Sydamerika",name:"Uruguay",pop:3395253,pop_ref:"[1]",pop_year:2012},
-us :{ eng:"United_States",cap:"Washington_d.c.",reg:"Nordamerika",name:"USA",pop:313914040,pop_ref:"[1]",pop_year:2012},
-uz :{ eng:"Uzbekistan",cap:"Tasjkent",reg:"Asien",name:"Uzbekistan",pop:29776850,pop_ref:"[1]",pop_year:2012},
-vu :{ eng:"Vanuatu",cap:"Port_Vila",reg:"Oceanien",name:"Vanuatu",pop:247262,pop_ref:"[1]",pop_year:2012},
-ve :{ eng:"Venezuela",cap:"Caracas",reg:"Sydamerika",name:"Venezuela",pop:29954782,pop_ref:"[1]",pop_year:2012},
-vn :{ eng:"Vietnam",cap:"Hanoi",reg:"Asien",name:"Vietnam",pop:88775500,pop_ref:"[1]",pop_year:2012},
-by :{ eng:"Belarus",cap:"Minsk",reg:"Europa",name:"Vitryssland",pop:9464000,pop_ref:"[1]",pop_year:2012},
-zm :{ eng:"Zambia",cap:"Lusaka",reg:"Afrika",name:"Zambia",pop:14075099,pop_ref:"[1]",pop_year:2012},
-zw :{ eng:"Zimbabwe",cap:"Harare",reg:"Afrika",name:"Zimbabwe",pop:13724317,pop_ref:"[1]",pop_year:2012},
-at :{ eng:"Austria",cap:"Wien",reg:"Europa",name:"%C3%96sterrike",pop:8462446,pop_ref:"[1]",pop_year:2012},
-tl :{ eng:"East_Timor",cap:"Dili",reg:"Asien",name:"%C3%96sttimor",pop:1210233,pop_ref:"[1]",pop_year:2012},
-xk :{ eng:"Kosovo",cap:"Pristina",reg:"Europa",name:"Kosovo",pop:1847708,pop_ref:"[3]",pop_year:2013},
-tw :{ eng:"Taiwan",cap:"Taipei",reg:"Asien",name:"Taiwan",pop:23299716,pop_ref:"[3]",pop_year:2013},
-va :{ eng:"Vatican_City",cap:"Vatikanstaden",reg:"Europa",name:"Vatikanstaten",pop:839,pop_ref:"[3]",pop_year:2013} };
+af:{eng:"Afghanistan",cap:"Kabul",reg:"Asien",name:"Afghanistan",pop:29824536,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+al:{eng:"Albania",cap:"Tirana",reg:"Europa",name:"Albanien",pop:3162083,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+dz:{eng:"Algeria",cap:"Alger",reg:"Afrika",name:"Algeriet",pop:38481705,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+ad:{eng:"Andorra",cap:"Andorra_la_Vella",reg:"Europa",name:"Andorra",pop:78360,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+ao:{eng:"Angola",cap:"Luanda",reg:"Afrika",name:"Angola",pop:20820525,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+ag:{eng:"Antigua_and_Barbuda",cap:"Saint_John's",reg:"Nordamerika",name:"Antigua_och_Barbuda",pop:89069,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+ar:{eng:"Argentina",cap:"Buenos_Aires",reg:"Sydamerika",name:"Argentina",pop:41086927,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+am:{eng:"Armenia",cap:"Jerevan",reg:"Asien",name:"Armenien",pop:2969081,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+au:{eng:"Australia",cap:"Canberra",reg:"Oceanien",name:"Australien",pop:22683600,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+az:{eng:"Azerbaijan",cap:"Baku",reg:"Asien",name:"Azerbajdzjan",pop:9297507,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+bs:{eng:"The_Bahamas",cap:"Nassau",reg:"Nordamerika",name:"Bahamas",pop:371960,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+bh:{eng:"Bahrain",cap:"Manama",reg:"Asien",name:"Bahrain",pop:1317827,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+bd:{eng:"Bangladesh",cap:"Dhaka",reg:"Asien",name:"Bangladesh",pop:154695368,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+bb:{eng:"Barbados",cap:"Bridgetown",reg:"Nordamerika",name:"Barbados",pop:283221,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+be:{eng:"Belgium",cap:"Bryssel",reg:"Europa",name:"Belgien",pop:11142157,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+bz:{eng:"Belize",cap:"Belmopan",reg:"Nordamerika",name:"Belize",pop:324060,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+bj:{eng:"Benin",cap:"Porto-Novo",reg:"Afrika",name:"Benin",pop:10050702,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+bt:{eng:"Bhutan",cap:"Thimphu",reg:"Asien",name:"Bhutan",pop:741822,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+bo:{eng:"Bolivia",cap:"Sucre",reg:"Sydamerika",name:"Bolivia",pop:10496285,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+ba:{eng:"Bosnia_and_Herzegovina",cap:"Sarajevo",reg:"Europa",name:"Bosnien_och_Hercegovina",pop:3833916,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+bw:{eng:"Botswana",cap:"Gaborone",reg:"Afrika",name:"Botswana",pop:2003910,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+br:{eng:"Brazil",cap:"Brasilia",reg:"Sydamerika",name:"Brasilien",pop:198656019,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+bn:{eng:"Brunei",cap:"Bandar_Seri_Begawan",reg:"Asien",name:"Brunei",pop:412238,pop_ref:"[1]",pop_year:2012,gov:"Absolut_monarki"},
+bg:{eng:"Bulgaria",cap:"Sofia",reg:"Europa",name:"Bulgarien",pop:7304632,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+bf:{eng:"Burkina_Faso",cap:"Ouagadougou",reg:"Afrika",name:"Burkina_Faso",pop:16460141,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+mm:{eng:"Myanmar",cap:"Naypyidaw",reg:"Asien",name:"Burma",pop:52797319,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+bi:{eng:"Burundi",cap:"Bujumbura",reg:"Afrika",name:"Burundi",pop:9849569,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+cf:{eng:"Central_African_Republic",cap:"Bangui",reg:"Afrika",name:"Centralafrikanska_republiken",pop:4525209,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+cl:{eng:"Chile",cap:"Santiago_de_Chile",reg:"Sydamerika",name:"Chile",pop:17464814,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+co:{eng:"Colombia",cap:"Bogot%C3%A1",reg:"Sydamerika",name:"Colombia",pop:47704427,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+cr:{eng:"Costa_Rica",cap:"San_Jos%C3%A9",reg:"Nordamerika",name:"Costa_Rica",pop:4805295,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+cy:{eng:"Cyprus",cap:"Nicosia",reg:"Asien",name:"Cypern",pop:1128994,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+dk:{eng:"Denmark",cap:"K%C3%B6penhamn",reg:"Europa",name:"Danmark",pop:5590478,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+dj:{eng:"Djibouti",cap:"Djibouti",reg:"Afrika",name:"Djibouti",pop:859652,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+dm:{eng:"Dominica",cap:"Roseau",reg:"Nordamerika",name:"Dominica",pop:71684,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+do:{eng:"Dominican_Republic",cap:"Santo_Domingo",reg:"Nordamerika",name:"Dominikanska_republiken",pop:10276621,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+ec:{eng:"Ecuador",cap:"Quito",reg:"Sydamerika",name:"Ecuador",pop:15492264,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+eg:{eng:"Egypt",cap:"Kairo",reg:"Afrika",name:"Egypten",pop:80721874,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+gq:{eng:"Equatorial_Guinea",cap:"Malabo",reg:"Afrika",name:"Ekvatorialguinea",pop:736296,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+ci:{eng:"Ivory_Coast",cap:"Yamoussoukro",reg:"Afrika",name:"Elfenbenskusten",pop:19839750,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+sv:{eng:"El_Salvador",cap:"San_Salvador",reg:"Nordamerika",name:"El_Salvador",pop:6297394,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+er:{eng:"Eritrea",cap:"Asmara",reg:"Afrika",name:"Eritrea",pop:6130922,pop_ref:"[1]",pop_year:2012,gov:"Enpartistat"},
+ee:{eng:"Estonia",cap:"Tallinn",reg:"Europa",name:"Estland",pop:1339396,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+et:{eng:"Ethiopia",cap:"Addis_Abeba",reg:"Afrika",name:"Etiopien",pop:91728849,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+fj:{eng:"Fiji",cap:"Suva",reg:"Oceanien",name:"Fiji",pop:874742,pop_ref:"[1]",pop_year:2012,gov:"Milit%C3%A4rjunta"},
+ph:{eng:"Philippines",cap:"Manila",reg:"Asien",name:"Filippinerna",pop:96706764,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+fi:{eng:"Finland",cap:"Helsingfors",reg:"Europa",name:"Finland",pop:5414293,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+fr:{eng:"France",cap:"Paris",reg:"Europa",name:"Frankrike",pop:65696689,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+ae:{eng:"United_Arab_Emirates",cap:"Abu_Dhabi",reg:"Asien",name:"F%C3%B6renade_Arabemiraten",pop:9205651,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+ga:{eng:"Gabon",cap:"Libreville",reg:"Afrika",name:"Gabon",pop:1632572,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+gm:{eng:"Gambia",cap:"Banjul",reg:"Afrika",name:"Gambia",pop:1791225,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+ge:{eng:"Georgia",cap:"Tbilisi",reg:"Asien",name:"Georgien",pop:4511800,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+gh:{eng:"Ghana",cap:"Accra",reg:"Afrika",name:"Ghana",pop:25366462,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+gr:{eng:"Greece",cap:"Aten",reg:"Europa",name:"Grekland",pop:11280167,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+gd:{eng:"Grenada",cap:"Saint_George's",reg:"Nordamerika",name:"Grenada",pop:105483,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+gt:{eng:"Guatemala",cap:"Guatemala_City",reg:"Nordamerika",name:"Guatemala",pop:15082831,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+gn:{eng:"Guinea",cap:"Conakry",reg:"Afrika",name:"Guinea",pop:11451273,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+gw:{eng:"Guinea-Bissau",cap:"Bissau",reg:"Afrika",name:"Guinea-Bissau",pop:1663558,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+gy:{eng:"Guyana",cap:"Georgetown",reg:"Sydamerika",name:"Guyana",pop:795369,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+ht:{eng:"Haiti",cap:"Port-au-Prince",reg:"Nordamerika",name:"Haiti",pop:10173775,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+hn:{eng:"Honduras",cap:"Tegucigalpa",reg:"Nordamerika",name:"Honduras",pop:7935846,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+in:{eng:"India",cap:"New_Delhi",reg:"Asien",name:"Indien",pop:1236686732,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+id:{eng:"Indonesia",cap:"Djakarta",reg:"Asien",name:"Indonesien",pop:246864191,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+iq:{eng:"Iraq",cap:"Bagdad",reg:"Asien",name:"Irak",pop:32578209,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+ir:{eng:"Iran",cap:"Teheran",reg:"Asien",name:"Iran",pop:76424443,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+ie:{eng:"Ireland",cap:"Dublin",reg:"Europa",name:"Irland",pop:4588798,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+is:{eng:"Iceland",cap:"Reykjavik",reg:"Europa",name:"Island",pop:320137,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+il:{eng:"Israel",cap:"Jerusalem",reg:"Asien",name:"Israel",pop:7907900,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+it:{eng:"Italy",cap:"Rom",reg:"Europa",name:"Italien",pop:60917978,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+jm:{eng:"Jamaica",cap:"Kingston",reg:"Nordamerika",name:"Jamaica",pop:2712100,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+jp:{eng:"Japan",cap:"Tokyo",reg:"Asien",name:"Japan",pop:127561489,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+ye:{eng:"Yemen",cap:"Sana",reg:"Asien",name:"Jemen",pop:23852409,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+jo:{eng:"Jordan",cap:"Amman",reg:"Asien",name:"Jordanien",pop:6318000,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+kh:{eng:"Cambodia",cap:"Phnom_Penh",reg:"Asien",name:"Kambodja",pop:14864646,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+cm:{eng:"Cameroon",cap:"Yaound%C3%A9",reg:"Afrika",name:"Kamerun",pop:21699631,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+ca:{eng:"Canada",cap:"Ottawa",reg:"Nordamerika",name:"Kanada",pop:34880491,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+cv:{eng:"Cape_Verde",cap:"Praia",reg:"Afrika",name:"Kap_Verde",pop:494401,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+kz:{eng:"Kazakhstan",cap:"Astana",reg:"Asien",name:"Kazakstan",pop:16797459,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+ke:{eng:"Kenya",cap:"Nairobi",reg:"Afrika",name:"Kenya",pop:43178141,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+cn:{eng:"China",cap:"Peking",reg:"Asien",name:"Kina",pop:1350695000,pop_ref:"[1]",pop_year:2012,gov:"Enpartistat"},
+kg:{eng:"Kyrgyzstan",cap:"Bisjkek",reg:"Asien",name:"Kirgizistan",pop:5582100,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+ki:{eng:"Kiribati",cap:"S%C3%B6dra_Tarawa",reg:"Oceanien",name:"Kiribati",pop:100786,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+km:{eng:"Comoros",cap:"Moroni",reg:"Afrika",name:"Komorerna",pop:717503,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+cg:{eng:"Congo-Brazzaville",cap:"Brazzaville",reg:"Afrika",name:"Kongo-Brazzaville",pop:4337051,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+cd:{eng:"Congo-Kinshasa",cap:"Kinshasa",reg:"Afrika",name:"Kongo-Kinshasa",pop:65705093,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+hr:{eng:"Croatia",cap:"Zagreb",reg:"Europa",name:"Kroatien",pop:4267000,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+cu:{eng:"Cuba",cap:"Havanna",reg:"Nordamerika",name:"Kuba",pop:11270957,pop_ref:"[1]",pop_year:2012,gov:"Enpartistat"},
+kw:{eng:"Kuwait",cap:"Kuwait",reg:"Asien",name:"Kuwait",pop:3250496,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+la:{eng:"Laos",cap:"Vientiane",reg:"Asien",name:"Laos",pop:6645827,pop_ref:"[1]",pop_year:2012,gov:"Enpartistat"},
+ls:{eng:"Lesotho",cap:"Maseru",reg:"Afrika",name:"Lesotho",pop:2051545,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+lv:{eng:"Latvia",cap:"Riga",reg:"Europa",name:"Lettland",pop:2025473,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+lb:{eng:"Lebanon",cap:"Beirut",reg:"Asien",name:"Libanon",pop:4424888,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+lr:{eng:"Liberia",cap:"Monrovia",reg:"Afrika",name:"Liberia",pop:4190435,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+ly:{eng:"Libya",cap:"Tripoli",reg:"Afrika",name:"Libyen",pop:6154623,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+li:{eng:"Liechtenstein",cap:"Vaduz",reg:"Europa",name:"Liechtenstein",pop:36656,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+lt:{eng:"Lithuania",cap:"Vilnius",reg:"Europa",name:"Litauen",pop:2985509,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+lu:{eng:"Luxembourg",cap:"Luxemburg",reg:"Europa",name:"Luxemburg",pop:531441,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+mg:{eng:"Madagascar",cap:"Antananarivo",reg:"Afrika",name:"Madagaskar",pop:22293914,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+mk:{eng:"Macedonia",cap:"Skopje",reg:"Europa",name:"Makedonien",pop:2105575,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+mw:{eng:"Malawi",cap:"Lilongwe",reg:"Afrika",name:"Malawi",pop:15906483,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+my:{eng:"Malaysia",cap:"Kuala_Lumpur",reg:"Asien",name:"Malaysia",pop:29239927,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+mv:{eng:"Maldives",cap:"Mal%C3%A9",reg:"Asien",name:"Maldiverna",pop:338442,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+ml:{eng:"Mali",cap:"Bamako",reg:"Afrika",name:"Mali",pop:14853572,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+mt:{eng:"Malta",cap:"Valletta",reg:"Europa",name:"Malta",pop:418366,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+ma:{eng:"Morocco",cap:"Rabat",reg:"Afrika",name:"Marocko",pop:32521143,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+mh:{eng:"Marshall_Islands",cap:"Majuro",reg:"Oceanien",name:"Marshall%C3%B6arna",pop:52555,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+mr:{eng:"Mauritania",cap:"Nouakchott",reg:"Afrika",name:"Mauretanien",pop:3796141,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+mu:{eng:"Mauritius",cap:"Port_Louis",reg:"Afrika",name:"Mauritius",pop:1291456,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+mx:{eng:"Mexico",cap:"Mexico_City",reg:"Nordamerika",name:"Mexiko",pop:120847477,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+fm:{eng:"Federated_States_of_Micronesia",cap:"Palikir",reg:"Oceanien",name:"Mikronesiens_federerade_stater",pop:103395,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+mz:{eng:"Mozambique",cap:"Maputo",reg:"Afrika",name:"Mo%C3%A7ambique",pop:25203395,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+md:{eng:"Moldova",cap:"Chi%C8%99in%C4%83u",reg:"Europa",name:"Moldavien",pop:3559541,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+mc:{eng:"Monaco",cap:"Monaco",reg:"Europa",name:"Monaco",pop:37579,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+me:{eng:"Montenegro",cap:"Podgorica",reg:"Europa",name:"Montenegro",pop:621081,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+mn:{eng:"Mongolia",cap:"Ulan_Bator",reg:"Asien",name:"Mongoliet",pop:2796484,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+na:{eng:"Namibia",cap:"Windhoek",reg:"Afrika",name:"Namibia",pop:2259393,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+nr:{eng:"Nauru",cap:"saknar_huvudstad",reg:"Oceanien",name:"Nauru",pop:10185,pop_ref:"[2]",pop_year:2011,gov:"Parlamentarisk_republik"},
+nl:{eng:"Netherlands",cap:"Amsterdam",reg:"Europa",name:"Nederl%C3%A4nderna",pop:16767705,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+np:{eng:"Nepal",cap:"Kathmandu",reg:"Asien",name:"Nepal",pop:27474377,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+ni:{eng:"Nicaragua",cap:"Managua",reg:"Nordamerika",name:"Nicaragua",pop:5991733,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+ne:{eng:"Niger",cap:"Niamey",reg:"Afrika",name:"Niger",pop:17157042,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+ng:{eng:"Nigeria",cap:"Abuja",reg:"Afrika",name:"Nigeria",pop:168833776,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+kp:{eng:"North_Korea",cap:"Pyongyang",reg:"Asien",name:"Nordkorea",pop:24763188,pop_ref:"[1]",pop_year:2012,gov:"Enpartistat"},
+no:{eng:"Norway",cap:"Oslo",reg:"Europa",name:"Norge",pop:5018869,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+nz:{eng:"New_Zealand",cap:"Wellington",reg:"Oceanien",name:"Nya_Zeeland",pop:4433100,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+om:{eng:"Oman",cap:"Muskat",reg:"Asien",name:"Oman",pop:3314001,pop_ref:"[1]",pop_year:2012,gov:"Absolut_monarki"},
+pk:{eng:"Pakistan",cap:"Islamabad",reg:"Asien",name:"Pakistan",pop:179160111,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+pw:{eng:"Palau",cap:"Melekeok",reg:"Oceanien",name:"Palau",pop:20754,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+pa:{eng:"Panama",cap:"Panama_City",reg:"Nordamerika",name:"Panama",pop:3802281,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+pg:{eng:"Papua_New_Guinea",cap:"Port_Moresby",reg:"Oceanien",name:"Papua_Nya_Guinea",pop:7167010,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+py:{eng:"Paraguay",cap:"Asunci%C3%B3n",reg:"Sydamerika",name:"Paraguay",pop:6687361,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+pe:{eng:"Peru",cap:"Lima",reg:"Sydamerika",name:"Peru",pop:29987800,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+pl:{eng:"Poland",cap:"Warszawa",reg:"Europa",name:"Polen",pop:38542737,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+pt:{eng:"Portugal",cap:"Lissabon",reg:"Europa",name:"Portugal",pop:10526703,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+qa:{eng:"Qatar",cap:"Doha",reg:"Asien",name:"Qatar",pop:2050514,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+ro:{eng:"Romania",cap:"Bukarest",reg:"Europa",name:"Rum%C3%A4nien",pop:21326905,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+rw:{eng:"Rwanda",cap:"Kigali",reg:"Afrika",name:"Rwanda",pop:11457801,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+ru:{eng:"Russia",cap:"Moskva",reg:"Asien",name:"Ryssland",pop:143533000,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+kn:{eng:"Saint_Kitts_and_Nevis",cap:"Basseterre",reg:"Nordamerika",name:"Saint_Kitts_och_Nevis",pop:53584,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+lc:{eng:"Saint_Lucia",cap:"Castries",reg:"Nordamerika",name:"Saint_Lucia",pop:180870,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+vc:{eng:"Saint_Vincent_and_the_Grenadines",cap:"Kingstown",reg:"Nordamerika",name:"Saint_Vincent_och_Grenadinerna",pop:109373,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+sb:{eng:"Solomon_Islands",cap:"Honiara",reg:"Oceanien",name:"Salomon%C3%B6arna",pop:549598,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+ws:{eng:"Samoa",cap:"Apia",reg:"Oceanien",name:"Samoa",pop:188889,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+sm:{eng:"San_Marino",cap:"San_Marino",reg:"Europa",name:"San_Marino",pop:31247,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+st:{eng:"S%C3%A3o_Tom%C3%A9_and_Pr%C3%ADncipe",cap:"S%C3%A3o_Tom%C3%A9",reg:"Afrika",name:"S%C3%A3o_Tom%C3%A9_och_Pr%C3%ADncipe",pop:188098,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+sa:{eng:"Saudi_Arabia",cap:"Riyadh",reg:"Asien",name:"Saudiarabien",pop:28287855,pop_ref:"[1]",pop_year:2012,gov:"Absolut_monarki"},
+ch:{eng:"Switzerland",cap:"Bern",reg:"Europa",name:"Schweiz",pop:7997152,pop_ref:"[1]",pop_year:2012,gov:"%C3%96vrig"},
+sn:{eng:"Senegal",cap:"Dakar",reg:"Afrika",name:"Senegal",pop:13726021,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+sc:{eng:"Seychelles",cap:"Victoria",reg:"Afrika",name:"Seychellerna",pop:87785,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+rs:{eng:"Serbia",cap:"Belgrad",reg:"Europa",name:"Serbien",pop:7223887,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+sl:{eng:"Sierra_Leone",cap:"Freetown",reg:"Afrika",name:"Sierra_Leone",pop:5978727,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+sg:{eng:"Singapore",cap:"Singapore",reg:"Asien",name:"Singapore",pop:5312400,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+sk:{eng:"Slovakia",cap:"Bratislava",reg:"Europa",name:"Slovakien",pop:5410267,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+si:{eng:"Slovenia",cap:"Ljubljana",reg:"Europa",name:"Slovenien",pop:2058152,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+so:{eng:"Somalia",cap:"Mogadishu",reg:"Afrika",name:"Somalia",pop:10195134,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+es:{eng:"Spain",cap:"Madrid",reg:"Europa",name:"Spanien",pop:46217961,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+lk:{eng:"Sri_Lanka",cap:"Sri_Jayawardenapura",reg:"Asien",name:"Sri_Lanka",pop:20328000,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+gb:{eng:"United_Kingdom",cap:"London",reg:"Europa",name:"Storbritannien",pop:63227526,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+sd:{eng:"Sudan",cap:"Khartoum",reg:"Afrika",name:"Sudan",pop:37195349,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+sr:{eng:"Suriname",cap:"Paramaribo",reg:"Sydamerika",name:"Surinam",pop:534541,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+se:{eng:"Sweden",cap:"Stockholm",reg:"Europa",name:"Sverige",pop:9516617,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+sz:{eng:"Swaziland",cap:"Mbabane",reg:"Afrika",name:"Swaziland",pop:1230985,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+za:{eng:"South_Africa",cap:"Kapstaden",reg:"Afrika",name:"Sydafrika",pop:51189307,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+kr:{eng:"South_Korea",cap:"Seoul",reg:"Asien",name:"Sydkorea",pop:50004000,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+ss:{eng:"South_Sudan",cap:"Juba",reg:"Afrika",name:"Sydsudan",pop:10837527,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+sy:{eng:"Syria",cap:"Damaskus",reg:"Asien",name:"Syrien",pop:22399254,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+tj:{eng:"Tajikistan",cap:"Dusjanbe",reg:"Asien",name:"Tadzjikistan",pop:8008990,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+tz:{eng:"Tanzania",cap:"Dodoma",reg:"Afrika",name:"Tanzania",pop:47783107,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+td:{eng:"Chad",cap:"N'Djamena",reg:"Afrika",name:"Tchad",pop:12448175,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+th:{eng:"Thailand",cap:"Bangkok",reg:"Asien",name:"Thailand",pop:66785001,pop_ref:"[1]",pop_year:2012,gov:"Milit%C3%A4rjunta"},
+cz:{eng:"Czech_Republic",cap:"Prag",reg:"Europa",name:"Tjeckien",pop:10514810,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+tg:{eng:"Togo",cap:"Lom%C3%A9",reg:"Afrika",name:"Togo",pop:6642928,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+to:{eng:"Tonga",cap:"Nuku'alofa",reg:"Oceanien",name:"Tonga",pop:104941,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+tt:{eng:"Trinidad_and_Tobago",cap:"Port_of_Spain",reg:"Nordamerika",name:"Trinidad_och_Tobago",pop:1337439,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+tn:{eng:"Tunisia",cap:"Tunis",reg:"Afrika",name:"Tunisien",pop:10777500,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+tr:{eng:"Turkey",cap:"Ankara",reg:"Asien",name:"Turkiet",pop:73997128,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+tm:{eng:"Turkmenistan",cap:"Asjchabad",reg:"Asien",name:"Turkmenistan",pop:5172931,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+tv:{eng:"Tuvalu",cap:"Funafuti",reg:"Oceanien",name:"Tuvalu",pop:9860,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+de:{eng:"Germany",cap:"Berlin",reg:"Europa",name:"Tyskland",pop:81889839,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+ug:{eng:"Uganda",cap:"Kampala",reg:"Afrika",name:"Uganda",pop:36345860,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+ua:{eng:"Ukraine",cap:"Kiev",reg:"Europa",name:"Ukraina",pop:45593300,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+hu:{eng:"Hungary",cap:"Budapest",reg:"Europa",name:"Ungern",pop:9943755,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+uy:{eng:"Uruguay",cap:"Montevideo",reg:"Sydamerika",name:"Uruguay",pop:3395253,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+us:{eng:"United_States",cap:"Washington_d.c.",reg:"Nordamerika",name:"USA",pop:313914040,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+uz:{eng:"Uzbekistan",cap:"Tasjkent",reg:"Asien",name:"Uzbekistan",pop:29776850,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+vu:{eng:"Vanuatu",cap:"Port_Vila",reg:"Oceanien",name:"Vanuatu",pop:247262,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+ve:{eng:"Venezuela",cap:"Caracas",reg:"Sydamerika",name:"Venezuela",pop:29954782,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+vn:{eng:"Vietnam",cap:"Hanoi",reg:"Asien",name:"Vietnam",pop:88775500,pop_ref:"[1]",pop_year:2012,gov:"Enpartistat"},
+by:{eng:"Belarus",cap:"Minsk",reg:"Europa",name:"Vitryssland",pop:9464000,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+zm:{eng:"Zambia",cap:"Lusaka",reg:"Afrika",name:"Zambia",pop:14075099,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
+zw:{eng:"Zimbabwe",cap:"Harare",reg:"Afrika",name:"Zimbabwe",pop:13724317,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+at:{eng:"Austria",cap:"Wien",reg:"Europa",name:"%C3%96sterrike",pop:8462446,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+tl:{eng:"East_Timor",cap:"Dili",reg:"Asien",name:"%C3%96sttimor",pop:1210233,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+xk:{eng:"Kosovo",cap:"Pristina",reg:"Europa",name:"Kosovo",pop:1847708,pop_ref:"[3]",pop_year:2013,gov:"Parlamentarisk_republik"},
+tw:{eng:"Taiwan",cap:"Taipei",reg:"Asien",name:"Taiwan",pop:23299716,pop_ref:"[3]",pop_year:2013,gov:"Semipresidentiell_republik"},
+va:{eng:"Vatican_City",cap:"Vatikanstaden",reg:"Europa",name:"Vatikanstaten",pop:839,pop_ref:"[3]",pop_year:2013,gov:"Absolut_monarki"} };
 
 var a3to2={afg:"af",ala:"ax",alb:"al",dza:"dz",asm:"as",and:"ad",ago:"ao",aia:"ai",ata:"aq",atg:"ag",arg:"ar",arm:"am",abw:"aw",aus:"au",aut:"at",aze:"az",bhs:"bs",bhr:"bh",bgd:"bd",brb:"bb",blr:"by",bel:"be",blz:"bz",ben:"bj",bmu:"bm",btn:"bt",bol:"bo",bih:"ba",bwa:"bw",bvt:"bv",bra:"br",iot:"io",brn:"bn",bgr:"bg",bfa:"bf",bdi:"bi",khm:"kh",cmr:"cm",can:"ca",cpv:"cv",cym:"ky",caf:"cf",tcd:"td",chl:"cl",chn:"cn",cxr:"cx",cck:"cc",col:"co",com:"km",cog:"cg",cod:"cd",cok:"ck",cri:"cr",civ:"ci",hrv:"hr",cub:"cu",cyp:"cy",cze:"cz",dnk:"dk",dji:"dj",dma:"dm",dom:"do",ecu:"ec",egy:"eg",slv:"sv",gnq:"gq",eri:"er",est:"ee",eth:"et",flk:"fk",fro:"fo",fji:"fj",fin:"fi",fra:"fr",guf:"gf",pyf:"pf",atf:"tf",gab:"ga",gmb:"gm",geo:"ge",deu:"de",gha:"gh",gib:"gi",grc:"gr",grl:"gl",grd:"gd",glp:"gp",gum:"gu",gtm:"gt",ggy:"gg",gin:"gn",gnb:"gw",guy:"gy",hti:"ht",hmd:"hm",vat:"va",hnd:"hn",hkg:"hk",hun:"hu",isl:"is",ind:"in",idn:"id",irn:"ir",irq:"iq",irl:"ie",imn:"im",isr:"il",ita:"it",jam:"jm",jpn:"jp",jey:"je",jor:"jo",kaz:"kz",ken:"ke",kir:"ki",prk:"kp",kor:"kr",kwt:"kw",kgz:"kg",lao:"la",lva:"lv",lbn:"lb",lso:"ls",lbr:"lr",lby:"ly",lie:"li",ltu:"lt",lux:"lu",mac:"mo",mkd:"mk",mdg:"mg",mwi:"mw",mys:"my",mdv:"mv",mli:"ml",mlt:"mt",mhl:"mh",mtq:"mq",mrt:"mr",mus:"mu",myt:"yt",mex:"mx",fsm:"fm",mda:"md",mco:"mc",mng:"mn",mne:"me",msr:"ms",mar:"ma",moz:"mz",mmr:"mm",nam:"na",nru:"nr",npl:"np",nld:"nl",ant:"an",ncl:"nc",nzl:"nz",nic:"ni",ner:"ne",nga:"ng",niu:"nu",nfk:"nf",mnp:"mp",nor:"no",omn:"om",pak:"pk",plw:"pw",pse:"ps",pan:"pa",png:"pg",pry:"py",per:"pe",phl:"ph",pcn:"pn",pol:"pl",prt:"pt",pri:"pr",qat:"qa",reu:"re",rou:"ro",rus:"ru",rwa:"rw",blm:"bl",shn:"sh",kna:"kn",lca:"lc",maf:"mf",spm:"pm",vct:"vc",wsm:"ws",smr:"sm",stp:"st",sau:"sa",sen:"sn",srb:"rs",syc:"sc",sle:"sl",sgp:"sg",svk:"sk",svn:"si",slb:"sb",som:"so",zaf:"za",sgs:"gs",esp:"es",lka:"lk",sdn:"sd",sur:"sr",sjm:"sj",swz:"sz",swe:"se",che:"ch",syr:"sy",twn:"tw",tjk:"tj",tza:"tz",tha:"th",tls:"tl",tgo:"tg",tkl:"tk",ton:"to",tto:"tt",tun:"tn",tur:"tr",tkm:"tm",tca:"tc",tuv:"tv",uga:"ug",ukr:"ua",are:"ae",gbr:"gb",usa:"us",umi:"um",ury:"uy",uzb:"uz",vut:"vu",ven:"ve",vnm:"vn",vgb:"vg",vir:"vi",wlf:"wf",esh:"eh",yem:"ye",zmb:"zm",zwe:"zw",ssd:"ss"};
 a3to2.ado = "ad";
@@ -1148,6 +1178,7 @@ function shade_color(state, percent) {
 
 var g_prop = { cap : { disp_name: "Huvudstad" , unique: true , type: "text"    , show: false},
                reg : { disp_name: "Världsdel" , unique: false, type: "text"    , show: true },
+               gov : { disp_name: "Statsskick", unique: false, type: "text"    , show: true },
                name: { disp_name: "Namn"      , unique: true , type: "text"    , show: false},
                pop : { disp_name: "Population", unique: false, type: "numeric" , show: true },
                flag: { disp_name: "Flagga"    , unique: true , type: "image"   , show: true, img_data: g_flag_data },
@@ -1428,6 +1459,11 @@ function init_reg(id) {
     init_text_numeric('reg', val.disp, val.idx);
 }
 
+function init_gov(id) {
+    var val = g_prop.gov.val[id];
+    init_text_numeric('gov', val.disp, val.idx);
+}
+
 function init_name(cc) {
     init_text_numeric('name', g_list[cc].disp.name, cc);
 }
@@ -1501,6 +1537,10 @@ function set_state_flag(cc, state) {
 
 function set_state_reg(id, state) {
     set_state(id, 'reg', state);
+}
+
+function set_state_gov(id, state) {
+    set_state(id, 'gov', state);
 }
 
 function set_state_pop(id, state) {
