@@ -484,10 +484,11 @@ div {
                 </div><div id="info_compatibility_menu" class="menu">
                     <ul>
                         <li><div class="menu_text">Chrome 31.0, Windows 8.1: Fungerar bra</div></li>
+                        <li><div class="menu_text">Firefox 26.0, Windows 8.1: Flaggorna och listorna fungerar inte</div></li>
                         <li><div class="menu_text">Firefox 28.0a2, Windows 8.1: Fungerar bra [I skrivande stund är 28.0a2 pre-Beta, och kallas Aurora. Kan laddas ner <a target='_blank' href='http://www.mozilla.org/en-US/firefox/aurora/'>här</a>.]</div></li>
-                        <li><div class="menu_text">Safari 5.1.7, Windows 8.1: Fungerar inte [obj('map').classList == undefined]</div></li>
+                        <li><div class="menu_text">Safari 5.1.7, Windows 8.1: Spelbart, men eftersom flexbox inte stödjs så är flaggorna och listorna alltid i samma ordning.</div></li>
                         <li><div class="menu_text">Opera 18.0, Windows 8.1: Fungerar bra</div></li>
-                        <li><div class="menu_text">Internet Explorer 11.0, Windows 8.1: Fungerar inte [obj('map').classList == undefined]</div></li>
+                        <li><div class="menu_text">Internet Explorer 11.0, Windows 8.1: ???</div></li>
                     </ul>
                 </div><div id="info_todo_menu" class="menu">
                     <div class="menu_title">Till nästa version:</div>
@@ -1067,6 +1068,21 @@ var levDist = function(s, t) {
     return d[n][m];
 }
 
+var buggy_svg_classList = {};
+buggy_svg_classList.add = function(elem, cls) {
+    if(!buggy_svg_classList.contains(elem, cls)) {
+        elem.className.baseVal += ' ' + cls;
+    }
+};
+
+buggy_svg_classList.remove = function(elem, cls) {
+    elem.className.baseVal = elem.className.baseVal.replace(' ' + cls, '');
+};
+
+buggy_svg_classList.contains = function(elem, cls) {
+    return elem.className.baseVal.indexOf(' ' + cls) >= 0;
+}
+
 function obj(id) { return document.getElementById(id); }
 
 //+ Jonas Raoni Soares Silva
@@ -1251,7 +1267,11 @@ function set_prop_hover(hover_prop, id) {
                     else node_list = g_map.getElementsByClassName(c);
 
                     for(var i = 0, length = node_list.length; i < length; i++) {
-                        node_list[i].classList[type](prop + '_' + state + '_hover');
+                        if(node_list[i].classList == undefined) {
+                            buggy_svg_classList[type](node_list[i], prop + '_' + state + '_hover');
+                        } else {
+                            node_list[i].classList[type](prop + '_' + state + '_hover');
+                        }
                     }
                 } else {
                     obj(prop + '_' + c).classList[type](prop + '_' + state + '_hover');
@@ -1484,19 +1504,34 @@ function set_state_map(cc, state) {
     else node_list = g_map.getElementsByClassName(cc);
 
     if(g_list[cc].state.map != undefined) {
-        if(node_list[0].classList.contains('map_' + g_list[cc].state.map + '_hover')) have_hover = true;
+        if(node_list[0] == undefined) alert(cc + ' : ' + node_list.length);
+        if(node_list[0].classList == undefined) {
+            if(buggy_svg_classList.contains(node_list[0], 'map_' + g_list[cc].state.map + '_hover')) have_hover = true;
+        } else {
+            if(node_list[0].classList.contains('map_' + g_list[cc].state.map + '_hover')) have_hover = true;
+        }
 
-        for(var i = 0, length = node_list.length; i < length; i++) {
-            node_list[i].classList.remove('map_' + g_list[cc].state.map);
-            if(have_hover) node_list[i].classList.remove('map_' + g_list[cc].state.map + '_hover');
+        for(var i = 0; i < node_list.length; i++) {
+            if(node_list[i].classList == undefined) {
+                buggy_svg_classList.remove(node_list[i], 'map_' + g_list[cc].state.map);
+                if(have_hover) buggy_svg_classList.remove(node_list[i], 'map_' + g_list[cc].state.map + '_hover');
+            } else {
+                node_list[i].classList.remove('map_' + g_list[cc].state.map);
+                if(have_hover) node_list[i].classList.remove('map_' + g_list[cc].state.map + '_hover');
+            }
         }
     }
 
     g_list[cc].state.map = state;
 
-    for(var i = 0, length = node_list.length; i < length; i++) {
-        node_list[i].classList.add('map_' + g_list[cc].state.map);
-        if(have_hover && g_use_map_hover) node_list[i].classList.add('map_' + g_list[cc].state.map + '_hover');
+    for(var i = 0; i < node_list.length; i++) {
+        if(node_list[i].classList == undefined) {
+            buggy_svg_classList.add(node_list[i], 'map_' + g_list[cc].state.map);
+            if(have_hover && g_use_map_hover) buggy_svg_classList.add(node_list[i], 'map_' + g_list[cc].state.map + '_hover');
+        } else {
+            node_list[i].classList.add('map_' + g_list[cc].state.map);
+            if(have_hover && g_use_map_hover) node_list[i].classList.add('map_' + g_list[cc].state.map + '_hover');
+        }
     }
 }
 
@@ -2447,9 +2482,17 @@ function set_prop_div_visibility() {
         else g_prop[prop].show = g_prop[prop].paused_show;
 
         if(g_prop[prop].show) {
-            obj(prop).classList.remove('removed');
+            if(prop == 'map' && obj(prop).classList == undefined) {
+                buggy_svg_classList.remove(obj(prop), 'removed');
+            } else {
+                obj(prop).classList.remove('removed');
+            }
         } else {
-            obj(prop).classList.add('removed');
+            if(prop == 'map' && obj(prop).classList == undefined) {
+                buggy_svg_classList.add(obj(prop), 'removed');
+            } else {
+                obj(prop).classList.add('removed');
+            }
         }
     }
 }
