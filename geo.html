@@ -1224,13 +1224,13 @@ var g_prop = { cap : { disp_name: "Huvudstad" , unique: true , type: "text"    ,
 var g_key_return = 13;
 
 var g_use_map_hover = false;
-var g_state = { inactive    :{color:"#e0e0e0", show_hover:0, show_info:0, flag_opacity:1.0, hover_color:"#e0e0e0"},
-                active      :{color:"#00a050", show_hover:1, show_info:0, flag_opacity:1.0, hover_color:"#ff60ff"},
-                paused      :{color:"#00c060", show_hover:1, show_info:1, flag_opacity:1.0, hover_color:"#ff60ff"},
-                wrong       :{color:"#ff6060", show_hover:1, show_info:1, flag_opacity:0.3, hover_color:"#ffa0a0"},
-                correct     :{color:"#00ff00", show_hover:1, show_info:1, flag_opacity:0.3, hover_color:"#70e070"},
-                prev_wrong  :{color:"#ff2020", show_hover:1, show_info:1, flag_opacity:0.6, hover_color:"#ffa0a0"},
-                highlight   :{color:"#ff00ff", show_hover:1, show_info:0, flag_opacity:1.0, hover_color:"#ff60ff"} };
+var g_state = { inactive    :{show_hover_other:0, show_info:0},
+                active      :{show_hover_other:0, show_info:0},
+                paused      :{show_hover_other:1, show_info:1},
+                wrong       :{show_hover_other:1, show_info:1},
+                correct     :{show_hover_other:1, show_info:1},
+                prev_wrong  :{show_hover_other:1, show_info:1},
+                highlight   :{show_hover_other:0, show_info:0} };
 
 var g_flag_width = 9.8; // percent of window width
 var g_map_width = 98; // percent of window width
