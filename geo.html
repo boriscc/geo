@@ -474,7 +474,7 @@ div {
                 </div><div class="menu_header menu_header_disabled" onclick="toggle_menu(event, 'main', 'guess_menu'); if(!this.classList.contains('menu_header_disabled')) { obj('aid_menu_header').classList.add('menu_header_disabled'); obj('start_button').classList.add('menu_button_disabled'); }" id="guess_menu_header" title="Välj vad du ska gissa på">3. Gissning
                 </div><div class="menu_header menu_header_disabled" onclick="toggle_menu(event, 'main', 'aid_menu'); if(!this.classList.contains('menu_header_disabled')) obj('start_button').classList.add('menu_button_disabled');" id="aid_menu_header" title="Välj vad man ska veta om landet man gissar på och om de land som är med i spelet">4. Hjälpmedel
                 </div><div id="start_button" class="menu_button menu_button_disabled" onclick="toggle_game(event)">STARTA
-                </div><div id="game_status" class='removed' title="<antal klara> (<antal rätt>) / <totalt antal>">
+                </div><div id="game_status" class='removed' title="<antal gissningar> (<antal rätt>) / <totalt antal>">
                 </div><div id="message" title="Senaste statusmeddelandet"></div>
             </div><div id="game_aid" title="Information om landet du ska gissa på nu">
                 <img id="game_aid_flag" src="" height="30" />
@@ -2088,7 +2088,7 @@ function game_show_help() {
                 }
             }
             
-            if(g_prop[prop].game_show) {
+            if(g_prop[prop].show) {
                 if(g_prop[prop].unique) {
                     window['set_state_' + prop](cc, 'highlight');
                 } else {
@@ -2150,7 +2150,7 @@ function game_guess_correctness(correct, guess, type) {
 function set_game_status() {
     if(g_game_state == 'on') {
         obj('game_status').classList.remove('removed');
-        obj('game_status').innerHTML = g_game_done_nr + ' (' + g_game_correct_nr + ') / ' + g_game_total_nr;
+        obj('game_status').innerHTML = g_game_guess_nr + ' (' + g_game_correct_nr + ') / ' + g_game_total_nr;
     } else {
         obj('game_status').classList.add('removed');
     }
