@@ -70,7 +70,7 @@ div {
 }
 
 .menu_header {
-    background-color: #e0ffe0;
+    background-color: #c0ffc0;
     border-color: #000000;
     border-style: solid solid solid none;
     border-width: 2px;
@@ -78,7 +78,7 @@ div {
 }
 
 .menu_header:hover {
-    background-color: #b0ffb0;
+    background-color: #90ff90;
     cursor: pointer;
     cursor: hand;
 }
@@ -313,22 +313,22 @@ div {
 .menu_choice {
     display: block;
     font-size: 125%;
-    background-color: #e0e0ff;
+    background-color: #b0b0ff;
     cursor: pointer;
     cursor: hand;
 }
 
 .menu_choice:hover {
-    background-color: #b0b0ff;
+    background-color: #8080ff;
 }
 
 .menu_choice_checked {
     color: #ffffff;
-    background-color: #3030ff;
+    background-color: #2020ff;
 }
 
 .menu_choice_checked:hover {
-    background-color: #3030ff;
+    background-color: #2020ff;
 }
 
 .menu_choice_disabled {
@@ -417,6 +417,7 @@ div {
 }
 
 #game_status {
+    background-color: #ffffb0;
     borde-color: #ff0000;
     border-style: solid;
 }
@@ -467,6 +468,8 @@ div {
                 </div><div class="menu_header menu_header_disabled" onclick="toggle_menu(event, 'main', 'guess_menu'); if(!this.classList.contains('menu_header_disabled')) { obj('aid_menu_header').classList.add('menu_header_disabled'); obj('start_button').classList.add('menu_button_disabled'); }" id="guess_menu_header" title="Välj vad du ska gissa på">3. Gissning
                 </div><div class="menu_header menu_header_disabled" onclick="toggle_menu(event, 'main', 'aid_menu'); if(!this.classList.contains('menu_header_disabled')) obj('start_button').classList.add('menu_button_disabled');" id="aid_menu_header" title="Välj vad man ska veta om landet man gissar på och om de land som är med i spelet">4. Hjälpmedel
                 </div><div id="start_button" class="menu_button menu_button_disabled" onclick="toggle_game(event)">STARTA
+                </div><div id="game_status" class='removed' title="<antal klara> (<antal rätt>) / <totalt antal>">
+                </div><div id="message" title="Senaste statusmeddelandet">
             </div>
             </div><div id="guess_div" class="removed" title="Infoga specialbokstäver">
                 <input class="menu_smallbutton" type="button" value="å" onclick="obj('guess_input').value += 'å'; obj('guess_input').focus()"
@@ -510,8 +513,6 @@ div {
                     <div class="game_aid_header">Statsskick:</div>
                     <div id="game_aid_gov" class="game_aid_text"></div>
                 </div>
-            </div><div id="message" title="Senaste statusmeddelandet">
-            </div><div id="game_status" class='removed' title="<antal klara> (<antal rätt>) / <totalt antal>">
             </div><div id="info_menu" class="menu" onclick="event.stopPropagation()">
                 <div class="menu_header" onclick="toggle_menu(event, 'info', 'info_help_menu')">Hjälp
                 </div><div class="menu_header" onclick="toggle_menu(event, 'info', 'info_info_menu')">Info
@@ -1924,7 +1925,6 @@ function start_game() {
     obj('guess_menu_header').classList.add('menu_header_disabled');
     obj('aid_menu_header').classList.add('menu_header_disabled');
     obj('start_button').innerHTML = 'GE UPP';
-    obj('game_status').classList.remove('removed');
     obj('filter_list_active_div').style.display = 'none';
 
     g_game_show_done = (choice_get_id('help_show_done') != undefined);
@@ -1934,6 +1934,8 @@ function start_game() {
     g_game_guess_nr = 0;
     g_game_skip_nr = 0;
     g_game_total_nr = g_game_country_list.length;
+
+    set_game_status();
 
     for(var prop in g_prop) {
         var state = choice_get_id('game_show_' + prop);
@@ -2010,7 +2012,7 @@ function stop_game() {
     set_prop_div_visibility();
     filter_show_all();
     obj('start_button').innerHTML = 'STARTA';
-    obj('game_status').classList.add('removed');
+    set_game_status();
     obj('filter_list_active_div').style.display = 'none';
     obj('guess_div').classList.add('removed');
     obj('game_aid').style.display = 'none';
@@ -2155,6 +2157,15 @@ function game_guess_correctness(correct, guess, type) {
 
     alert('Internal error 21');
     return false;
+}
+
+function set_game_status() {
+    if(g_game_state == 'on') {
+        obj('game_status').classList.remove('removed');
+        obj('game_status').innerHTML = g_game_done_nr + ' (' + g_game_correct_nr + ') / ' + g_game_total_nr;
+    } else {
+        obj('game_status').classList.add('removed');
+    }
 }
 
 function make_guess(val) {
@@ -2347,7 +2358,7 @@ function make_guess(val) {
         }
     }
 
-    obj('game_status').innerHTML = g_game_done_nr + ' (' + g_game_correct_nr + ') / ' + g_game_total_nr;
+    set_game_status();
     if(game_done()) {
         obj('start_button').innerHTML = 'AVSLUTA';
         game_show_results();
