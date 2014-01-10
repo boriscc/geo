@@ -396,10 +396,33 @@ div {
     border-style: solid;
 }
 
+.country_info_text {
+}
+
+.country_info_header {
+    font-weight: bold;
+}
+
 #game_aid {
     display: none;
     border-color: #ff0000;
     border-style: solid;
+}
+
+.game_aid_text {
+}
+
+.game_aid_header {
+    font-weight: bold;
+}
+
+#game_status {
+    borde-color: #ff0000;
+    border-style: solid;
+}
+
+#menu_headers {
+    display: block;
 }
 
 #license-div {
@@ -435,17 +458,16 @@ div {
 }
         </style>
         <div id="main_menu" class="menu menu_active">
-            <div>
+            <div id="menu_headers">
                 <div class="menu_header menu_header_highlight" onclick="toggle_menu(event, 'main', 'info_menu')">Hjälp/Info
                 </div><div class="menu_header menu_header_highlight" onclick="toggle_menu(event, 'main', 'settings_menu')" title="Generella inställningar som får effekt omedelbart, även medan spelet pågår.">Inställningar
                 </div><div class="menu_header menu_header_highlight" onclick="toggle_menu(event, 'main', 'display_menu')" title="Styr vad och hur olika delar visas">Utseende
-                </div><div style="display: block">
-                    <div class="menu_header" onclick="toggle_menu(event, 'main', 'filter_menu')" id="filter_menu_header" title="Ställ in vilka länder som ska användas i spelet. Under 'Världsdel' kan du markera de världsdelar du vill träna på. Under 'Population' kan du välja att endast träna på länder med invånarantal inom ett visst intervall. Om min/max lämnas tomt så betyder det att det inte finns någon undre/övre gräns.">1. Länder
-                    </div><div class="menu_header" onclick="toggle_menu(event, 'main', 'game_mode_menu')" id="game_mode_menu_header">2. Spelsätt
-                    </div><div class="menu_header menu_header_disabled" onclick="toggle_menu(event, 'main', 'guess_menu'); if(!this.classList.contains('menu_header_disabled')) { obj('aid_menu_header').classList.add('menu_header_disabled'); obj('start_button').classList.add('menu_button_disabled'); }" id="guess_menu_header" title="Välj vad du ska gissa på">3. Gissning
-                    </div><div class="menu_header menu_header_disabled" onclick="toggle_menu(event, 'main', 'aid_menu'); if(!this.classList.contains('menu_header_disabled')) obj('start_button').classList.add('menu_button_disabled');" id="aid_menu_header" title="Välj vad man ska veta om landet man gissar på och om de land som är med i spelet">4. Hjälpmedel
-                </div></div>
-            </div><div id="start_button" class="menu_button menu_button_disabled" onclick="toggle_game(event)">STARTA
+                </div><div class="menu_header" onclick="toggle_menu(event, 'main', 'filter_menu')" id="filter_menu_header" title="Ställ in vilka länder som ska användas i spelet. Under 'Världsdel' kan du markera de världsdelar du vill träna på. Under 'Population' kan du välja att endast träna på länder med invånarantal inom ett visst intervall. Om min/max lämnas tomt så betyder det att det inte finns någon undre/övre gräns.">1. Länder
+                </div><div class="menu_header" onclick="toggle_menu(event, 'main', 'game_mode_menu')" id="game_mode_menu_header">2. Spelsätt
+                </div><div class="menu_header menu_header_disabled" onclick="toggle_menu(event, 'main', 'guess_menu'); if(!this.classList.contains('menu_header_disabled')) { obj('aid_menu_header').classList.add('menu_header_disabled'); obj('start_button').classList.add('menu_button_disabled'); }" id="guess_menu_header" title="Välj vad du ska gissa på">3. Gissning
+                </div><div class="menu_header menu_header_disabled" onclick="toggle_menu(event, 'main', 'aid_menu'); if(!this.classList.contains('menu_header_disabled')) obj('start_button').classList.add('menu_button_disabled');" id="aid_menu_header" title="Välj vad man ska veta om landet man gissar på och om de land som är med i spelet">4. Hjälpmedel
+                </div><div id="start_button" class="menu_button menu_button_disabled" onclick="toggle_game(event)">STARTA
+            </div>
             </div><div id="guess_div" class="removed" title="Infoga specialbokstäver">
                 <input class="menu_smallbutton" type="button" value="å" onclick="obj('guess_input').value += 'å'; obj('guess_input').focus()"
                 /><input class="menu_smallbutton" type="button" value="ä" onclick="obj('guess_input').value += 'ä'; obj('guess_input').focus()"
@@ -460,27 +482,36 @@ div {
 
             </div><div id="country_info">
                 <img id="country_info_flag" src="" height="30" />
-                <div id="country_info_name" class="country_info_text"></div>
-                <div class="country_info_text">&nbsp;-&nbsp;</div>
-                <div id="country_info_cap" class="country_info_text"></div>
-                <div class="country_info_text">&nbsp;Invånare:&nbsp;</div>
-                <div id="country_info_pop" class="country_info_text"></div>
-                <div class="country_info_text">&nbsp;V&auml;rldsdel:&nbsp;</div>
-                <div id="country_info_reg" class="country_info_text"></div>
-                <div class="country_info_text">&nbsp;Statsskick:&nbsp;</div>
-                <div id="country_info_gov" class="country_info_text"></div>
+                <div>
+                    <div style="display: block">
+                        <div id="country_info_name" class="country_info_text"></div>
+                        <div class="country_info_text">-</div>
+                        <div id="country_info_cap" class="country_info_text"></div>
+                        <div class="country_info_header">Invånare:</div>
+                        <div id="country_info_pop" class="country_info_text"></div>
+                    </div>
+                    <div class="country_info_header">V&auml;rldsdel:</div>
+                    <div id="country_info_reg" class="country_info_text"></div>
+                    <div class="country_info_header">Statsskick:</div>
+                    <div id="country_info_gov" class="country_info_text"></div>
+                </div>
             </div><div id="game_aid" title="Information om landet du ska gissa på nu">
                 <img id="game_aid_flag" src="" height="30" />
-                <div id="game_aid_name" class="game_aid_text"></div>
-                <div class="game_aid_text">&nbsp;-&nbsp;</div>
-                <div id="game_aid_cap" class="game_aid_text"></div>
-                <div class="game_aid_text">&nbsp;Invånare:&nbsp;</div>
-                <div id="game_aid_pop" class="game_aid_text"></div>
-                <div class="game_aid_text">&nbsp;V&auml;rldsdel:&nbsp;</div>
-                <div id="game_aid_reg" class="game_aid_text"></div>
-                <div class="game_aid_text">&nbsp;Statsskick:&nbsp;</div>
-                <div id="game_aid_gov" class="game_aid_text"></div>
+                <div>
+                    <div style="display: block">
+                        <div id="game_aid_name" class="game_aid_text"></div>
+                        <div class="game_aid_header">-</div>
+                        <div id="game_aid_cap" class="game_aid_text"></div>
+                        <div class="game_aid_header">Invånare:</div>
+                        <div id="game_aid_pop" class="game_aid_text"></div>
+                    </div>
+                    <div class="game_aid_header">V&auml;rldsdel:</div>
+                    <div id="game_aid_reg" class="game_aid_text"></div>
+                    <div class="game_aid_header">Statsskick:</div>
+                    <div id="game_aid_gov" class="game_aid_text"></div>
+                </div>
             </div><div id="message" title="Senaste statusmeddelandet">
+            </div><div id="game_status" class='removed' title="<antal klara> (<antal rätt>) / <totalt antal>">
             </div><div id="info_menu" class="menu" onclick="event.stopPropagation()">
                 <div class="menu_header" onclick="toggle_menu(event, 'info', 'info_help_menu')">Hjälp
                 </div><div class="menu_header" onclick="toggle_menu(event, 'info', 'info_info_menu')">Info
@@ -524,7 +555,7 @@ div {
                 </div><div id="info_compatibility_menu" class="menu">
                     <ul>
                         <li><div class="menu_text compatibility_good">Chrome 31.0, Windows 8.1: Fungerar bra</div></li>
-                        <li><div class="menu_text compatibility_bad">Firefox 26.0, Windows 8.1: Flaggorna och listorna fungerar inte</div></li>
+                        <li><div class="menu_text compatibility_bad">Firefox 26.0, Windows 8.1: Flaggorna och de långa listorna fungerar inte eftersom flex-wrap inte stödjs.</div></li>
                         <li><div class="menu_text compatibility_good">Firefox 28.0a2, Windows 8.1 och Linux: Fungerar bra [I skrivande stund (2014-01-09) är 28.0a2 pre-Beta, och kallas Aurora. Kan laddas ner <a target='_blank' href='http://www.mozilla.org/en-US/firefox/aurora/'>här</a>.]</div></li>
                         <li><div class="menu_text compatibility_good">Iceweasel 10.0, Linux: Fungerar bra</div></li>
                         <li><div class="menu_text compatibility_playable">Safari 5.1.7, Windows 8.1: Spelbart, men eftersom flexbox inte stödjs så är flaggorna och listorna alltid i samma ordning.</div></li>
@@ -1210,7 +1241,7 @@ var g_game_guess_until_correct;
 var g_game_country_list = [];
 var g_game_fail_list = {};
 var g_game_show_done;
-var g_game_correct_nr, g_game_done_nr, g_game_total_nr, g_game_guess_nr;
+var g_game_correct_nr, g_game_done_nr, g_game_total_nr, g_game_guess_nr, g_game_skip_nr;
 var g_filter_reg = {};
 var g_filter_fail_list = false;
 
@@ -1754,6 +1785,15 @@ function game_filter_include(country_code) {
     for(var key in g_prop) {
         if(g_prop[key].unique == true) continue;
         var id = g_list[country_code].val_idx[key];
+        var include_all = true;
+        
+        for(var i = 0; i < g_prop[key].val.length; i++) {
+            if(g_prop[key].val[i].active == true) {
+                include_all = false;
+                break;
+            }
+        }
+        if(include_all) continue;
         
         if(g_prop[key].type == 'text') {
             if(g_prop[key].val[id].active == false) return false;
@@ -1864,6 +1904,7 @@ function start_game() {
         return;
     }
 
+    show_message('');
     set_country_sorting('random');
     
     for(var key in g_prop) {
@@ -1882,7 +1923,8 @@ function start_game() {
     obj('game_mode_menu_header').classList.add('menu_header_disabled');
     obj('guess_menu_header').classList.add('menu_header_disabled');
     obj('aid_menu_header').classList.add('menu_header_disabled');
-    obj('start_button').innerHTML = 'AVSLUTA';
+    obj('start_button').innerHTML = 'GE UPP';
+    obj('game_status').classList.remove('removed');
     obj('filter_list_active_div').style.display = 'none';
 
     g_game_show_done = (choice_get_id('help_show_done') != undefined);
@@ -1890,6 +1932,7 @@ function start_game() {
     g_game_correct_nr = 0;
     g_game_done_nr = 0;
     g_game_guess_nr = 0;
+    g_game_skip_nr = 0;
     g_game_total_nr = g_game_country_list.length;
 
     for(var prop in g_prop) {
@@ -1967,6 +2010,7 @@ function stop_game() {
     set_prop_div_visibility();
     filter_show_all();
     obj('start_button').innerHTML = 'STARTA';
+    obj('game_status').classList.add('removed');
     obj('filter_list_active_div').style.display = 'none';
     obj('guess_div').classList.add('removed');
     obj('game_aid').style.display = 'none';
@@ -1976,8 +2020,22 @@ function toggle_game(event) {
     if(event != undefined) if(event.currentTarget.classList.contains('menu_button_disabled')) return;
     close_menu('main');
     if(g_game_state == 'off') start_game();
-    else if(g_game_state == 'on') stop_game();
-    else alert('Internal error 3');
+    else if(g_game_state == 'on') {
+        if(game_done()) stop_game();
+        else {
+            for(var i = 0; i < g_game_country_list.length; i++) {
+                var cc = g_game_country_list[i].country_code;
+                if(g_list[cc].done) continue;
+                g_game_done_nr++;
+                g_game_skip_nr++;
+                g_list[cc].done = true;
+                g_game_country_list[i].correct = false;
+            }
+            if(!game_done()) alert('Internal error 38');
+            obj('start_button').innerHTML = 'AVSLUTA';
+            game_show_results();
+        }
+    } else alert('Internal error 3');
     event.stopPropagation();
 }
 
@@ -1991,7 +2049,7 @@ function update_map_hover() {
 
 function game_done() {
     return (g_game_guess_until_correct && g_game_done_nr == g_game_total_nr) ||
-           (g_game_guess_until_correct == false && g_game_guess_nr == g_game_total_nr);
+           (g_game_guess_until_correct == false && g_game_guess_nr == g_game_total_nr - g_game_skip_nr);
 }
 
 function game_show_results() {
@@ -2000,13 +2058,21 @@ function game_show_results() {
     var state;
 
     if(g_game_guess_until_correct == false) {
-        if(g_game_correct_nr < g_game_total_nr) state = 'bad';
+        if(g_game_correct_nr < g_game_total_nr || g_game_skip_nr) state = 'bad';
         else state = 'good';
-        show_message('Du hade ' + g_game_correct_nr + ' av ' + g_game_total_nr + ' rätt.', state);
+        if(g_game_skip_nr) {
+            show_message('Du hade ' + g_game_correct_nr + ' av ' + (g_game_total_nr - g_game_skip_nr) + ' rätt och hoppade över ' + g_game_skip_nr + ' länder.', state);
+        } else {
+            show_message('Du hade ' + g_game_correct_nr + ' av ' + g_game_total_nr + ' rätt.', state);
+        }
     } else {
-        if(g_game_guess_nr == g_game_total_nr) state = 'good';
+        if(g_game_guess_nr == g_game_total_nr && g_game_skip_nr == 0) state = 'good';
         else state = 'bad';
-        show_message('Du hade ' + (g_game_guess_nr - g_game_total_nr) + ' felaktiga gissningar', state);
+        if(g_game_skip_nr) {
+            show_message('Du hade ' + (g_game_guess_nr - g_game_total_nr) + ' felaktiga gissningar och hoppade över ' + g_game_skip_nr + ' länder.', state);
+        } else {
+            show_message('Du hade ' + (g_game_guess_nr - g_game_total_nr) + ' felaktiga gissningar.', state);
+        }
     }
 }
 
@@ -2281,7 +2347,9 @@ function make_guess(val) {
         }
     }
 
+    obj('game_status').innerHTML = g_game_done_nr + ' (' + g_game_correct_nr + ') / ' + g_game_total_nr;
     if(game_done()) {
+        obj('start_button').innerHTML = 'AVSLUTA';
         game_show_results();
     } else {
         game_show_help();
