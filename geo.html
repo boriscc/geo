@@ -302,6 +302,10 @@ div {
 .map_highlight { fill: #ff00ff; cursor: pointer; cursor: hand }
 .map_highlight_hover { fill: #ff60ff }
 
+.ref_country {
+    display: block;
+}
+
 .flag_box {
     margin: 2px;
 }
@@ -542,12 +546,13 @@ div {
                     </ul>
                 </div><div id="info_sources_menu" class="menu">
                     <ul>
+                        <li><div class="menu_text">För att se detaljerad referens-information, tryck Utseende -> "Visa referenser"</div></li>
                         <li><div class="menu_text">Namn på länder och huvudstäder kommer från ländernas respektive sida på svenska wikipedia, hämtade december 2013.</div></li>
                         <li><div class="menu_text">Lista på länder som ingår i FN hämtade från <a target="_blank" href="https://sv.wikipedia.org/wiki/F%C3%B6renta_nationernas_medlemsstater">Wikipedia: Förenta nationernas medlemsstater</a> december 2013.</div></li>
                         <li><div class="menu_text">Kartan är en aningen modifierad version av en <a target="_blank" href="http://en.wikipedia.org/wiki/File:BlankMap-World-Microstates.svg">karta från wikipedia</a> hämtad december 2013.</div></li>
                         <li><div class="menu_text">Flaggorna är hämtade via <a target="_blank" href="https://sv.wikipedia.org/wiki/F%C3%B6renta_nationernas_medlemsstater">Wikipedia: Förenta nationernas medlemsstater</a> december 2013.</div></li>
                         <li><div class="menu_text">Invånar-värdena är tagna från olika källor. För att se referensen och året då värdet gäller så håll över landet när spelet är pausat. De fulla referenserna står längst ner på sidan. I skrivande stund [januari 2014] är Nauru tagen från [2]; Kosovo, Taiwan och Vatikanstaten från [3] och resten från [1].</div></li>
-                        <li><div class="menu_text">Vilket statsskick de olika länderna har är svårt att kategorisera, för det kan se väldigt olika ut i olika länder. Jag skulle tro att en del länder som stårsom republiker i själva verket inte är det. Som källa har jag använt en <a target="_blank" href="http://en.wikipedia.org/wiki/File:Forms_of_government.svg">karta från wikipedia</a> hämtad 2014-01-09. De länder som där betecknades som "Republics with an executive president dependent on a parliament" betecknar jag med parlamentarisk republik. Östtimor fick bli semipresidentiell republik för det är vad <a target="_blank" href="https://en.wikipedia.org/wiki/East_Timor">Wikipedia-sidan för Östtimor</a> påstår (hämtad 2014-01-09). Thailand är konstitutionell monarki enligt <a target="_blank" href="http://en.wikipedia.org/wiki/Thailand">Wikipedia-sidan för Thailand</a> (hämtad 2014-01-09). Jag är inte helt klar på hur läget är i Fiji, men det verkar som att de är på väg mot en parlamentarisk republik, i alla fall om man får tro <a target="_blank" href="http://www.abc.net.au/news/2013-08-22/an-fiji-government-released-final-version-of-constitution/4904020">denna</a> källan (hämtad 2014-01-09), så jag skriver att Fiji är det. Statsskicket i Schweiz är komplicerat, och jag är ingen expert på området. Efterom jag gärna vill dela in världens länder i få grupper så låter jag Schweiz vara en parlamentarisk republik. Huruvida detta är vettigt eller ej vet jag inte, men jag tog beslutet efter att ha läst <a target="_blank" href="https://en.wikipedia.org/wiki/Politics_of_Switzerland">denna</a> Wikipedia-artikel (hämtad 2014-01-09). Vitryssland står som enpartistat (diktatorskap) med <a target="_blank" href="https://www.cia.gov/library/publications/the-world-factbook/geos/bo.html">The World Factbook (CIA)</a> som källa (hämtad 2014-01-10).</div></li>
+                        <li><div class="menu_text">Vilket statsskick de olika länderna har är svårt att kategorisera, för det kan se väldigt olika ut i olika länder. Jag skulle tro att en del länder som stårsom republiker i själva verket inte är det. Som huvudkälla har jag använt en <a target="_blank" href="http://en.wikipedia.org/wiki/File:Forms_of_government.svg">karta från wikipedia</a> hämtad 2014-01-09. De länder som där betecknades som "Republics with an executive president dependent on a parliament" betecknar jag med parlamentarisk republik. Värt att notera är att kartan är till för att visa de jure statsskick, inte de facto. När källan för statsskicket är något annat kan det vara antingen de jure eller de facto.</div></li>
                     </ul>
                 </div><div id="info_problem_menu" class="menu">
                     <ul>
@@ -614,6 +619,7 @@ div {
                 </div>
                 <div class="menu_title" title="Här väljer du vad som ska visas när spelet inte är igång.">Synlig information (i pausat l&auml;ge):</div>
                 <div id='prop_show_when_paused' class="menu_group">
+                </div><div id="show_ref" class="menu_choice" onclick="show_ref_click(event)">Visa detaljerade referenser
                 </div>
             </div><div id="filter_menu" class="menu" onclick="event.stopPropagation()">
                 <div id="filter_div" style="display: block">
@@ -689,6 +695,8 @@ id="path5520"/></g><circle class="circlexx vi" cx="778.383" cy="608.82" id="vi."
         </div>
         <div id="flag">
         </div>
+        <div id="ref" class="removed">
+        </div>
         <script type="text/javascript">
 var g_list = {
 af:{eng:"Afghanistan",cap:"Kabul",reg:"Asien",name:"Afghanistan",pop:29824536,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
@@ -735,7 +743,7 @@ sv:{eng:"El_Salvador",cap:"San_Salvador",reg:"Nordamerika",name:"El_Salvador",po
 er:{eng:"Eritrea",cap:"Asmara",reg:"Afrika",name:"Eritrea",pop:6130922,pop_ref:"[1]",pop_year:2012,gov:"Enpartistat"},
 ee:{eng:"Estonia",cap:"Tallinn",reg:"Europa",name:"Estland",pop:1339396,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
 et:{eng:"Ethiopia",cap:"Addis_Abeba",reg:"Afrika",name:"Etiopien",pop:91728849,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
-fj:{eng:"Fiji",cap:"Suva",reg:"Oceanien",name:"Fiji",pop:874742,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+fj:{eng:"Fiji",cap:"Suva",reg:"Oceanien",name:"Fiji",pop:874742,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik",gov_ref:"http://www.abc.net.au/news/2013-08-22/an-fiji-government-released-final-version-of-constitution/4904020, 2014-01-09"},
 ph:{eng:"Philippines",cap:"Manila",reg:"Asien",name:"Filippinerna",pop:96706764,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
 fi:{eng:"Finland",cap:"Helsingfors",reg:"Europa",name:"Finland",pop:5414293,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
 fr:{eng:"France",cap:"Paris",reg:"Europa",name:"Frankrike",pop:65696689,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
@@ -825,7 +833,7 @@ py:{eng:"Paraguay",cap:"Asunci%C3%B3n",reg:"Sydamerika",name:"Paraguay",pop:6687
 pe:{eng:"Peru",cap:"Lima",reg:"Sydamerika",name:"Peru",pop:29987800,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
 pl:{eng:"Poland",cap:"Warszawa",reg:"Europa",name:"Polen",pop:38542737,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
 pt:{eng:"Portugal",cap:"Lissabon",reg:"Europa",name:"Portugal",pop:10526703,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
-qa:{eng:"Qatar",cap:"Doha",reg:"Asien",name:"Qatar",pop:2050514,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+qa:{eng:"Qatar",cap:"Doha",reg:"Asien",name:"Qatar",pop:2050514,pop_ref:"[1]",pop_year:2012,gov:"Absolut_monarki",gov_ref:"http://en.wikipedia.org/wiki/Qatar, 2014-01-10"},
 ro:{eng:"Romania",cap:"Bukarest",reg:"Europa",name:"Rum%C3%A4nien",pop:21326905,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
 rw:{eng:"Rwanda",cap:"Kigali",reg:"Afrika",name:"Rwanda",pop:11457801,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
 ru:{eng:"Russia",cap:"Moskva",reg:"Asien",name:"Ryssland",pop:143533000,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
@@ -837,7 +845,7 @@ ws:{eng:"Samoa",cap:"Apia",reg:"Oceanien",name:"Samoa",pop:188889,pop_ref:"[1]",
 sm:{eng:"San_Marino",cap:"San_Marino",reg:"Europa",name:"San_Marino",pop:31247,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
 st:{eng:"S%C3%A3o_Tom%C3%A9_and_Pr%C3%ADncipe",cap:"S%C3%A3o_Tom%C3%A9",reg:"Afrika",name:"S%C3%A3o_Tom%C3%A9_och_Pr%C3%ADncipe",pop:188098,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
 sa:{eng:"Saudi_Arabia",cap:"Riyadh",reg:"Asien",name:"Saudiarabien",pop:28287855,pop_ref:"[1]",pop_year:2012,gov:"Absolut_monarki"},
-ch:{eng:"Switzerland",cap:"Bern",reg:"Europa",name:"Schweiz",pop:7997152,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
+ch:{eng:"Switzerland",cap:"Bern",reg:"Europa",name:"Schweiz",pop:7997152,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik",gov_ref:"https://en.wikipedia.org/wiki/Politics_of_Switzerland, 2014-01-09"},
 sn:{eng:"Senegal",cap:"Dakar",reg:"Afrika",name:"Senegal",pop:13726021,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
 sc:{eng:"Seychelles",cap:"Victoria",reg:"Afrika",name:"Seychellerna",pop:87785,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
 rs:{eng:"Serbia",cap:"Belgrad",reg:"Europa",name:"Serbien",pop:7223887,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
@@ -852,7 +860,7 @@ gb:{eng:"United_Kingdom",cap:"London",reg:"Europa",name:"Storbritannien",pop:632
 sd:{eng:"Sudan",cap:"Khartoum",reg:"Afrika",name:"Sudan",pop:37195349,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
 sr:{eng:"Suriname",cap:"Paramaribo",reg:"Sydamerika",name:"Surinam",pop:534541,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
 se:{eng:"Sweden",cap:"Stockholm",reg:"Europa",name:"Sverige",pop:9516617,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
-sz:{eng:"Swaziland",cap:"Mbabane",reg:"Afrika",name:"Swaziland",pop:1230985,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+sz:{eng:"Swaziland",cap:"Mbabane",reg:"Afrika",name:"Swaziland",pop:1230985,pop_ref:"[1]",pop_year:2012,gov:"Absolut_monarki",gov_ref:"http://en.wikipedia.org/wiki/Swaziland"},
 za:{eng:"South_Africa",cap:"Kapstaden",reg:"Afrika",name:"Sydafrika",pop:51189307,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
 kr:{eng:"South_Korea",cap:"Seoul",reg:"Asien",name:"Sydkorea",pop:50004000,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
 ss:{eng:"South_Sudan",cap:"Juba",reg:"Afrika",name:"Sydsudan",pop:10837527,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
@@ -860,7 +868,7 @@ sy:{eng:"Syria",cap:"Damaskus",reg:"Asien",name:"Syrien",pop:22399254,pop_ref:"[
 tj:{eng:"Tajikistan",cap:"Dusjanbe",reg:"Asien",name:"Tadzjikistan",pop:8008990,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
 tz:{eng:"Tanzania",cap:"Dodoma",reg:"Afrika",name:"Tanzania",pop:47783107,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
 td:{eng:"Chad",cap:"N'Djamena",reg:"Afrika",name:"Tchad",pop:12448175,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
-th:{eng:"Thailand",cap:"Bangkok",reg:"Asien",name:"Thailand",pop:66785001,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
+th:{eng:"Thailand",cap:"Bangkok",reg:"Asien",name:"Thailand",pop:66785001,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki",gov_ref:"http://en.wikipedia.org/wiki/Thailand, 2014-01-09"},
 cz:{eng:"Czech_Republic",cap:"Prag",reg:"Europa",name:"Tjeckien",pop:10514810,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
 tg:{eng:"Togo",cap:"Lom%C3%A9",reg:"Afrika",name:"Togo",pop:6642928,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
 to:{eng:"Tonga",cap:"Nuku'alofa",reg:"Oceanien",name:"Tonga",pop:104941,pop_ref:"[1]",pop_year:2012,gov:"Konstitutionell_monarki"},
@@ -879,11 +887,11 @@ uz:{eng:"Uzbekistan",cap:"Tasjkent",reg:"Asien",name:"Uzbekistan",pop:29776850,p
 vu:{eng:"Vanuatu",cap:"Port_Vila",reg:"Oceanien",name:"Vanuatu",pop:247262,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
 ve:{eng:"Venezuela",cap:"Caracas",reg:"Sydamerika",name:"Venezuela",pop:29954782,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
 vn:{eng:"Vietnam",cap:"Hanoi",reg:"Asien",name:"Vietnam",pop:88775500,pop_ref:"[1]",pop_year:2012,gov:"Enpartistat"},
-by:{eng:"Belarus",cap:"Minsk",reg:"Europa",name:"Vitryssland",pop:9464000,pop_ref:"[1]",pop_year:2012,gov:"Enpartistat"},
+by:{eng:"Belarus",cap:"Minsk",reg:"Europa",name:"Vitryssland",pop:9464000,pop_ref:"[1]",pop_year:2012,gov:"Enpartistat",gov_ref:"https://www.cia.gov/library/publications/the-world-factbook/geos/bo.html, 2014-01-10"},
 zm:{eng:"Zambia",cap:"Lusaka",reg:"Afrika",name:"Zambia",pop:14075099,pop_ref:"[1]",pop_year:2012,gov:"Presidentiell_republik"},
 zw:{eng:"Zimbabwe",cap:"Harare",reg:"Afrika",name:"Zimbabwe",pop:13724317,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
 at:{eng:"Austria",cap:"Wien",reg:"Europa",name:"%C3%96sterrike",pop:8462446,pop_ref:"[1]",pop_year:2012,gov:"Parlamentarisk_republik"},
-tl:{eng:"East_Timor",cap:"Dili",reg:"Asien",name:"%C3%96sttimor",pop:1210233,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik"},
+tl:{eng:"East_Timor",cap:"Dili",reg:"Asien",name:"%C3%96sttimor",pop:1210233,pop_ref:"[1]",pop_year:2012,gov:"Semipresidentiell_republik",gov_ref:"https://en.wikipedia.org/wiki/East_Timor, 2014-01-09"},
 xk:{eng:"Kosovo",cap:"Pristina",reg:"Europa",name:"Kosovo",pop:1847708,pop_ref:"[3]",pop_year:2013,gov:"Parlamentarisk_republik"},
 tw:{eng:"Taiwan",cap:"Taipei",reg:"Asien",name:"Taiwan",pop:23299716,pop_ref:"[3]",pop_year:2013,gov:"Semipresidentiell_republik"},
 va:{eng:"Vatican_City",cap:"Vatikanstaden",reg:"Europa",name:"Vatikanstaten",pop:839,pop_ref:"[3]",pop_year:2013,gov:"Absolut_monarki"} };
@@ -2619,6 +2627,15 @@ function set_prop_show_when_paused(event) {
     set_prop_div_visibility();
 }
 
+function show_ref_click(event) {
+    set_choice(event, 'show_ref', 'one');
+    if(choice_get_id('show_ref') == undefined) {
+        obj('ref').classList.add('removed');
+    } else {
+        obj('ref').classList.remove('removed');
+    }
+}
+
 function set_prop_div_visibility() {
     for(var prop in g_prop) {
         if(g_game_state == 'on') g_prop[prop].show = g_prop[prop].game_show;
@@ -2645,6 +2662,9 @@ function init() {
         g_list[cc].state = {};
         g_list[cc].val_idx = {};
         g_list[cc].disp = {};
+        if(g_list[cc].gov_ref == undefined) {
+            g_list[cc].gov_ref = 'http://en.wikipedia.org/wiki/File:Forms_of_government.svg, 2014-01-09';
+        }
     }
 
     for(var key in g_prop) {
@@ -2783,6 +2803,16 @@ function init() {
 
     var top_padding_size = obj('main_menu').clientHeight;
     document.getElementsByTagName('body')[0].style.marginTop = top_padding_size + "px";
+    
+    for(var cc in g_list) {
+        var elem = document.createElement('div');
+        elem.classList.add('ref_country');
+        elem.innerHTML = g_list[cc].disp.name + ' --- invånar-referens: ' +
+                         g_list[cc].pop_ref + ' (' + g_list[cc].pop_year +
+                         ') --- statsskicks-referens: ' +
+                         g_list[cc].gov_ref;
+        obj('ref').appendChild(elem);
+    }
 }
 
 init();
