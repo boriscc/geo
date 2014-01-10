@@ -280,8 +280,10 @@ div {
 .flag_highlight { border-color: #ff00ff }
 .flag_highlight_hover:hover { opacity: 0.3 }
 
-.landxx { fill: #e0e0e0 }
-.circlexx { fill: #e0e0e0 }
+#xk- { stroke-width: 0.5; stroke: #000000 !important }
+.landxx { fill: #e0e0e0; stroke: #000000 !important }
+.circlexx { fill: #e0e0e0; stroke: #000000 !important }
+.oceanxx { fill: #2020ff }
 .noxx { fill: #e0e0e0 }
 .antxx { fill: #e0e0e0 }
 .map {
@@ -1230,9 +1232,6 @@ var g_state = { inactive    :{color:"#e0e0e0", show_hover:0, show_info:0, flag_o
                 prev_wrong  :{color:"#ff2020", show_hover:1, show_info:1, flag_opacity:0.6, hover_color:"#ffa0a0"},
                 highlight   :{color:"#ff00ff", show_hover:1, show_info:0, flag_opacity:1.0, hover_color:"#ff60ff"} };
 
-var g_stroke_color = "#000000";
-var g_water_color = "#2020ff";
-
 var g_flag_width = 9.8; // percent of window width
 var g_map_width = 98; // percent of window width
 
@@ -1289,16 +1288,6 @@ function set_map_width(width) {
     obj('map_size').value = g_map_width + "";
     g_map.setAttribute("width", width_real);
     g_map.setAttribute("height", width_real / 2);
-}
-
-function set_color_of_region(country_code, color, type) {
-    if(type == undefined) type = "fill";
-    var node_list;
-    if(g_map.getElementsByClassName == undefined) node_list = document.getElementsByClassName(country_code);
-    else node_list = g_map.getElementsByClassName(country_code);
-    for(var i = 0, length = node_list.length; i < length; i++) {
-        node_list[i].style[type] = color;
-    }
 }
 
 function set_country_info(cc) {
@@ -2783,13 +2772,6 @@ function init() {
 
     set_map_width(g_map_width);
     set_flag_width(g_flag_width);
-
-    // xk- is the border for Kosovo
-    obj('xk-').style.strokeWidth = 0.5;
-    obj('xk-').style.stroke = g_stroke_color;
-    set_color_of_region("landxx", g_stroke_color, "stroke");
-    set_color_of_region("circlexx", g_stroke_color, "stroke");
-    set_color_of_region("oceanxx", g_water_color);
 
     var top_padding_size = obj('main_menu').clientHeight;
     document.getElementsByTagName('body')[0].style.marginTop = top_padding_size + "px";
