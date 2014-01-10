@@ -377,6 +377,10 @@ div {
     background-color: #e0ffe0;
 }
 
+#guess_div {
+    display: inline-block;
+}
+
 #guess_input:focus {
     background-color: #ffffff;
 }
@@ -387,7 +391,7 @@ div {
 }
 
 #guess_input {
-    display: block;
+    display: inline-block;
 }
 
 #country_info {
@@ -469,35 +473,7 @@ div {
                 </div><div class="menu_header menu_header_disabled" onclick="toggle_menu(event, 'main', 'aid_menu'); if(!this.classList.contains('menu_header_disabled')) obj('start_button').classList.add('menu_button_disabled');" id="aid_menu_header" title="Välj vad man ska veta om landet man gissar på och om de land som är med i spelet">4. Hjälpmedel
                 </div><div id="start_button" class="menu_button menu_button_disabled" onclick="toggle_game(event)">STARTA
                 </div><div id="game_status" class='removed' title="<antal klara> (<antal rätt>) / <totalt antal>">
-                </div><div id="message" title="Senaste statusmeddelandet">
-            </div>
-            </div><div id="guess_div" class="removed" title="Infoga specialbokstäver">
-                <input class="menu_smallbutton" type="button" value="å" onclick="obj('guess_input').value += 'å'; obj('guess_input').focus()"
-                /><input class="menu_smallbutton" type="button" value="ä" onclick="obj('guess_input').value += 'ä'; obj('guess_input').focus()"
-                /><input class="menu_smallbutton" type="button" value="ö" onclick="obj('guess_input').value += 'ö'; obj('guess_input').focus()"
-                /><input class="menu_smallbutton" type="button" value="ã" onclick="obj('guess_input').value += 'ã'; obj('guess_input').focus()"
-                /><input class="menu_smallbutton" type="button" value="ă" onclick="obj('guess_input').value += 'ă'; obj('guess_input').focus()"
-                /><input class="menu_smallbutton" type="button" value="ç" onclick="obj('guess_input').value += 'ç'; obj('guess_input').focus()"
-                /><input class="menu_smallbutton" type="button" value="é" onclick="obj('guess_input').value += 'é'; obj('guess_input').focus()"
-                /><input class="menu_smallbutton" type="button" value="í" onclick="obj('guess_input').value += 'í'; obj('guess_input').focus()"
-                /><input class="menu_smallbutton" type="button" value="ș" onclick="obj('guess_input').value += 'ș'; obj('guess_input').focus()"
-                /><input type="text" class="menu_tbox" id="guess_input" value="Gissningsruta" onfocus="if(this.value=='Gissningsruta') this.select()" onmouseup="return false" onkeyup="guess_text(event, this)" title="Skriv in svar här. Stora/små bokstäver spelar ingen roll. Använd knapparna ovan för att infoga specialbokstäver. Vilka stavfel som är tillåtna kan ställas in under 'Inställningar'. Numeriska svar kan skrivas in som t ex '10.000.000', '10 miljoner', '10000 tusen', '0,01 miljarder', '10M', '1e7'.">
-
-            </div><div id="country_info">
-                <img id="country_info_flag" src="" height="30" />
-                <div>
-                    <div style="display: block">
-                        <div id="country_info_name" class="country_info_text"></div>
-                        <div class="country_info_text">-</div>
-                        <div id="country_info_cap" class="country_info_text"></div>
-                        <div class="country_info_header">Invånare:</div>
-                        <div id="country_info_pop" class="country_info_text"></div>
-                    </div>
-                    <div class="country_info_header">V&auml;rldsdel:</div>
-                    <div id="country_info_reg" class="country_info_text"></div>
-                    <div class="country_info_header">Statsskick:</div>
-                    <div id="country_info_gov" class="country_info_text"></div>
-                </div>
+                </div><div id="message" title="Senaste statusmeddelandet"></div>
             </div><div id="game_aid" title="Information om landet du ska gissa på nu">
                 <img id="game_aid_flag" src="" height="30" />
                 <div>
@@ -512,6 +488,34 @@ div {
                     <div id="game_aid_reg" class="game_aid_text"></div>
                     <div class="game_aid_header">Statsskick:</div>
                     <div id="game_aid_gov" class="game_aid_text"></div>
+                </div>
+            </div><div id="guess_div" class="removed">
+                <div style="display: block" title="Infoga specialbokstäver">
+                    <input class="menu_smallbutton" type="button" value="å" onclick="obj('guess_input').value += 'å'; obj('guess_input').focus()"
+                    /><input class="menu_smallbutton" type="button" value="ä" onclick="obj('guess_input').value += 'ä'; obj('guess_input').focus()"
+                    /><input class="menu_smallbutton" type="button" value="ö" onclick="obj('guess_input').value += 'ö'; obj('guess_input').focus()"
+                    /><input class="menu_smallbutton" type="button" value="ã" onclick="obj('guess_input').value += 'ã'; obj('guess_input').focus()"
+                    /><input class="menu_smallbutton" type="button" value="ă" onclick="obj('guess_input').value += 'ă'; obj('guess_input').focus()"
+                    /><input class="menu_smallbutton" type="button" value="ç" onclick="obj('guess_input').value += 'ç'; obj('guess_input').focus()"
+                    /><input class="menu_smallbutton" type="button" value="é" onclick="obj('guess_input').value += 'é'; obj('guess_input').focus()"
+                    /><input class="menu_smallbutton" type="button" value="í" onclick="obj('guess_input').value += 'í'; obj('guess_input').focus()"
+                    /><input class="menu_smallbutton" type="button" value="ș" onclick="obj('guess_input').value += 'ș'; obj('guess_input').focus()"
+                /></div>
+                <input type="text" class="menu_tbox" id="guess_input" value="Gissningsruta" onfocus="if(this.value=='Gissningsruta') this.select()" onmouseup="return false" onkeyup="guess_text(event, this)" title="Skriv in svar här. Stora/små bokstäver spelar ingen roll. Använd knapparna ovan för att infoga specialbokstäver. Vilka stavfel som är tillåtna kan ställas in under 'Inställningar'. Numeriska svar kan skrivas in som t ex '10.000.000', '10 miljoner', '10000 tusen', '0,01 miljarder', '10M', '1e7'.">
+            </div><div id="country_info">
+                <img id="country_info_flag" src="" height="30" />
+                <div>
+                    <div style="display: block">
+                        <div id="country_info_name" class="country_info_text"></div>
+                        <div class="country_info_text">-</div>
+                        <div id="country_info_cap" class="country_info_text"></div>
+                        <div class="country_info_header">Invånare:</div>
+                        <div id="country_info_pop" class="country_info_text"></div>
+                    </div>
+                    <div class="country_info_header">V&auml;rldsdel:</div>
+                    <div id="country_info_reg" class="country_info_text"></div>
+                    <div class="country_info_header">Statsskick:</div>
+                    <div id="country_info_gov" class="country_info_text"></div>
                 </div>
             </div><div id="info_menu" class="menu" onclick="event.stopPropagation()">
                 <div class="menu_header" onclick="toggle_menu(event, 'info', 'info_help_menu')">Hjälp
