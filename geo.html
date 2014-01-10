@@ -1224,13 +1224,13 @@ var g_prop = { cap : { disp_name: "Huvudstad" , unique: true , type: "text"    ,
 var g_key_return = 13;
 
 var g_use_map_hover = false;
-var g_state = { inactive    :{show_hover_other:0, show_info:0},
-                active      :{show_hover_other:0, show_info:0},
-                paused      :{show_hover_other:1, show_info:1},
-                wrong       :{show_hover_other:1, show_info:1},
-                correct     :{show_hover_other:1, show_info:1},
-                prev_wrong  :{show_hover_other:1, show_info:1},
-                highlight   :{show_hover_other:0, show_info:0} };
+var g_state = { inactive    :{show_info:0},
+                active      :{show_info:0},
+                paused      :{show_info:1},
+                wrong       :{show_info:1},
+                correct     :{show_info:1},
+                prev_wrong  :{show_info:1},
+                highlight   :{show_info:0} };
 
 var g_flag_width = 9.8; // percent of window width
 var g_map_width = 98; // percent of window width
