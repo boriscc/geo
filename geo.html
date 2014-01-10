@@ -2298,7 +2298,7 @@ function make_guess(val) {
                 }
             }
             if(max_other <= max_active && max_active > 0) {
-                if(choice_get_id('setting_typo_response') == 'setting_typo_response_again') {
+                if(choice_get_id('setting_typo_response') == 'setting_typo_response_again' && max_active < 1) {
                     is_correct = false;
                 } else {
                     is_correct = true;
