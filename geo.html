@@ -2194,6 +2194,7 @@ function make_guess(val) {
                         var cur_val = decodeURIComponent(g_list[cc][g_game_guess].replace(/_/g, ' '));
                         var cur_cor = game_guess_correctness(correct.val, cur_val, g_prop[g_game_guess].type);
                         if(cur_cor > correctness) {
+                            correctness = 0;
                             is_correct = false;
                             break;
                         }
@@ -2204,6 +2205,7 @@ function make_guess(val) {
                         var cur_val = decodeURIComponent(g_prop[g_game_guess].val[i].val.replace(/_/g, ' '));
                         var cur_cor = game_guess_correctness(correct.val, cur_val, g_prop[g_game_guess].type);
                         if(cur_cor > correctness) {
+                            correctness = 0;
                             is_correct = false;
                             break;
                         }
@@ -2211,6 +2213,9 @@ function make_guess(val) {
                 }
             } else {
                 alert('Internal error 27');
+            }
+            if(choice_get_id('setting_typo_response') == 'setting_typo_response_again') {
+                is_correct = false;
             }
         } else {
             is_correct = correctness;
@@ -2309,7 +2314,11 @@ function make_guess(val) {
                 }
             }
             if(max_other <= max_active && max_active > 0) {
-                is_correct = true;
+                if(choice_get_id('setting_typo_response') == 'setting_typo_response_again') {
+                    is_correct = false;
+                } else {
+                    is_correct = true;
+                }
                 correctness = max_active;
                 correct = game_get_correct(correct_id);
             }
