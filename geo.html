@@ -2064,6 +2064,20 @@ function game_show_results() {
             show_message('Du hade ' + (g_game_guess_nr - g_game_total_nr) + ' felaktiga gissningar.', state);
         }
     }
+    
+    for(var prop in g_prop) {
+        if(g_prop[prop].show == false) continue;
+        if(g_prop[prop].unique == false) continue;
+        for(var i = 0; i < g_game_country_list.length; i++) {
+            var cc = g_game_country_list[i].country_code;
+            if(g_game_country_list[i].correct) {
+                state = 'correct';
+            } else {
+                state = 'wrong';
+            }
+            window['set_state_' + prop](cc, state);
+        }
+    }
 }
 
 function game_show_help() {
