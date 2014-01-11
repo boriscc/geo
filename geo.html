@@ -213,6 +213,29 @@ div {
 .gov_highlight_hover { border-color: #ff60ff }
 .gov_type_match { border-color: #ff60ff }
 
+.rel, .rel_c, .rel_m, .rel_n, .rel_h, .rel_b, .rel_f, .rel_o, .rel_j {
+    border-style: solid;
+    border-width: 0.2em;
+    padding: 0em 0.1em 0em 0.1em;
+    margin: 0em 0.1em 0.1em 0em;
+    cursor: pointer;
+    cursor: hand;
+}
+.rel_inactive, .rel_c_inactive, .rel_m_inactive, .rel_n_inactive, .rel_h_inactive, .rel_b_inactive, .rel_f_inactive, .rel_o_inactive, .rel_j_inactive { display: none }
+.rel_active, .rel_c_active, .rel_m_active, .rel_n_active, .rel_h_active, .rel_b_active, .rel_f_active, .rel_o_active, .rel_j_active { background-color: #00a050 }
+.rel_active_hover, .rel_c_active_hover, .rel_m_active_hover, .rel_n_active_hover, .rel_h_active_hover, .rel_b_active_hover, .rel_f_active_hover, .rel_o_active_hover, .rel_j_active_hover { border-color: #ff60ff }
+.rel_paused, .rel_c_paused, .rel_m_paused, .rel_n_paused, .rel_h_paused, .rel_b_paused, .rel_f_paused, .rel_o_paused, .rel_j_paused { background-color: #00c060 }
+.rel_paused_hover, .rel_c_paused_hover, .rel_m_paused_hover, .rel_n_paused_hover, .rel_h_paused_hover, .rel_b_paused_hover, .rel_f_paused_hover, .rel_o_paused_hover, .rel_j_paused_hover { border-color: #ff60ff }
+.rel_wrong, .rel_c_wrong, .rel_m_wrong, .rel_n_wrong, .rel_h_wrong, .rel_b_wrong, .rel_f_wrong, .rel_o_wrong, .rel_j_wrong { background-color: #ff6060 }
+.rel_wrong_hover, .rel_c_wrong_hover, .rel_m_wrong_hover, .rel_n_wrong_hover, .rel_h_wrong_hover, .rel_b_wrong_hover, .rel_f_wrong_hover, .rel_o_wrong_hover, .rel_j_wrong_hover { border-color: #ff60ff }
+.rel_correct, .rel_c_correct, .rel_m_correct, .rel_n_correct, .rel_h_correct, .rel_b_correct, .rel_f_correct, .rel_o_correct, .rel_j_correct { background-color: #00ff00 }
+.rel_correct_hover, .rel_c_correct_hover, .rel_m_correct_hover, .rel_n_correct_hover, .rel_h_correct_hover, .rel_b_correct_hover, .rel_f_correct_hover, .rel_o_correct_hover, .rel_j_correct_hover { border-color: #ff60ff }
+.rel_prev_wrong, .rel_c_prev_wrong, .rel_m_prev_wrong, .rel_n_prev_wrong, .rel_h_prev_wrong, .rel_b_prev_wrong, .rel_f_prev_wrong, .rel_o_prev_wrong, .rel_j_prev_wrong { background-color: #ff2020 }
+.rel_prev_wrong_hover, .rel_c_prev_wrong_hover, .rel_m_prev_wrong_hover, .rel_n_prev_wrong_hover, .rel_h_prev_wrong_hover, .rel_b_prev_wrong_hover, .rel_f_prev_wrong_hover, .rel_o_prev_wrong_hover, .rel_j_prev_wrong_hover { border-color: #ff60ff }
+.rel_highlight, .rel_c_highlight, .rel_m_highlight, .rel_n_highlight, .rel_h_highlight, .rel_b_highlight, .rel_f_highlight, .rel_o_highlight, .rel_j_highlight { background-color: #ff00ff }
+.rel_highlight_hover, .rel_c_highlight_hover, .rel_m_highlight_hover, .rel_n_highlight_hover, .rel_h_highlight_hover, .rel_b_highlight_hover, .rel_f_highlight_hover, .rel_o_highlight_hover, .rel_j_highlight_hover { border-color: #ff60ff }
+.rel_type_match, .rel_c_type_match, .rel_m_type_match, .rel_n_type_match, .rel_h_type_match, .rel_b_type_match, .rel_f_type_match, .rel_o_type_match, .rel_j_type_match { border-color: #ff60ff }
+
 .name {
     border-style: solid;
     border-width: 0.2em;
@@ -446,7 +469,7 @@ div {
     display: block;
 }
 
-#flag, #name, #cap, #reg, #pop {
+#flag, #name, #cap, #reg, #gov, #pop, #rel, #rel_c, #rel_m, #rel_n, #rel_h, #rel_b, #rel_f, #rel_o, #rel_j {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -603,24 +626,28 @@ div {
                 <div class="menu_choice" id="setting_num_factor_div" title="Hur mycket numeriska svar får avvika från det korrekta. T ex om man har en faktor 2 och det rätta svaret är 10, så räknas alla svar i intervallet (10/2 = 5) till (10*2 = 20) som rätt.">Maximal faktor för numeriska svar:<input type="text" id="setting_num_factor" class="menu_tbox" style="width: 40px" value="2"/></div>
                 <div class="menu_choice" id="setting_use_hints" onclick="set_choice(event, 'setting_use_hints', 'one')" title="Om detta är markerat, och man svarar fel på landets namn, huvudstad eller världsdel och man har aktiverat att gissa tills man har rätt, så får man mer och mer hjälp varje gång man svarar fel.">Aktivera ledtrådar</div>
             </div><div id="display_menu" class="menu" onclick="event.stopPropagation()">
-                <div class="menu_group">
-                    <div class="menu_choice">Bredd på karta i %:<input type="text" id="map_size" onkeyup="map_size_evt_key(event)" class="menu_tbox" style="width: 40px"/></div>
-                    <div class="menu_choice">Bredd på flaggor i %:<input type="text" id="flag_size" onkeyup="flag_size_evt_key(event)" class="menu_tbox" style="width: 40px"/></div>
-                </div>
-                <div class="menu_choice" id="set_map_hover" onclick="set_choice(event, 'set_map_hover', 'one'); update_map_hover()" title="Om detta avmarkeras, så byter inte land-områdena på kartan som är under muspekaren färg.">"Hover"-effekt</div>
-                <div class="menu_title" title="Zooma in kartan på ett visst område. Detta påverkar endast utseendet av kartan. Vilka länder som du vill träna på väljer du under '1. Länder'.">Zoom:</div>
-                <div class="menu_group">
-                    <div class="menu_choice" onclick="set_zoom('world', event)">Världen</div>
-                    <div class="menu_choice" onclick="set_zoom('africa', event)">Afrika</div>
-                    <div class="menu_choice" onclick="set_zoom('asia', event)">Asien</div>
-                    <div class="menu_choice" onclick="set_zoom('europe', event)">Europa</div>
-                    <div class="menu_choice" onclick="set_zoom('north_america', event)">Nordamerika</div>
-                    <div class="menu_choice" onclick="set_zoom('oceania', event)">Oceanien</div>
-                    <div class="menu_choice" onclick="set_zoom('south_america', event)">Sydamerika</div>
-                </div>
-                <div class="menu_title" title="Här väljer du vad som ska visas när spelet inte är igång.">Synlig information (i pausat l&auml;ge):</div>
-                <div id='prop_show_when_paused' class="menu_group">
-                </div><div id="show_ref" class="menu_choice" onclick="show_ref_click(event)">Visa detaljerade referenser
+                <div>
+                    <div class="menu_group">
+                        <div class="menu_choice">Bredd på karta i %:<input type="text" id="map_size" onkeyup="map_size_evt_key(event)" class="menu_tbox" style="width: 40px"/></div>
+                        <div class="menu_choice">Bredd på flaggor i %:<input type="text" id="flag_size" onkeyup="flag_size_evt_key(event)" class="menu_tbox" style="width: 40px"/></div>
+                    </div>
+                    <div class="menu_choice" id="set_map_hover" onclick="set_choice(event, 'set_map_hover', 'one'); update_map_hover()" title="Om detta avmarkeras, så byter inte land-områdena på kartan som är under muspekaren färg.">"Hover"-effekt</div>
+                    <div class="menu_title" title="Zooma in kartan på ett visst område. Detta påverkar endast utseendet av kartan. Vilka länder som du vill träna på väljer du under '1. Länder'.">Zoom:</div>
+                    <div class="menu_group">
+                        <div class="menu_choice" onclick="set_zoom('world', event)">Världen</div>
+                        <div class="menu_choice" onclick="set_zoom('compact', event)">Världen - kompakt</div>
+                        <div class="menu_choice" onclick="set_zoom('africa', event)">Afrika</div>
+                        <div class="menu_choice" onclick="set_zoom('asia', event)">Asien</div>
+                        <div class="menu_choice" onclick="set_zoom('europe', event)">Europa</div>
+                        <div class="menu_choice" onclick="set_zoom('north_america', event)">Nordamerika</div>
+                        <div class="menu_choice" onclick="set_zoom('oceania', event)">Oceanien</div>
+                        <div class="menu_choice" onclick="set_zoom('south_america', event)">Sydamerika</div>
+                    </div>
+                </div><div>
+                    <div class="menu_title" title="Här väljer du vad som ska visas när spelet inte är igång.">Synlig information (i pausat l&auml;ge):</div>
+                    <div id='prop_show_when_paused' class="menu_group">
+                    </div><div id="show_ref" class="menu_choice" onclick="show_ref_click(event)">Visa detaljerade referenser
+                    </div>
                 </div>
             </div><div id="filter_menu" class="menu" onclick="event.stopPropagation()">
                 <div id="filter_div" style="display: block">
@@ -1253,10 +1280,11 @@ var g_filter_reg = {};
 var g_filter_fail_list = false;
 
 var g_zoom = {};
-g_zoom.world  = {height: 1403, width: 1, y: 60, x: -53};
-g_zoom.africa = {height: 640, width: 1, y: 430, x: 1070};
-g_zoom.asia   = {height: 700, width: 1, y: 160, x: 1450};
-g_zoom.europe = {height: 310, width: 1, y: 160, x: 1150};
+g_zoom.world   = {height: 1403, width: 1, y: 60, x: -53};
+g_zoom.compact = {height: 1160, width: 1, y: 100, x: 400};
+g_zoom.africa  = {height: 640, width: 1, y: 430, x: 1070};
+g_zoom.asia    = {height: 700, width: 1, y: 160, x: 1450};
+g_zoom.europe  = {height: 310, width: 1, y: 160, x: 1150};
 g_zoom.north_america = {height: 550, width: 1, y: 160, x: 250};
 g_zoom.oceania       = {height: 560, width: 1, y: 620, x: 2100};
 g_zoom.south_america = {height: 630, width: 1, y: 630, x: 630};
