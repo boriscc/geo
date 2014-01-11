@@ -721,6 +721,24 @@ id="path5520"/></g><circle class="circlexx vi" cx="778.383" cy="608.82" id="vi."
         </div>
         <div id="pop">
         </div>
+        <div id="rel">
+        </div>
+        <div id="rel_c">
+        </div>
+        <div id="rel_m">
+        </div>
+        <div id="rel_n">
+        </div>
+        <div id="rel_h">
+        </div>
+        <div id="rel_b">
+        </div>
+        <div id="rel_f">
+        </div>
+        <div id="rel_o">
+        </div>
+        <div id="rel_j">
+        </div>
         <div id="flag">
         </div>
         <div id="ref" class="removed">
@@ -1207,7 +1225,7 @@ function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-function geo_parse_int(str) {
+function geo_parse_num(str) {
     return parseInt(parseFloat(str.replace(/\./g, '').replace(/,/g, '.').replace(/miljoner/ig, 'e6').replace(/miljarder/ig, 'e9').replace(/miljon/ig, 'e6').replace(/miljard/ig, 'e9').replace(/milj/ig, 'e6').replace(/tusen/ig, 'e3').replace(/ /g, '').replace('k', 'e3').replace('M', 'e6').replace('G', 'e9')));
 }
 
@@ -1244,11 +1262,21 @@ function shade_color(state, percent) {
     return "#" + (0x1000000 + (R<255?R<1?0:R:255)*0x10000 + (G<255?G<1?0:G:255)*0x100 + (B<255?B<1?0:B:255)).toString(16).slice(1);
 }
 
+var g_rel_prop = { rel_c: { disp: 'Kristendom' },
+                   rel_m: { disp: 'Islam' },
+                   rel_n: { disp: 'Ingen religion' },
+                   rel_h: { disp: 'Hinduism' },
+                   rel_b: { disp: 'Buddhism' },
+                   rel_f: { disp: 'Folktro' },
+                   rel_o: { disp: 'Övrig religion' },
+                   rel_j: { disp: 'Judendom' } };
+
 var g_prop = { cap : { disp_name: "Huvudstad" , unique: true , type: "text"    , show: false},
                reg : { disp_name: "Världsdel" , unique: false, type: "text"    , show: true },
                gov : { disp_name: "Statsskick", unique: false, type: "text"    , show: true },
+               rel : { disp_name: "Religion"  , unique: false, type: "text"    , show: true }, 
                name: { disp_name: "Namn"      , unique: true , type: "text"    , show: false},
-               pop : { disp_name: "Population", unique: false, type: "numeric" , show: true },
+               pop : { disp_name: "Population", unique: false, type: "numeric" , show: true , interval_type: "even", interval_nr: 10},
                flag: { disp_name: "Flagga"    , unique: true , type: "image"   , show: true, img_data: g_flag_data },
                map : { disp_name: "Plats"     , unique: true , type: "map"     , show: true } };
 var g_key_return = 13;
@@ -1326,6 +1354,7 @@ function set_country_info(cc) {
         obj('country_info').style.visibility = 'hidden';
         for(var prop in g_prop) {
             if(g_prop[prop].type == 'map') continue;
+            if(obj('country_info_' + prop) == undefined) continue;
             if(g_prop[prop].type == 'image') {
                 obj('country_info_' + prop).src = '';
             } else {
@@ -1336,6 +1365,7 @@ function set_country_info(cc) {
         obj('country_info').style.visibility = 'visible';
         for(var prop in g_prop) {
             if(g_prop[prop].type == 'map') continue;
+            if(obj('country_info_' + prop) == undefined) continue;
             if(g_prop[prop].unique) {
                 if(g_prop[prop].type == 'image') {
                     obj('country_info_' + prop).src = 'data:image/png;base64,' + g_prop[prop].img_data[cc];
@@ -1520,6 +1550,51 @@ function init_gov(id) {
     init_text_numeric('gov', val.disp, val.idx);
 }
 
+function init_rel(id) {
+    var val = g_prop.rel.val[id];
+    init_text_numeric('rel', val.disp, val.idx);
+}
+
+function init_rel_c(id) {
+    var val = g_prop.rel_c.val[id];
+    init_text_numeric('rel_c', val.disp, val.idx);
+}
+
+function init_rel_m(id) {
+    var val = g_prop.rel_m.val[id];
+    init_text_numeric('rel_m', val.disp, val.idx);
+}
+
+function init_rel_n(id) {
+    var val = g_prop.rel_n.val[id];
+    init_text_numeric('rel_n', val.disp, val.idx);
+}
+
+function init_rel_h(id) {
+    var val = g_prop.rel_h.val[id];
+    init_text_numeric('rel_h', val.disp, val.idx);
+}
+
+function init_rel_b(id) {
+    var val = g_prop.rel_b.val[id];
+    init_text_numeric('rel_b', val.disp, val.idx);
+}
+
+function init_rel_f(id) {
+    var val = g_prop.rel_f.val[id];
+    init_text_numeric('rel_f', val.disp, val.idx);
+}
+
+function init_rel_o(id) {
+    var val = g_prop.rel_o.val[id];
+    init_text_numeric('rel_o', val.disp, val.idx);
+}
+
+function init_rel_j(id) {
+    var val = g_prop.rel_j.val[id];
+    init_text_numeric('rel_j', val.disp, val.idx);
+}
+
 function init_name(cc) {
     init_text_numeric('name', g_list[cc].disp.name, cc);
 }
@@ -1601,6 +1676,42 @@ function set_state_gov(id, state) {
 
 function set_state_pop(id, state) {
     set_state(id, 'pop', state);
+}
+
+function set_state_rel(id, state) {
+    set_state(id, 'rel', state);
+}
+
+function set_state_rel_c(id, state) {
+    set_state(id, 'rel_c', state);
+}
+
+function set_state_rel_m(id, state) {
+    set_state(id, 'rel_m', state);
+}
+
+function set_state_rel_n(id, state) {
+    set_state(id, 'rel_n', state);
+}
+
+function set_state_rel_h(id, state) {
+    set_state(id, 'rel_h', state);
+}
+
+function set_state_rel_b(id, state) {
+    set_state(id, 'rel_b', state);
+}
+
+function set_state_rel_f(id, state) {
+    set_state(id, 'rel_f', state);
+}
+
+function set_state_rel_o(id, state) {
+    set_state(id, 'rel_o', state);
+}
+
+function set_state_rel_j(id, state) {
+    set_state(id, 'rel_j', state);
 }
 
 function set_state_map(cc, state) {
@@ -1858,8 +1969,8 @@ function create_game_country_list(mode) {
                     g_prop[prop].val[id].active = true;
                 }
             } else if(g_prop[prop].type == 'numeric') {
-                g_prop[prop].active_min = geo_parse_int(obj('filter_' + prop + '_min').value);
-                g_prop[prop].active_max = geo_parse_int(obj('filter_' + prop + '_max').value);
+                g_prop[prop].active_min = geo_parse_num(obj('filter_' + prop + '_min').value);
+                g_prop[prop].active_max = geo_parse_num(obj('filter_' + prop + '_max').value);
             } else {
                 alert('Internal error 17');
             }
@@ -1940,6 +2051,7 @@ function start_game() {
     set_country_sorting('random');
     
     for(var key in g_prop) {
+        if(obj('game_aid_' + key) == undefined) continue;
         if(g_prop[key].type == 'image') obj('game_aid_' + key).src = '';
         else if(g_prop[key].type == 'text' ||
                 g_prop[key].type == 'numeric') obj('game_aid_' + key).innerHTML = '';
@@ -2443,7 +2555,7 @@ function guess_text(evt, elem) {
         if(g_prop[g_game_guess].type == 'text') {
             make_guess((elem.value + "").trim().replace(/ /g, '_').toLowerCase());
         } else if(g_prop[g_game_guess].type == 'numeric') {
-            var val = geo_parse_int(elem.value);
+            var val = geo_parse_num(elem.value);
             var factor = parseInt(obj('setting_num_factor').value);
             make_guess({ val: val, min: val / factor, max: val * factor });
         }
@@ -2708,6 +2820,10 @@ function set_prop_div_visibility() {
 }
 
 function init() {
+    for(var rel in g_rel_prop) {
+        g_prop[rel] = { disp_name: g_rel_prop[rel].disp + ' i %', unique: false, type: 'numeric', show: true, interval_type: 'custom', interval_lim: [0, 20, 40, 60, 80, 100]};
+        obj(rel).innerHTML = g_prop[rel].disp_name + ':';
+    }
     for(var cc in g_list) {
         g_list[cc].state = {};
         g_list[cc].val_idx = {};
@@ -2715,6 +2831,15 @@ function init() {
         if(g_list[cc].gov_ref == undefined) {
             g_list[cc].gov_ref = 'http://en.wikipedia.org/wiki/File:Forms_of_government.svg, 2014-01-09';
         }
+        var max = 0;
+        var max_prop;
+        for(var rel in g_rel_prop) {
+            if(g_list[cc][rel] > max) {
+                max = g_list[cc][rel];
+                max_prop = rel;
+            }
+        }
+        g_list[cc].rel = encodeURIComponent(g_rel_prop[max_prop].disp);
     }
 
     for(var key in g_prop) {
@@ -2765,30 +2890,43 @@ function init() {
                 }
             }
         } else if(g_prop[prop].type == 'numeric') {
-            var list = [];
-            var interval_nr = 10;
-            for(var cc in g_list) list.push(g_list[cc][prop]);
-            list.sort(function(a, b) { return a - b; });
-            if(list.length < interval_nr) interval_nr = list.length;
-            g_prop[prop].val = [];
-            for(var i = 0; i < interval_nr; i++) {
-                g_prop[prop].val.push({ idx: i });
-            }
-            // Create the interval ranges
-            for(var i = 0; i < list.length; i++) {
-                var interval = Math.floor((interval_nr * i) / list.length);
-                if(g_prop[prop].val[interval].min == undefined) {
-                    g_prop[prop].val[interval].min = list[i];
-                    g_prop[prop].val[interval].max = list[i];
-                } else {
-                    if(list[i] < g_prop[prop].val[interval].min) g_prop[prop].val[interval].min = list[i];
-                    else if(list[i] > g_prop[prop].val[interval].max) g_prop[prop].val[interval].max = list[i];
+            var interval_nr;
+            if(g_prop[prop].interval_type == 'even') {
+                var list = [];
+                interval_nr = g_prop[prop].interval_nr;
+                for(var cc in g_list) list.push(g_list[cc][prop]);
+                list.sort(function(a, b) { return a - b; });
+                if(list.length < interval_nr) interval_nr = list.length;
+                g_prop[prop].val = [];
+                for(var i = 0; i < interval_nr; i++) {
+                    g_prop[prop].val.push({ idx: i });
                 }
+                // Create the interval ranges
+                for(var i = 0; i < list.length; i++) {
+                    var interval = Math.floor((interval_nr * i) / list.length);
+                    if(g_prop[prop].val[interval].min == undefined) {
+                        g_prop[prop].val[interval].min = list[i];
+                        g_prop[prop].val[interval].max = list[i];
+                    } else {
+                        if(list[i] < g_prop[prop].val[interval].min) g_prop[prop].val[interval].min = list[i];
+                        else if(list[i] > g_prop[prop].val[interval].max) g_prop[prop].val[interval].max = list[i];
+                    }
+                }
+            } else if(g_prop[prop].interval_type == 'custom') {
+                interval_nr = g_prop[prop].interval_lim.length - 1;
+                g_prop[prop].val = [];
+                for(var i = 0; i < interval_nr; i++) {
+                    g_prop[prop].val.push({ idx: i, min: g_prop[prop].interval_lim[i], max: g_prop[prop].interval_lim[i+1] });
+                }
+            } else {
+                alert('Internal error 39');
             }
+            
             for(var i = 0; i < interval_nr; i++) {
                 g_prop[prop].val[i].disp = numberWithCommas(g_prop[prop].val[i].min) + ' - ' +
                                                    numberWithCommas(g_prop[prop].val[i].max);
             }
+            
             // Determine the interval for each country
             for(var cc in g_list) {
                 for(var i = 0; i < interval_nr; i++) {
