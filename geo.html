@@ -1783,14 +1783,20 @@ function game_filter_include(country_code) {
     for(var key in g_prop) {
         if(g_prop[key].unique == true) continue;
         var id = g_list[country_code].val_idx[key];
-        var include_all = true;
+        var include_all;
         
-        for(var i = 0; i < g_prop[key].val.length; i++) {
-            if(g_prop[key].val[i].active == true) {
-                include_all = false;
-                break;
+        if(g_prop[key].type == 'text') {
+            include_all = true;
+            for(var i = 0; i < g_prop[key].val.length; i++) {
+                if(g_prop[key].val[i].active == true) {
+                    include_all = false;
+                    break;
+                }
             }
-        }
+        } else if(g_prop[key].type == 'numeric') {
+            include_all = false;
+        } else alert('Internal error 41');
+        
         if(include_all) continue;
         
         if(g_prop[key].type == 'text') {
