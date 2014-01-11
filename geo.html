@@ -1274,7 +1274,7 @@ var g_rel_prop = { rel_c: { disp: 'Kristendom' },
 var g_prop = { cap : { disp_name: "Huvudstad" , unique: true , type: "text"    , show: false},
                reg : { disp_name: "Världsdel" , unique: false, type: "text"    , show: true },
                gov : { disp_name: "Statsskick", unique: false, type: "text"    , show: true },
-               rel : { disp_name: "Religion"  , unique: false, type: "text"    , show: true }, 
+               rel : { disp_name: "Religion"  , unique: false, type: "text"    , show: true },
                name: { disp_name: "Namn"      , unique: true , type: "text"    , show: false},
                pop : { disp_name: "Population", unique: false, type: "numeric" , show: true , interval_type: "even", interval_nr: 10},
                flag: { disp_name: "Flagga"    , unique: true , type: "image"   , show: true, img_data: g_flag_data },
@@ -1923,7 +1923,7 @@ function game_filter_include(country_code) {
         if(g_prop[key].unique == true) continue;
         var id = g_list[country_code].val_idx[key];
         var include_all;
-        
+
         if(g_prop[key].type == 'text') {
             include_all = true;
             for(var i = 0; i < g_prop[key].val.length; i++) {
@@ -1935,9 +1935,9 @@ function game_filter_include(country_code) {
         } else if(g_prop[key].type == 'numeric') {
             include_all = false;
         } else alert('Internal error 41');
-        
+
         if(include_all) continue;
-        
+
         if(g_prop[key].type == 'text') {
             if(g_prop[key].val[id].active == false) return false;
         } else if(g_prop[key].type == 'numeric') {
@@ -2049,7 +2049,7 @@ function start_game() {
 
     show_message('');
     set_country_sorting('random');
-    
+
     for(var key in g_prop) {
         if(obj('game_aid_' + key) == undefined) continue;
         if(g_prop[key].type == 'image') obj('game_aid_' + key).src = '';
@@ -2086,7 +2086,7 @@ function start_game() {
         else state = state.replace('game_show_' + prop + '_', '');
         g_prop[prop].game_show = (state != 'none');
         g_prop[prop].show_only_active = (state == 'active');
-        
+
         var state = choice_get_id('game_aid_current_' + prop);
         if(state == undefined) g_prop[prop].game_aid_current = false;
         else g_prop[prop].game_aid_current = true;
@@ -2098,7 +2098,7 @@ function start_game() {
     for(var prop in g_prop) {
         if(g_prop[prop].unique) continue;
         if(g_prop[prop].show == false) continue;
-        
+
         for(var i = 0; i < g_prop[prop].val.length; i++) {
             g_prop[prop].val[i].active = false;
         }
@@ -2110,9 +2110,9 @@ function start_game() {
 
     for(var prop in g_prop) {
         if(g_prop[prop].show == false) continue;
-        
+
         var show_only_active = g_prop[prop].show_only_active;
-        
+
         if(g_prop[prop].unique) {
             for(var cc in g_list) {
                 if(g_list[cc].active == false && show_only_active) {
@@ -2219,7 +2219,7 @@ function game_show_results() {
             show_message('Du hade ' + (g_game_guess_nr - g_game_total_nr) + ' felaktiga gissningar.', state);
         }
     }
-    
+
     for(var prop in g_prop) {
         if(g_prop[prop].show == false) continue;
         if(g_prop[prop].unique == false) continue;
@@ -2256,7 +2256,7 @@ function game_show_help() {
                     obj('game_aid_' + prop).innerHTML = val;
                 }
             }
-            
+
             if(g_prop[prop].show) {
                 if(g_prop[prop].unique) {
                     window['set_state_' + prop](cc, 'highlight');
@@ -2334,7 +2334,7 @@ function make_guess(val) {
 
     if(g_game_guess_nr == 0) make_guess.nr_wrong_cur = 0;
     g_game_guess_nr++;
-    
+
     if(g_game_mode == 'specific') {
         // Determine if the guess is correct
         correct = game_get_correct(g_game_done_nr);
@@ -2373,7 +2373,7 @@ function make_guess(val) {
         } else {
             is_correct = correctness;
         }
-        
+
         if(is_correct) {
             make_guess.nr_wrong_cur = 0;
             g_game_correct_nr++;
@@ -2489,7 +2489,7 @@ function make_guess(val) {
                 }
             }
         }
-                
+
         if(is_correct) {
             g_game_correct_nr++;
             g_game_country_list[correct_id].correct = 1;
@@ -2561,7 +2561,7 @@ function guess_text(evt, elem) {
         }
         elem.value = '';
     }
-    
+
     if(g_game_state == 'on' && g_prop[g_game_guess].type == 'text' && g_prop[g_game_guess].show && elem.value.length > 1) {
         var user = (elem.value + "").trim().replace(/ /g, '_').toLowerCase();
         if(g_prop[g_game_guess].unique) {
@@ -2921,12 +2921,12 @@ function init() {
             } else {
                 alert('Internal error 39');
             }
-            
+
             for(var i = 0; i < interval_nr; i++) {
                 g_prop[prop].val[i].disp = numberWithCommas(g_prop[prop].val[i].min) + ' - ' +
                                                    numberWithCommas(g_prop[prop].val[i].max);
             }
-            
+
             // Determine the interval for each country
             for(var cc in g_list) {
                 for(var i = 0; i < interval_nr; i++) {
@@ -2991,7 +2991,7 @@ function init() {
 
     var top_padding_size = obj('main_menu').clientHeight;
     document.getElementsByTagName('body')[0].style.marginTop = top_padding_size + "px";
-    
+
     for(var cc in g_list) {
         var elem = document.createElement('div');
         elem.classList.add('ref_country');
