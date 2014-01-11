@@ -2473,6 +2473,10 @@ function guess_text(evt, elem) {
 function create_filter_object(parent_id) {
     var parent_div = obj(parent_id);
 
+    var row = document.createElement('div');
+    var row_size = 0;
+    var row_size_max = 20;
+    parent_div.appendChild(row);
     var elem = document.createElement('div');
     elem.classList.add('menu_choice');
     elem.id = 'filter_fail_list';
@@ -2480,19 +2484,30 @@ function create_filter_object(parent_id) {
     elem.addEventListener("click", create_click_set_choice('filter_fail_list', 'one'), false);
     elem.innerHTML = 'Fel-lista';
     elem.title = 'Markera detta för att endast inkludera de länder som du hade fel på sist. Har du inte spelat tidigare så har denna knapp ingen effekt.';
-    parent_div.appendChild(elem);
+    row.appendChild(elem);
+    row_size += 1;
 
     for(var prop in g_prop) {
         if(g_prop[prop].unique == true) continue;
+        var cur_size;
+        if(g_prop[prop].type == 'text') cur_size = 1 + g_prop[prop].val.length;
+        else if(g_prop[prop].type == 'numeric') cur_size = 3;
+        else alert('Internal error 40');
+        if(row_size + cur_size > row_size_max) {
+            var row = document.createElement('div');
+            parent_div.appendChild(row);
+            row_size = 0;
+        }
+        row_size += cur_size;
 
         elem = document.createElement('div');
         elem.classList.add('menu_title');
         elem.innerHTML = g_prop[prop].disp_name;
-        parent_div.appendChild(elem);
+        row.appendChild(elem);
 
         elem = document.createElement('div');
         elem.classList.add('menu_group');
-        parent_div.appendChild(elem);
+        row.appendChild(elem);
 
         if(g_prop[prop].type == 'text') {
             elem.addEventListener("click", create_click_set_choice('filter_' + prop, 'many'), false);
