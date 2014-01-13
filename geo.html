@@ -2434,8 +2434,8 @@ function make_guess(val) {
         }
 
         if(g_list[correct.country_code].done == true) {
-            if(g_game_show_done && g_game_done_nr >= 1 && g_game_country_list[g_game_done_nr - 1].correct == 0) {
-                var id_prev = g_game_country_list[g_game_done_nr - 1].country_code;
+            if(g_game_show_done && g_game_done_nr >= 2 && g_game_country_list[g_game_done_nr - 2].correct == 0) {
+                var id_prev = g_game_country_list[g_game_done_nr - 2].country_code;
                 var state = 'wrong';
                 for(var prop2 in g_prop) {
                     if(g_prop[prop2].show == false) continue;
