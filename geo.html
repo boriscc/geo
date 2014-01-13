@@ -2375,12 +2375,17 @@ function make_guess(val) {
         }
 
         if(is_correct) {
-            make_guess.nr_wrong_cur = 0;
-            g_game_correct_nr++;
-            g_game_country_list[g_game_done_nr].correct = 1;
+            if(make_guess.nr_wrong_cur == 0) {
+                g_game_correct_nr++;
+                g_game_country_list[g_game_done_nr].correct = 1;
+            } else {
+                g_game_country_list[g_game_done_nr].correct = 0;
+            }
             var state;
-            if(g_game_show_done) state = 'correct';
-            else state = 'active';
+            if(g_game_show_done) [
+                if(make_guess.nr_wrong_cur) state = 'prev-wrong';
+                else state = 'correct';
+            } else state = 'active';
             for(var prop2 in g_prop) {
                 if(g_prop[prop2].show == false) continue;
                 if(g_prop[prop2].unique) {
@@ -2396,6 +2401,7 @@ function make_guess(val) {
             } else show_message('Rätt!', 'good');
             g_game_done_nr++;
             g_list[correct.country_code].done = true;
+            make_guess.nr_wrong_cur = 0;
         } else if(correctness == 0) {
             make_guess.nr_wrong_cur++;
             if(g_game_guess_until_correct) {
