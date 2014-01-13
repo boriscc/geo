@@ -2714,7 +2714,7 @@ function create_aid_div() {
             g_choice[elem.id] = undefined;
             elem.addEventListener('click', create_click_set_choice('game_aid_current_' + key, 'one'), false);
             c2.appendChild(elem);
-            if(key != g_game_guess) {
+            if(key != g_game_guess && g_prop[key].unique == true) {
                 set_choice({target: elem}, 'game_aid_current_' + key, 'one');
             }
         }
