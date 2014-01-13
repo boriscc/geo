@@ -2382,7 +2382,7 @@ function make_guess(val) {
                 g_game_country_list[g_game_done_nr].correct = 0;
             }
             var state;
-            if(g_game_show_done) [
+            if(g_game_show_done) {
                 if(make_guess.nr_wrong_cur) state = 'prev-wrong';
                 else state = 'correct';
             } else state = 'active';
