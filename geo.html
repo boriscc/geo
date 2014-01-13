@@ -2440,9 +2440,9 @@ function make_guess(val) {
                 for(var prop2 in g_prop) {
                     if(g_prop[prop2].show == false) continue;
                     if(g_prop[prop2].unique) {
-                        window['set_state_' + prop2](correct.country_code, state);
+                        window['set_state_' + prop2](id_prev, state);
                     } else {
-                        window['set_state_' + prop2](g_list[correct.country_code].val_idx[prop2], 'active');
+                        window['set_state_' + prop2](g_list[id_prev].val_idx[prop2], 'active');
                     }
                 }
             }
