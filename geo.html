@@ -2382,7 +2382,7 @@ function make_guess(val) {
             }
             var state;
             if(g_game_show_done) {
-                if(make_guess.nr_wrong_cur) state = 'prev-wrong';
+                if(make_guess.nr_wrong_cur) state = 'prev_wrong';
                 else state = 'correct';
             } else state = 'active';
             for(var prop2 in g_prop) {
@@ -2399,8 +2399,8 @@ function make_guess(val) {
                 else show_message('Rätt! Population: ' + correct.disp, 'good');
             } else show_message('Rätt!', 'good');
             g_game_done_nr++;
-            g_list[correct.country_code].done = true;
             make_guess.nr_wrong_cur = 0;
+            g_list[correct.country_code].done = true;
         } else if(correctness == 0) {
             make_guess.nr_wrong_cur++;
             if(g_game_guess_until_correct) {
@@ -2422,6 +2422,7 @@ function make_guess(val) {
                     }
                 }
                 g_game_done_nr++;
+                make_guess.nr_wrong_cur = 0;
                 g_list[correct.country_code].done = true;
                 if(g_prop[prop].type == 'text' || g_prop[prop].type == 'numeric') {
                     show_message('Fel, skulle vara: ' + correct.disp);
