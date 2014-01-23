@@ -720,6 +720,14 @@ id="path5520"/></g><circle class="circlexx vi" cx="778.383" cy="608.82" id="vi."
         </div>
         <div id="pop">
         </div>
+        <div id="lang_a">
+        </div>
+        <div id="lang_e">
+        </div>
+        <div id="lang_f">
+        </div>
+        <div id="lang_s">
+        </div>
         <div id="rel">
         </div>
         <div id="rel_c">
@@ -1261,11 +1269,13 @@ function shade_color(state, percent) {
     return "#" + (0x1000000 + (R<255?R<1?0:R:255)*0x10000 + (G<255?G<1?0:G:255)*0x100 + (B<255?B<1?0:B:255)).toString(16).slice(1);
 }
 
-var lang = {};
-lang.lang_a = { Algeria:1,Bahrain:1,Chad:1,Comoros:1,Djibouti:1,Egypt:1,Eritrea:1,Iraq:1,Israel:1,Jordan:1,Kuwait:1,Lebanon:1,Libya:1,Mauritania:1,Morocco:1,Oman:1,Qatar:1,Saudi_Arabia:1,Somalia:1,Sudan:1,Syria:1,Tunisia:1,United_Arab_Emirates:1,Yemen:1 };
-lang.lang_e = { Antigua_and_Barbuda:1,Australia:1,Bahamas:1,Barbados:1,Belize_:1,Botswana_:1,Cameroon:1,Canada:1,Cook_Islands14:1,Dominica:1,Fiji:1,Gambia:1,Ghana:1,Grenada:1,Guyana:1,India_:1,Ireland:1,Jamaica:1,Kenya:1,Kiribati:1,Lesotho:1,Liberia:1,Malawi:1,Malta:1,Marshall_Islands:1,Mauritius:1,Federated_States_of_Micronesia:1,Namibia:1,Nauru:1,New_Zealand:1,Nigeria:1,Niue14:1,Pakistan:1,Palau_:1,Papua_New_Guinea:1,Philippines:1,Rwanda:1,Saint_Kitts_and_Nevis:1,Saint_Lucia:1,Saint_Vincent_and_the_Grenadines:1,Samoa:1,Seychelles:1,Sierra_Leone:1,Singapore:1,Solomon_Islands:1,Somaliland15___Africa__3:1,500:1,000:1,South_Africa:1,South_Sudan:1,Sudan:1,Swaziland:1,Tanzania:1,Tonga:1,Trinidad_and_Tobago:1,Tuvalu:1,Uganda:1,United_Kingdom:1,United_States:1,Vanuatu:1,Zambia:1,Zimbabwe:1,Israel:1 };
-lang.lang_f = { Belgium:1,Benin:1,Burkina:1,Burundi:1,Cameroon:1,Canada:1,Central:1,Chad:1,Comoros:1,Democratic_Republic_of_the_Congo:1,Djibouti:1,Equatorial_Guinea:1,France:1,Gabon:1,Guinea:1,Haiti:1,Ivory_Coast:1,Luxembourg:1,Madagascar:1,Mali:1,Monaco:1,Niger:1,Republic_of_the_Congo:1,Rwanda:1,Senegal:1,Seychelles:1,Switzerland:1,Togo:1,Vanuatu:1 };
-lang.lang_s = { Bolivia:1,Colombia:1,Costa_Rica:1,Cuba:1,Ecuador:1,El_Salvador:1,Equatorial_Guinea:1,Guatemala:1,Honduras:1,Panama:1,Paraguay:1,Peru:1,Spain:1,Venezuela:1,Argentina:1,Chile:1,Dominican_Republic:1,Mexico:1,Nicaragua:1,Uruguay:1 };
+var g_eng_to_cc = {};
+
+var g_lang = {};
+g_lang.lang_a = { Algeria:1,Bahrain:1,Chad:1,Comoros:1,Djibouti:1,Egypt:1,Eritrea:1,Iraq:1,Israel:1,Jordan:1,Kuwait:1,Lebanon:1,Libya:1,Mauritania:1,Morocco:1,Oman:1,Qatar:1,Saudi_Arabia:1,Somalia:1,Sudan:1,Syria:1,Tunisia:1,United_Arab_Emirates:1,Yemen:1 };
+g_lang.lang_e = { Antigua_and_Barbuda:1,Australia:1,The_Bahamas:1,Barbados:1,Belize:1,Botswana:1,Cameroon:1,Canada:1,Dominica:1,Fiji:1,Gambia:1,Ghana:1,Grenada:1,Guyana:1,India:1,Ireland:1,Jamaica:1,Kenya:1,Kiribati:1,Lesotho:1,Liberia:1,Malawi:1,Malta:1,Marshall_Islands:1,Mauritius:1,Federated_States_of_Micronesia:1,Namibia:1,Nauru:1,New_Zealand:1,Nigeria:1,Pakistan:1,Palau:1,Papua_New_Guinea:1,Philippines:1,Rwanda:1,Saint_Kitts_and_Nevis:1,Saint_Lucia:1,Saint_Vincent_and_the_Grenadines:1,Samoa:1,Seychelles:1,Sierra_Leone:1,Singapore:1,Solomon_Islands:1,South_Africa:1,South_Sudan:1,Sudan:1,Swaziland:1,Tanzania:1,Tonga:1,Trinidad_and_Tobago:1,Tuvalu:1,Uganda:1,United_Kingdom:1,United_States:1,Vanuatu:1,Zambia:1,Zimbabwe:1,Israel:1 };
+g_lang.lang_f = { Belgium:1,Benin:1,Burkina_Faso:1,Burundi:1,Cameroon:1,Canada:1,Central_African_Republic:1,Chad:1,Comoros:1,Congo_Kinshasa:1,Djibouti:1,Equatorial_Guinea:1,France:1,Gabon:1,Guinea:1,Haiti:1,Ivory_Coast:1,Luxembourg:1,Madagascar:1,Mali:1,Monaco:1,Niger:1,Congo_Brazzaville:1,Rwanda:1,Senegal:1,Seychelles:1,Switzerland:1,Togo:1,Vanuatu:1 };
+g_lang.lang_s = { Bolivia:1,Colombia:1,Costa_Rica:1,Cuba:1,Ecuador:1,El_Salvador:1,Equatorial_Guinea:1,Guatemala:1,Honduras:1,Panama:1,Paraguay:1,Peru:1,Spain:1,Venezuela:1,Argentina:1,Chile:1,Dominican_Republic:1,Mexico:1,Nicaragua:1,Uruguay:1 };
 
 var g_lang_prop = { lang_a: { disp: 'Arabiska' },
                     lang_e: { disp: 'Engelska' },
@@ -1560,6 +1570,26 @@ function init_gov(id) {
     init_text_numeric('gov', val.disp, val.idx);
 }
 
+function init_lang_a(id) {
+    var val = g_prop.lang_a.val[id];
+    init_text_numeric('lang_a', val.disp, val.idx);
+}
+
+function init_lang_e(id) {
+    var val = g_prop.lang_e.val[id];
+    init_text_numeric('lang_e', val.disp, val.idx);
+}
+
+function init_lang_f(id) {
+    var val = g_prop.lang_f.val[id];
+    init_text_numeric('lang_f', val.disp, val.idx);
+}
+
+function init_lang_s(id) {
+    var val = g_prop.lang_s.val[id];
+    init_text_numeric('lang_s', val.disp, val.idx);
+}
+
 function init_rel(id) {
     var val = g_prop.rel.val[id];
     init_text_numeric('rel', val.disp, val.idx);
@@ -1658,6 +1688,7 @@ function set_state(id, prop, state) {
     if(g_prop[prop].unique) g_list[id].state[prop] = state;
     else g_prop[prop].val[id].state = state;
 
+    if(obj(prop + '_' + id) == null) alert('Internal error 44: ' + prop + '_' + id);
     obj(prop + '_' + id).classList.add(prop + '_' + state);
     if(have_hover) {
         obj(prop + '_' + id).classList.add(prop + '_' + state + '_hover');
@@ -1686,6 +1717,22 @@ function set_state_gov(id, state) {
 
 function set_state_pop(id, state) {
     set_state(id, 'pop', state);
+}
+
+function set_state_lang_a(id, state) {
+    set_state(id, 'lang_a', state);
+}
+
+function set_state_lang_e(id, state) {
+    set_state(id, 'lang_e', state);
+}
+
+function set_state_lang_f(id, state) {
+    set_state(id, 'lang_f', state);
+}
+
+function set_state_lang_s(id, state) {
+    set_state(id, 'lang_s', state);
 }
 
 function set_state_rel(id, state) {
@@ -2621,6 +2668,7 @@ function create_filter_object(parent_id) {
         var cur_size;
         if(g_prop[prop].type == 'text') cur_size = 1 + g_prop[prop].val.length;
         else if(g_prop[prop].type == 'numeric') cur_size = 3;
+        else if(g_prop[prop].type == 'boolean') cur_size = 3;
         else alert('Internal error 40');
         if(row_size + cur_size > row_size_max) {
             var row = document.createElement('div');
@@ -2837,6 +2885,10 @@ function set_prop_div_visibility() {
 }
 
 function init() {
+    for(var cc in g_list) {
+        g_eng_to_cc[g_list[cc].eng.replace(/[-%]/g, '_')] = cc;
+    }
+
     for(var rel in g_rel_prop) {
         g_prop[rel] = { disp_name: g_rel_prop[rel].disp + ' i %', unique: false, type: 'numeric', show: true, interval_type: 'custom', interval_lim: [0, 20, 40, 60, 80, 100]};
         obj(rel).innerHTML = g_prop[rel].disp_name + ':';
@@ -2857,6 +2909,18 @@ function init() {
             }
         }
         g_list[cc].rel = encodeURIComponent(g_rel_prop[max_prop].disp);
+        for(var lang in g_lang_prop) {
+            g_list[cc][lang] = false;
+        }
+    }
+
+    for(var lang in g_lang_prop) {
+        g_prop[lang] = { disp_name: g_lang_prop[lang].disp + ' &auml;r officiellt spr&auml;k', unique: false, type: 'boolean', show: true };
+        for(var eng in g_lang[lang]) {
+            var cur_cc = g_eng_to_cc[eng.replace(/[-%]/g, '_')];
+            if(cur_cc == undefined) alert('Internal error 38: ', eng);
+            g_list[cur_cc][lang] = true;
+        }
     }
 
     for(var key in g_prop) {
@@ -2954,6 +3018,14 @@ function init() {
                     }
                 }
             }
+        } else if(g_prop[prop].type == 'boolean') {
+            g_prop[prop].val = [];
+            g_prop[prop].val.push({ idx: 0, val: 'Ja' });
+            g_prop[prop].val.push({ idx: 1, val: 'Nej' });
+            for(var cc in g_list) {
+                if(g_list[cc][prop]) g_list[cc].val_idx[prop] = 0;
+                else g_list[cc].val_idx[prop] = 1;
+            }
         } else {
             alert('Internal error 25');
         }
@@ -2968,6 +3040,11 @@ function init() {
             for(var cc in g_list) {
                 g_list[cc].disp[prop] = numberWithCommas(g_list[cc][prop]);
             }
+        } else if(g_prop[prop].type == 'boolean') {
+            for(var cc in g_list) {
+                if(g_list[cc][prop] == true) g_list[cc].disp[prop] = 'Ja';
+                else g_list[cc].disp[prop] = 'Nej';
+            }
         }
         if(g_prop[prop].unique) {
             for(var cc in g_list) {
@@ -2975,9 +3052,10 @@ function init() {
                 window['set_state_' + prop](cc, 'paused');
             }
         } else {
-            if(g_prop[prop].type == 'text' || g_prop[prop].type == 'numeric') {
+            if(g_prop[prop].type == 'text' || g_prop[prop].type == 'numeric' || g_prop[prop].type == 'boolean') {
                 for(var i = 0; i < g_prop[prop].val.length; i++) {
                     window['init_' + prop](i);
+                    if(window['set_state_' + prop] == undefined) alert('Internal error 41: ' + prop);
                     window['set_state_' + prop](i, 'paused');
                 }
             } else {
