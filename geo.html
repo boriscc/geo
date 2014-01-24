@@ -2611,6 +2611,7 @@ function create_filter_object(parent_id) {
 
     for(var prop in g_prop) {
         if(g_prop[prop].unique == true) continue;
+        if(g_prop[prop].disabled != undefined) continue;
         var cur_size;
         if(g_prop[prop].type == 'text') cur_size = 1 + g_prop[prop].val.length;
         else if(g_prop[prop].type == 'numeric') cur_size = 3;
@@ -2823,6 +2824,8 @@ function set_prop_div_visibility() {
         if(g_game_state == 'on') g_prop[prop].show = g_prop[prop].game_show;
         else g_prop[prop].show = g_prop[prop].paused_show;
 
+        if(g_prop[prop].disabled != undefined) g_prop[prop].show = false;
+
         if(g_prop[prop].show) {
             if(prop == 'map' && obj(prop).classList == undefined) {
                 buggy_svg_classList.remove(obj(prop), 'removed');
@@ -2845,7 +2848,7 @@ function init() {
     }
 
     for(var rel in g_rel_prop) {
-        g_prop[rel] = { disp_name: g_rel_prop[rel].disp + ' i %', unique: false, type: 'numeric', show: true, interval_type: 'custom', interval_lim: [0, 20, 40, 60, 80, 100]};
+        g_prop[rel] = { disp_name: g_rel_prop[rel].disp + ' i %', unique: false, type: 'numeric', show: true, interval_type: 'custom', interval_lim: [0, 20, 40, 60, 80, 100], disabled: true};
     }
     for(var cc in g_list) {
         g_list[cc].state = {};
