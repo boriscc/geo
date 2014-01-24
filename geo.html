@@ -2881,6 +2881,10 @@ function init() {
     }
 
     for(var key in g_prop) {
+        if(g_prop[key].disabled != undefined) {
+            delete g_prop[key];
+            continue;
+        }
         // Create guess_group content
         var item = document.createElement('div');
         item.classList.add('menu_choice');
