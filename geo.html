@@ -147,15 +147,16 @@ div {
 #lang, #lang_a, #lang_e, #lang_f, #lang_s, #name, #cap, #reg, #gov, #pop, #rel, .rel_group, #rel_c, #rel_m, #rel_n, #rel_h, #rel_b, #rel_f, #rel_o, #rel_j {
     display: inline-flex;
     flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    align-content: stretch;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
     background-color: #e0e0e0;
 }
-#cap, #name { flex-direction: row; justify-content: flex-start; }
-#pop { display: inline-flex; flex-direction: row; width: 30.2em; }
-#lang_a, #lang_e, #lang_f, #lang_s { display: flex; flex-direction: row; width: 5.2em; }
+#cap, #name { flex-direction: row; justify-content: flex-start; flex-wrap: wrap; }
+#pop { display: inline-flex; flex-direction: row; flex-wrap: wrap; width: 30.2em; }
+#lang_a, #lang_e, #lang_f, #lang_s { display: flex; flex-direction: row; flex-wrap: wrap; width: 5.2em; }
+#lang { width: 5.2em; }
 #rel_c, #rel_m, #rel_n, #rel_h, #rel_b, #rel_f, #rel_o, #rel_j { display: flex; flex-direction: row; width: 10.2em; }
 .cap, .name, .reg, .gov, .pop, .lang_a, .lang_e, .lang_f, .lang_s, .rel, .rel_c, .rel_m, .rel_n, .rel_h, .rel_b, .rel_f, .rel_o, .rel_j {
     min-width: 10em;
@@ -2914,7 +2915,8 @@ function init() {
         if(g_prop[prop].unique == true) continue;
         var elem = document.createElement('div');
         elem.innerHTML = g_prop[prop].disp_name + ':';
-        elem.style.flex = '1 1 100%';
+        elem.style.display = 'block';
+        elem.style.width = "100%";
         elem.style.textAlign = 'center';
         obj(prop).appendChild(elem);
         if(g_prop[prop].type == 'text') {
