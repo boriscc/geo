@@ -1279,6 +1279,12 @@ function set_zoom(arg, evt) {
     if(typeof arg == 'string') {
         if(g_zoom[arg] == undefined) alert('Internal error 2: "' + arg + '"');
         zoom = g_zoom[arg];
+        for(var i = 0; i < g_prop.reg.val.length; i++) {
+            if(g_prop.reg.val[i].val == arg) {
+                set_choice({target: obj('filter_reg_' + i) }, 'filter_reg', 'exactly one');
+                break;
+            }
+        }
     } else {
         zoom = arg;
     }
