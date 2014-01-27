@@ -2824,7 +2824,7 @@ function create_aid_div() {
         elem.id = 'game_show_' + key + '_active';
         elem.addEventListener('click', create_click_set_choice('game_show_' + key, 'one'), false);
         c3.appendChild(elem);
-        if((g_game_mode == 'specific' || g_game_guess != key) && g_prop[key].type != 'text' && g_prop[key].type != 'numeric') {
+        if((g_game_mode == 'specific' || g_game_guess != key) && g_prop[key].type != 'text' && g_prop[key].type != 'numeric' && g_prop[key].type != 'boolean') {
             set_choice({target: elem}, 'game_show_' + key, 'one');
         }
 
@@ -2835,7 +2835,7 @@ function create_aid_div() {
         elem.id = 'game_show_' + key + '_all';
         elem.addEventListener('click', create_click_set_choice('game_show_' + key, 'one'), false);
         c4.appendChild(elem);
-        if((g_game_mode == 'subset' && g_game_guess == key) && g_prop[key].type != 'text' && g_prop[key].type != 'numeric') {
+        if((g_game_mode == 'subset' && g_game_guess == key) && g_prop[key].type != 'text' && g_prop[key].type != 'numeric' && g_prop[key].type != 'boolean') {
             set_choice({target: elem}, 'game_show_' + key, 'one');
         }
     }
