@@ -27,6 +27,7 @@
              [first name] dot [last name] at gmail
 -->
     <body>
+        <div id="map_resizer"></div>
         <style type="text/css">
 * {
     -webkit-box-sizing: border-box;
@@ -386,14 +387,14 @@ div {
 }
 
 #map_container {
-    order: 2;
+    order: 1;
 }
 
 #map {
 }
 
 #flag {
-    order: 1;
+    order: 2;
     display: inline-flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -402,6 +403,13 @@ div {
     align-content: flex-start;
     background-color: #e0e0e0;
     overflow-y: scroll;
+}
+
+#map_resizer {
+    position: absolute;
+    width: 1em;
+    height: 1em;
+    background-color: #ff0000;
 }
 
 .center_horizontal {
@@ -555,7 +563,6 @@ div {
             </div><div id="display_menu" class="menu" onclick="event.stopPropagation()">
                 <div>
                     <div class="menu_group">
-                        <div class="menu_choice">Bredd på karta i %:<input type="text" id="map_size" onkeyup="map_size_evt_key(event)" class="menu_tbox" style="width: 40px"/></div>
                         <div class="menu_choice">Bredd på flaggor i em:<input type="text" id="flag_size" onkeyup="flag_size_evt_key(event)" class="menu_tbox" style="width: 40px"/></div>
                     </div>
                     <div class="menu_choice" id="set_map_hover" onclick="set_choice(event, 'set_map_hover', 'one'); update_map_hover()" title="Om detta avmarkeras, så byter inte land-områdena på kartan som är under muspekaren färg.">"Hover"-effekt</div>
@@ -563,12 +570,12 @@ div {
                     <div class="menu_group">
                         <div class="menu_choice" onclick="set_zoom('world', event)">Världen</div>
                         <div class="menu_choice" onclick="set_zoom('compact', event)">Världen - kompakt</div>
-                        <div class="menu_choice" onclick="set_zoom('africa', event)">Afrika</div>
-                        <div class="menu_choice" onclick="set_zoom('asia', event)">Asien</div>
-                        <div class="menu_choice" onclick="set_zoom('europe', event)">Europa</div>
-                        <div class="menu_choice" onclick="set_zoom('north_america', event)">Nordamerika</div>
-                        <div class="menu_choice" onclick="set_zoom('oceania', event)">Oceanien</div>
-                        <div class="menu_choice" onclick="set_zoom('south_america', event)">Sydamerika</div>
+                        <div class="menu_choice" onclick="set_zoom('Afrika', event)">Afrika</div>
+                        <div class="menu_choice" onclick="set_zoom('Asien', event)">Asien</div>
+                        <div class="menu_choice" onclick="set_zoom('Europa', event)">Europa</div>
+                        <div class="menu_choice" onclick="set_zoom('Nordamerika', event)">Nordamerika</div>
+                        <div class="menu_choice" onclick="set_zoom('Oceanien', event)">Oceanien</div>
+                        <div class="menu_choice" onclick="set_zoom('Sydamerika', event)">Sydamerika</div>
                     </div>
                 </div><div>
                     <div class="menu_title" title="Här väljer du vad som ska visas när spelet inte är igång.">Synlig information (i pausat l&auml;ge):</div>
@@ -1247,7 +1254,6 @@ var g_state = { inactive    :{show_info:0},
                 highlight   :{show_info:0} };
 
 var g_flag_width = 6; // in em
-var g_map_width = 60; // percent of window width
 
 var g_map = obj("map");
 var g_country_sort = [];
@@ -1264,14 +1270,14 @@ var g_filter_reg = {};
 var g_filter_fail_list = false;
 
 var g_zoom = {};
-g_zoom.world   = {height: 1403, width: 1, y: 60, x: -53};
-g_zoom.compact = {height: 1160, width: 1, y: 100, x: 400};
-g_zoom.africa  = {height: 640, width: 1, y: 430, x: 1070};
-g_zoom.asia    = {height: 700, width: 1, y: 160, x: 1450};
-g_zoom.europe  = {height: 310, width: 1, y: 160, x: 1150};
-g_zoom.north_america = {height: 550, width: 1, y: 160, x: 250};
-g_zoom.oceania       = {height: 560, width: 1, y: 620, x: 2100};
-g_zoom.south_america = {height: 630, width: 1, y: 630, x: 630};
+g_zoom.world       = {height: 1403, width: 1, y: 60 , x: -53};
+g_zoom.compact     = {height: 1160, width: 1, y: 100, x: 400};
+g_zoom.Afrika      = {height: 640 , width: 1, y: 430, x: 1070};
+g_zoom.Asien       = {height: 700 , width: 1, y: 160, x: 1450};
+g_zoom.Europa      = {height: 310 , width: 1, y: 160, x: 1150};
+g_zoom.Nordamerika = {height: 550 , width: 1, y: 160, x: 250};
+g_zoom.Oceanien    = {height: 560 , width: 1, y: 620, x: 2100};
+g_zoom.Sydamerika  = {height: 630 , width: 1, y: 630, x: 630};
 
 function set_zoom(arg, evt) {
     var zoom;
@@ -1301,16 +1307,21 @@ function show_message(msg, type) {
     else obj('message').style.color = '#ff0000';
 }
 
-function set_map_width(width) {
-    width = parseFloat(width);
-    if(isNaN(width) || width <= 0) width = g_map_width;
-    g_map_width = width;
-    var width_real = g_map_width * window.innerWidth / 100.0;
-    obj('map_size').value = g_map_width + "";
-    g_map.setAttribute("width", width_real);
-    g_map.setAttribute("height", width_real / 2);
-    obj('flag').style.width = (window.innerWidth - width_real - 20) + 'px';
-    obj('flag').style.height = (width_real / 2) + 'px';
+function set_map_width(width, height) {
+    if(width == undefined || isNaN(width) || width <= 0) alert('Internal error 56.2');
+    if(height == undefined || isNaN(height) || height <= 0) height = width / 2;
+    
+    g_map.setAttribute("width", width);
+    g_map.setAttribute("height", height);
+    
+    var off = get_object_offset(obj('map'));
+    var off2 = get_object_offset(obj('map_resizer'));
+    
+    obj('map_resizer').style.top = (height + off.y1 - off2.h/2) + 'px';
+    obj('map_resizer').style.left = (width + off.x1 - off2.w/2) + 'px';
+    
+    obj('flag').style.width = (window.innerWidth - off.x1 - width) + 'px';
+    obj('flag').style.height = height + 'px';
 }
 
 function set_country_info(cc) {
@@ -1344,6 +1355,47 @@ function set_country_info(cc) {
                 }
             }
         }
+    }
+}
+
+function mouseX(evt) {if (!evt) evt = window.event; if (evt.pageX) return evt.pageX; else if (evt.clientX)return evt.clientX + (document.documentElement.scrollLeft ?  document.documentElement.scrollLeft : document.body.scrollLeft); else return 0;}
+function mouseY(evt) {if (!evt) evt = window.event; if (evt.pageY) return evt.pageY; else if (evt.clientY)return evt.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop); else return 0;}
+function cancelDefaultAction(e) {
+    var evt = e ? e:window.event;
+    if (evt.preventDefault) evt.preventDefault();
+    else evt.returnValue = false;
+    return false;
+}
+
+function get_object_offset(o) {
+    var b = o.getBoundingClientRect();
+    var xo = window.pageXOffset;
+    var yo = window.pageYOffset;
+    return { x1: b.left + xo, y1: b.top + yo, x2: b.right + xo, y2: b.bottom + yo, w: b.right - b.left, h: b.bottom - b.top };
+}
+
+var g_map_resizer_moving = false;
+function set_map_resizer_pos(evt)
+{
+    if(g_map_resizer_moving == false) return;
+    var off = get_object_offset(obj('map_resizer'));
+    obj('map_resizer').style.top = (mouseY(evt) - off.h / 2) + 'px';
+    obj('map_resizer').style.left = (mouseX(evt) - off.w / 2) + 'px';
+}
+
+function map_resizer_mousedown(evt)
+{
+    g_map_resizer_moving = true;
+    
+    return cancelDefaultAction(evt);
+}
+
+function document_mouseup(evt)
+{
+    if(g_map_resizer_moving) {
+        g_map_resizer_moving = false;
+        var off = get_object_offset(obj('map'));
+        set_map_width(mouseX(evt) - off.x1, mouseY(evt) - off.y1);
     }
 }
 
@@ -1433,46 +1485,58 @@ function document_click(evt) {
 
 function document_mouseover(evt)
 {
-    set_country_info();
-    set_prop_hover();
+    if(g_map_resizer_moving == false) {
+        set_country_info();
+        set_prop_hover();
+    }
 
     evt.stopPropagation();
 }
 
+function document_mousemove(evt)
+{
+    set_map_resizer_pos(evt);
+}
+
 function prop_click(event, prop, id) {
-    if(g_game_state == 'on' && g_game_guess == prop &&
-       ((g_prop[prop].unique && g_list[id].state[prop] == 'active') || (g_prop[prop].unique == false && g_prop[prop].val[id].state == 'active'))) {
-        var factor = parseInt(obj('setting_num_factor').value);
-        if(g_prop[prop].type == 'numeric') {
-            if(g_prop[prop].unique) make_guess({val: g_list[id][prop], min: g_list[id][prop] / factor, max: g_list[id][prop] * factor});
-            else make_guess(g_prop[prop].val[id]);
-        } else if(g_prop[prop].type == 'map') {
-            make_guess(id);
-        } else if(g_prop[prop].type == 'image') {
-            make_guess(id);
-        } else if(g_prop[prop].type == 'text') {
-            var val;
-            if(g_prop[prop].unique) val = g_list[id][prop];
-            else val = g_prop[prop].val[id].val;
-            make_guess(decodeURIComponent(val).toLowerCase());
-        } else if(g_prop[prop].type == 'boolean') {
-            make_guess(g_prop[prop].val[id].val);
+    if(g_map_resizer_moving == false) {
+        var allowed_states = { active: true, highlight: true };
+        if(g_game_state == 'on' && g_game_guess == prop &&
+           ((g_prop[prop].unique && g_list[id].state[prop] in allowed_states) || (g_prop[prop].unique == false && g_prop[prop].val[id].state in allowed_states))) {
+            var factor = parseInt(obj('setting_num_factor').value);
+            if(g_prop[prop].type == 'numeric') {
+                if(g_prop[prop].unique) make_guess({val: g_list[id][prop], min: g_list[id][prop] / factor, max: g_list[id][prop] * factor});
+                else make_guess(g_prop[prop].val[id]);
+            } else if(g_prop[prop].type == 'map') {
+                make_guess(id);
+            } else if(g_prop[prop].type == 'image') {
+                make_guess(id);
+            } else if(g_prop[prop].type == 'text') {
+                var val;
+                if(g_prop[prop].unique) val = g_list[id][prop];
+                else val = g_prop[prop].val[id].val;
+                make_guess(decodeURIComponent(val).toLowerCase());
+            } else if(g_prop[prop].type == 'boolean') {
+                make_guess(g_prop[prop].val[id].val);
+            }
         }
     }
     event.stopPropagation();
 }
 
 function prop_mouseover(event, prop, id) {
-    if(g_prop[prop].unique) {
-        if(g_state[g_list[id].state[prop]].show_info) {
-            set_country_info(id);
+    if(g_map_resizer_moving == false) {
+        if(g_prop[prop].unique) {
+            if(g_state[g_list[id].state[prop]].show_info) {
+                set_country_info(id);
+            } else {
+                set_country_info();
+            }
+            set_prop_hover(prop, id);
         } else {
             set_country_info();
+            set_prop_hover(prop, id);
         }
-        set_prop_hover(prop, id);
-    } else {
-        set_country_info();
-        set_prop_hover(prop, id);
     }
 
     event.stopPropagation();
@@ -3049,7 +3113,9 @@ function init() {
 
     g_map.addEventListener("mouseover", function(evt) { top.document_mouseover(evt); }, false);
     document.addEventListener("mouseover", function(evt) { document_mouseover(evt); }, false);
+    document.addEventListener("mousemove", function(evt) { document_mousemove(evt); }, false);
     document.addEventListener("click", function(evt) { document_click(evt); }, false);
+    document.addEventListener("mouseup", function(evt) { document_mouseup(evt); }, false);
 
     set_choice({target: obj('help_show_done') }, 'help_show_done', 'one');
     set_choice({target: obj('setting_typo_none') }, 'setting_typo', 'exactly one');
@@ -3058,9 +3124,6 @@ function init() {
     set_choice({target: obj('set_map_hover') }, 'set_map_hover', 'one');
 
     update_map_hover();
-
-    set_map_width(g_map_width);
-    set_flag_width(g_flag_width);
 
     var top_padding_size = obj('main_menu').clientHeight;
     document.getElementsByTagName('body')[0].style.marginTop = top_padding_size + "px";
@@ -3074,6 +3137,11 @@ function init() {
                          g_list[cc].gov_ref;
         obj('ref').appendChild(elem);
     }
+    
+    obj('map_resizer').addEventListener("mousedown", function(evt) { map_resizer_mousedown(evt); }, false);
+    
+    set_map_width(70 * window.innerWidth / 100.0);
+    set_flag_width(g_flag_width);
 }
 
 init();
