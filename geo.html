@@ -1318,7 +1318,7 @@ function set_map_width(width, height) {
     g_map.setAttribute("width", width);
     g_map.setAttribute("height", height);
     
-    var off = get_object_offset(obj('map'));
+    var off = get_object_offset(obj('map_container'));
     var off2 = get_object_offset(obj('map_resizer'));
     
     obj('map_resizer').style.top = (height + off.y1 - off2.h/2) + 'px';
@@ -1398,7 +1398,7 @@ function document_mouseup(evt)
 {
     if(g_map_resizer_moving) {
         g_map_resizer_moving = false;
-        var off = get_object_offset(obj('map'));
+        var off = get_object_offset(obj('map_container'));
         set_map_width(mouseX(evt) - off.x1, mouseY(evt) - off.y1);
     }
 }
