@@ -1938,10 +1938,17 @@ function close_menu(group) {
 
 var g_choice = {};
 function set_choice(evt, group_id, type) {
+    if(g_choice[group_id] == undefined) g_choice[group_id] = {};
+    if(type == 'none') {
+        for(var key in g_choice[group_id]) {
+            obj(key).classList.remove("menu_choice_checked");
+            delete g_choice[group_id][key];
+        }
+        return;
+    }
     var id = evt.target.id;
     if(id == undefined || id == '') return;
     var elem = evt.target;
-    if(g_choice[group_id] == undefined) g_choice[group_id] = {};
 
     if(type == 'many') {
         if(id in g_choice[group_id]) {
