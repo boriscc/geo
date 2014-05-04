@@ -2296,9 +2296,9 @@ function game_show_results() {
         if(g_game_guess_nr == g_game_total_nr && g_game_skip_nr == 0) state = 'good';
         else state = 'bad';
         if(g_game_skip_nr) {
-            show_message('Du hade ' + (g_game_guess_nr - g_game_correct_nr) + ' felaktiga gissningar och hoppade över ' + g_game_skip_nr + ' länder.', state);
+            show_message('Du hade ' + (g_game_guess_nr - g_game_total_nr) + ' felaktiga gissningar och hoppade över ' + g_game_skip_nr + ' länder.', state);
         } else {
-            show_message('Du hade ' + (g_game_guess_nr - g_game_correct_nr) + ' felaktiga gissningar.', state);
+            show_message('Du hade ' + (g_game_guess_nr - g_game_total_nr) + ' felaktiga gissningar.', state);
         }
     }
 
