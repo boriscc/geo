@@ -1506,7 +1506,7 @@ function prop_click(event, prop, id) {
         var allowed_states = { active: true, highlight: true };
         if(g_game_state == 'on' && g_game_guess == prop &&
            ((g_prop[prop].unique && g_list[id].state[prop] in allowed_states) || (g_prop[prop].unique == false && g_prop[prop].val[id].state in allowed_states))) {
-            var factor = parseInt(obj('setting_num_factor').value);
+            var factor = parseFloat(obj('setting_num_factor').value.replace(',', '.'));
             if(g_prop[prop].type == 'numeric') {
                 if(g_prop[prop].unique) make_guess({val: g_list[id][prop], min: g_list[id][prop] / factor, max: g_list[id][prop] * factor});
                 else make_guess(g_prop[prop].val[id]);
@@ -2651,7 +2651,7 @@ function guess_text(evt, elem) {
             make_guess((elem.value + "").trim().replace(/ /g, '_').toLowerCase());
         } else if(g_prop[g_game_guess].type == 'numeric') {
             var val = geo_parse_num(elem.value);
-            var factor = parseInt(obj('setting_num_factor').value);
+            var factor = parseFloat(obj('setting_num_factor').value.replace(',', '.'));
             make_guess({ val: val, min: val / factor, max: val * factor });
         }
         elem.value = '';
