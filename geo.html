@@ -1565,6 +1565,26 @@ function document_mousemove(evt)
     set_map_resizer_pos(evt);
 }
 
+function map_click(event) {
+    var cur = g_map.viewBox.baseVal;
+    var set = {};
+
+    set.width = Math.min(g_zoom.world.width, cur.width*1.5);
+    set.height = Math.min(g_zoom.world.height, cur.height*1.5);
+    set.x = Math.max(g_zoom.world.x, cur.x - 0.5*(set.width - cur.width));
+    set.y = Math.max(g_zoom.world.y, cur.y - 0.5*(set.height - cur.height));
+
+    set_zoom(set);
+
+    event.stopPropagation();
+}
+
+function map_dblclick(event) {
+    set_zoom('world');
+
+    event.stopPropagation();
+}
+
 function prop_click(event, prop, id) {
     if(g_map_resizer_moving == false) {
         var allowed_states = { active: true, highlight: true };
@@ -3265,6 +3285,8 @@ function init() {
     create_filter_object('filter_div');
 
     g_map.addEventListener("mouseover", function(evt) { top.document_mouseover(evt); }, false);
+    g_map.addEventListener("click", function(evt) { top.map_click(evt); }, false);
+    g_map.addEventListener("dblclick", function(evt) { top.map_dblclick(evt); }, false);
     document.addEventListener("mouseover", function(evt) { document_mouseover(evt); }, false);
     document.addEventListener("mousemove", function(evt) { document_mousemove(evt); }, false);
     document.addEventListener("click", function(evt) { document_click(evt); }, false);
