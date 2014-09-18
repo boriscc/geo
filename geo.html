@@ -1147,6 +1147,19 @@ var levDist = function(s, t) {
     return d[n][m];
 }
 
+function scrollSmooth(element, to, duration) {
+    if (duration <= 0) return;
+    var dt = 10; // in milliseconds
+    var difference = to - element.scrollTop;
+    var fact = Math.min(1, dt / duration);
+    var perTick = fact * difference;
+
+    setTimeout(function () {
+        element.scrollTop = element.scrollTop + perTick;
+        scrollSmooth(element, to, duration - dt);
+    }, dt);
+}
+
 var buggy_svg_classList = {};
 buggy_svg_classList.add = function(elem, cls) {
     if(!buggy_svg_classList.contains(elem, cls)) {
@@ -1476,6 +1489,81 @@ function document_mouseup(evt)
     }
 }
 
+function on_map_paused_hover_add(obj, type, id, prop, state, suffix)
+{
+    function add_flashing_circle(o) {
+        var mw = g_map.viewBox.baseVal.width;
+        var mh = g_map.viewBox.baseVal.height;
+        var m_min = Math.min(mw, mh);
+        if(o.bbox.width > 0.05 * mw || o.bbox.height > 0.05 * mh) return;
+        var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circ.setAttribute('cx', o.cent_x);
+        circ.setAttribute('cy', o.cent_y);
+        circ.setAttribute('r', Math.min(0.15 * m_min / 2, 70));
+        circ.style.fill = 'none';
+        circ.style.stroke = '#ffffff';
+        circ.style.strokeWidth = 0.03 * m_min / 2;
+        circ.addEventListener('mouseover', function(evt){evt.stopPropagation();}, false);
+        g_map.appendChild(circ);
+        var anim = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+        anim.setAttribute('attributeName', 'r');
+        anim.setAttribute('attributeType', 'XML');
+        anim.setAttribute('to', '0');
+        anim.setAttribute('begin', 'indefinite');
+        anim.setAttribute('dur', '1.0s');
+        anim.setAttribute('id', name + '_anim_r');
+        anim.setAttribute('repeatCount', '2');
+        var anim2 = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+        anim2.setAttribute('attributeName', 'opacity');
+        anim2.setAttribute('attributeType', 'XML');
+        anim2.setAttribute('from', '1');
+        anim2.setAttribute('to', '0');
+        anim2.setAttribute('begin', name + '_anim_r.end');
+        anim2.setAttribute('dur', '1.0s');
+        anim2.setAttribute('repeatCount', '1');
+        anim2.setAttribute('fill', 'freeze');
+        if(anim.classList == undefined) {
+            buggy_svg_classList.add(anim, name + '_anim');
+            buggy_svg_classList.add(anim2, name + '_anim');
+            buggy_svg_classList.add(circ, name + '_anim_' + id);
+        } else {
+            anim.classList.add(name + '_anim');
+            anim2.classList.add(name + '_anim');
+            circ.classList.add(name + '_anim_' + id);
+        }
+        circ.appendChild(anim);
+        circ.appendChild(anim2);
+        anim.beginElement();
+        o.obj_highlight = circ;
+        o.have_highlight = true;
+    }
+
+    if(set_prop_hover.prev_prop == 'map') return;
+    for(var i = 0; i < g_list[id].map_obj.length; i++) {
+        if(g_list[id].map_obj[i].need_highlight && g_list[id].map_obj[i].have_highlight == false) add_flashing_circle(g_list[id].map_obj[i]);
+    }
+}
+
+function on_map_paused_hover_remove(obj, type, id, prop, state, suffix) {
+    for(var i = 0; i < g_list[id].map_obj.length; i++) {
+        if(g_list[id].map_obj[i].have_highlight) {
+            g_list[id].map_obj[i].obj_highlight.parentNode.removeChild(g_list[id].map_obj[i].obj_highlight);
+            delete g_list[id].map_obj[i].obj_highlight;
+            g_list[id].map_obj[i].have_highlight = false;
+        }
+    }
+}
+
+function on_flag_paused_hover_add(o, type, id, prop, state, suffix) {
+}
+
+function on_prop_paused_click(o, type, id, prop, state, suffix) {
+    if(g_prop[prop].unique) {
+        if(prop != 'flag') scrollSmooth(obj('flag'), obj('flag').scrollTop - obj('flag').getBoundingClientRect().top + obj('flag_' + id).getBoundingClientRect().top, 250);
+        set_zoom(id);
+    }
+}
+
 function set_prop_class(obj, type, id, prop, state, suffix) {
     name = prop + '_' + state + suffix;
 
@@ -1628,6 +1716,13 @@ function prop_click(event, prop, id) {
                 make_guess(g_prop[prop].val[id].val);
             }
         }
+
+        if(g_game_state == 'off') {
+            if(g_prop[prop].unique) {
+                f = g_list[id]['on_' + prop + '_paused_click'];
+                if(f != undefined) f(event.currentTarget, 'click', id, prop, 'paused', '');
+            }
+        }
     }
     event.stopPropagation();
 }
@@ -1774,6 +1869,8 @@ function init_flag(country_code) {
 
     elem.classList.add("flag");
     add_prop_events(elem, 'flag', country_code);
+    g_list[country_code].on_flag_paused_hover_add = on_flag_paused_hover_add;
+    g_list[country_code].on_flag_paused_click = on_prop_paused_click;
 }
 
 function init_map(cc) {
@@ -1864,6 +1961,10 @@ function init_map(cc) {
             }
         }
     }
+
+    g_list[cc].on_map_paused_hover_add = on_map_paused_hover_add;
+    g_list[cc].on_map_paused_hover_remove = on_map_paused_hover_remove;
+    g_list[cc].on_map_paused_click = on_prop_paused_click;
 }
 
 function set_state(id, prop, state) {
