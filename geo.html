@@ -1204,6 +1204,69 @@ function timerStart(onReady, ready, ID, waitTime)
     return;
 }
 
+//*** This code is copyright 2011 by Gavin Kistner, !@phrogz.net
+//*** It is covered under the license viewable at http://phrogz.net/JS/_ReuseLicense.txt
+//*** Reuse or modification is free provided you abide by the terms of that license.
+//*** (Including the first two lines above in your source code satisfies the conditions.)
+function pathToPolygon(path,samples){
+	if (!samples) samples = 0;
+	var doc = path.ownerDocument;
+	var poly = doc.createElementNS('http://www.w3.org/2000/svg','polygon');
+
+	// Put all path segments in a queue
+	for (var segs=[],s=path.pathSegList,i=s.numberOfItems-1;i>=0;--i) segs[i] = s.getItem(i);
+	var segments = segs.concat();
+
+	var seg,lastSeg,points=[],x,y;
+	var addSegmentPoint = function(s){
+		if (s.pathSegType == SVGPathSeg.PATHSEG_CLOSEPATH){
+		}else{
+			if (s.pathSegType%2==1 && s.pathSegType>1){
+				// All odd-numbered path types are relative, except PATHSEG_CLOSEPATH (1)
+				if(s.x != undefined) x+=s.x;
+                if(s.y != undefined) y+=s.y;
+			}else{
+				x=s.x; y=s.y;
+			}
+			var lastPoint = points[points.length-1];
+			if (!lastPoint || x!=lastPoint[0] || y!=lastPoint[1]) points.push([x,y]);
+		}
+	};
+	for (var d=0,len=path.getTotalLength(),step=len/samples;d<=len;d+=step){
+		var seg = segments[path.getPathSegAtLength(d)];
+		var pt  = path.getPointAtLength(d);
+		if (seg != lastSeg){
+			lastSeg = seg;
+			while (segs.length && segs[0]!=seg) addSegmentPoint( segs.shift() );
+		}
+		var lastPoint = points[points.length-1];
+		if (!lastPoint || pt.x!=lastPoint[0] || pt.y!=lastPoint[1]) points.push([pt.x,pt.y]);
+	}
+	for (var i=0,len=segs.length;i<len;++i) addSegmentPoint(segs[i]);
+	for (var i=0,len=points.length;i<len;++i) points[i] = points[i].join(',');
+	poly.setAttribute('points',points.join(' '));
+	return poly;
+}
+
+function polyData(poly){
+	var area=0,pts=poly.points,len=pts.numberOfItems;
+    var cent_x = 0;
+    var cent_y = 0;
+    var ret = {};
+	for(var i=0;i<len;++i){
+		var p1 = pts.getItem(i), p2=pts.getItem((i+len-1)%len);
+		//area += (p2.x+p1.x) * (p2.y-p1.y);
+        var t = p2.x * p1.y - p1.x * p2.y;
+        area += t;
+        cent_x += t * (p1.x + p2.x);
+        cent_y += t * (p1.y + p2.y);
+	}
+    ret.area = area / 2;
+    ret.cent_x = cent_x / (6 * ret.area);
+    ret.cent_y = cent_y / (6 * ret.area);
+	return ret;
+}
+
 function shade_color(state, percent) {
     if(state.hover_color != undefined) return state.hover_color;
     var color = state.color;
@@ -1677,8 +1740,87 @@ function init_map(cc) {
     if(g_map.getElementsByClassName == undefined) node_list = document.getElementsByClassName(cc);
     else node_list = g_map.getElementsByClassName(cc);
 
+    g_list[cc].map_obj = [];
     for(var i = 0, length = node_list.length; i < length; i++) {
         add_prop_events(node_list[i], 'map', cc);
+
+        if(node_list[i]['data-added'] == undefined) {
+            g_list[cc].map_obj.push({obj: node_list[i]});
+            node_list[i]['data-added'] = '1';
+        }
+        var clist = node_list[i].getElementsByTagName('path');
+        for(var j = 0; j < clist.length; j++) {
+            if(clist[j]['data-added'] != undefined) continue;
+            g_list[cc].map_obj.push({obj: clist[j]});
+            clist[j]['data-added'] = '1';
+        }
+        var clist = node_list[i].getElementsByTagName('circle');
+        for(var j = 0; j < clist.length; j++) {
+            if(clist[j]['data-added'] != undefined) continue;
+            g_list[cc].map_obj.push({obj: clist[j]});
+            clist[j]['data-added'] = '1';
+        }
+    }
+
+    for(var i = 0; i < g_list[cc].map_obj.length; i++) {
+        var obj = g_list[cc].map_obj[i];
+        if(obj.obj.tagName == 'path') {
+            var d = polyData(pathToPolygon(obj.obj, 2));
+            obj.area = d.area;
+            obj.cent_x = d.cent_x;
+            obj.cent_y = d.cent_y;
+            obj.size = Math.sqrt(Math.abs(obj.area)/Math.PI);
+        } else if(obj.obj.tagName == 'circle') {
+            obj.area = obj.obj.r.baseVal.value * obj.obj.r.baseVal.value * Math.PI;
+            obj.cent_x = obj.obj.cx.baseVal.value;
+            obj.cent_y = obj.obj.cy.baseVal.value;
+            obj.size = obj.obj.r.baseVal.value;
+        } else {
+            obj.area = 0;
+            obj.cent_x = 0;
+            obj.cent_y = 0;
+            obj.size = 0;
+        }
+    }
+
+    // Sort with largest first
+    g_list[cc].map_obj.sort(function(a, b){return Math.abs(b.area) - Math.abs(a.area)});
+
+    // Remove objects with too small area
+    // A normal circle has area 114, a small circle 56
+    while(g_list[cc].map_obj.length && Math.abs(g_list[cc].map_obj[g_list[cc].map_obj.length - 1].area) < 28) {
+        g_list[cc].map_obj.pop();
+    }
+    if(g_list[cc].map_obj.length == 0) alert(cc + ' has no area');
+
+    g_list[cc].map_bbox = g_list[cc].map_obj[0].obj.getBBox();
+    min_width = 150;
+    min_height = 150;
+    size_factor = 1.5;
+    new_width = Math.max(min_width, g_list[cc].map_bbox.width * size_factor);
+    new_height = Math.max(min_height, g_list[cc].map_bbox.height * size_factor);
+    g_list[cc].map_bbox.x -= 0.5 * (new_width - g_list[cc].map_bbox.width);
+    g_list[cc].map_bbox.y -= 0.5 * (new_height - g_list[cc].map_bbox.height);
+    g_list[cc].map_bbox.width = new_width;
+    g_list[cc].map_bbox.height = new_height;
+
+    var d = g_list[cc].map_obj;
+    for(var i = 0; i < g_list[cc].map_obj.length; i++) {
+        d[i].have_highlight = false;
+        d[i].bbox = d[i].obj.getBBox();
+        if(Math.abs(d[i].area) > 1000) {
+            d[i].need_highlight = false;
+            continue;
+        }
+
+        d[i].need_highlight = true;
+        for(var j = 0; j < i; j++) {
+            // if (xj-xi)^2 + (yj-yi)^2 < (C*(rj + ri) + rc)^2
+            if(Math.pow(d[j].cent_x - d[i].cent_x, 2) + Math.pow(d[j].cent_y - d[i].cent_y, 2) < Math.pow(1.5*(d[j].size + d[i].size) + 50, 2)) {
+                d[i].need_highlight = false;
+                break;
+            }
+        }
     }
 }
 
