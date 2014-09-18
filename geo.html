@@ -1476,6 +1476,21 @@ function document_mouseup(evt)
     }
 }
 
+function set_prop_class(obj, type, id, prop, state, suffix) {
+    name = prop + '_' + state + suffix;
+
+    if(obj.classList == undefined) {
+        buggy_svg_classList[type](obj, name);
+    } else {
+        obj.classList[type](name);
+    }
+
+    if(g_prop[prop].unique) {
+        f = g_list[id]['on_' + name + '_' + type];
+        if(f != undefined) f(obj, type, id, prop, state, suffix);
+    }
+}
+
 function set_prop_hover(hover_prop, id) {
     function set_hover(c, prop_list, type) {
         for(var prop in prop_list) {
@@ -1490,19 +1505,15 @@ function set_prop_hover(hover_prop, id) {
                     else node_list = g_map.getElementsByClassName(c);
 
                     for(var i = 0, length = node_list.length; i < length; i++) {
-                        if(node_list[i].classList == undefined) {
-                            buggy_svg_classList[type](node_list[i], prop + '_' + state + '_hover');
-                        } else {
-                            node_list[i].classList[type](prop + '_' + state + '_hover');
-                        }
+                        set_prop_class(node_list[i], type, c, prop, state, '_hover');
                     }
                 } else {
-                    obj(prop + '_' + c).classList[type](prop + '_' + state + '_hover');
+                    set_prop_class(obj(prop + '_' + c), type, c, prop, state, '_hover');
                 }
             } else {
                 var idx = g_list[c].val_idx[prop]
                 var state = prop_list[prop].val[idx].state;
-                obj(prop + '_' + idx).classList[type](prop + '_' + state + '_hover');
+                set_prop_class(obj(prop + '_' + idx), type, c, prop, state, '_hover');
             }
         }
     }
@@ -1513,7 +1524,7 @@ function set_prop_hover(hover_prop, id) {
         }
         if(g_prop[set_prop_hover.prev_prop].unique == false) {
             var prop = set_prop_hover.prev_prop;
-            obj(prop + '_' + set_prop_hover.prev_id).classList.remove(prop + '_' + g_prop[prop].val[set_prop_hover.prev_id].state + '_hover');
+            set_prop_class(obj(prop + '_' + set_prop_hover.prev_id), 'remove', set_prop_hover.prev_id, prop, g_prop[prop].val[set_prop_hover.prev_id].state, '_hover');
         }
         delete set_prop_hover.prev_id;
         delete set_prop_hover.prev_prop;
@@ -1542,7 +1553,7 @@ function set_prop_hover(hover_prop, id) {
             }
         }
         var prop = set_prop_hover.prev_prop;
-        obj(prop + '_' + set_prop_hover.prev_id).classList.add(prop + '_' + g_prop[prop].val[set_prop_hover.prev_id].state + '_hover');
+        set_prop_class(obj(prop + '_' + set_prop_hover.prev_id), 'add', set_prop_hover.prev_id, prop, g_prop[prop].val[set_prop_hover.prev_id].state, '_hover');
         if(g_state[g_prop[hover_prop].val[id].state].show_info) {
             set_prop_hover.prev_prop_list = g_prop;
         } else {
@@ -1864,10 +1875,10 @@ function set_state(id, prop, state) {
 
     if(old_state != undefined) {
         if(old_state == state) return;
-        obj(prop + '_' + id).classList.remove(prop + '_' + old_state);
+        set_prop_class(obj(prop + '_' + id), 'remove', id, prop, old_state, '');
         if(obj(prop + '_' + id).classList.contains(prop + '_' + old_state + '_hover')) {
             have_hover = true;
-            obj(prop + '_' + id).classList.remove(prop + '_' + old_state + '_hover');
+            set_prop_class(obj(prop + '_' + id), 'remove', id, prop, old_state, '_hover');
         }
     }
 
@@ -1875,9 +1886,9 @@ function set_state(id, prop, state) {
     else g_prop[prop].val[id].state = state;
 
     if(obj(prop + '_' + id) == null) alert('Internal error 44: ' + prop + '_' + id);
-    obj(prop + '_' + id).classList.add(prop + '_' + state);
+    set_prop_class(obj(prop + '_' + id), 'add', id, prop, state, '');
     if(have_hover) {
-        obj(prop + '_' + id).classList.add(prop + '_' + state + '_hover');
+        set_prop_class(obj(prop + '_' + id), 'add', id, prop, state, '_hover');
     }
 }
 
@@ -1975,26 +1986,16 @@ function set_state_map(cc, state) {
         }
 
         for(var i = 0; i < node_list.length; i++) {
-            if(node_list[i].classList == undefined) {
-                buggy_svg_classList.remove(node_list[i], 'map_' + g_list[cc].state.map);
-                if(have_hover) buggy_svg_classList.remove(node_list[i], 'map_' + g_list[cc].state.map + '_hover');
-            } else {
-                node_list[i].classList.remove('map_' + g_list[cc].state.map);
-                if(have_hover) node_list[i].classList.remove('map_' + g_list[cc].state.map + '_hover');
-            }
+            set_prop_class(node_list[i], 'remove', cc, 'map', g_list[cc].state.map, '');
+            if(have_hover) set_prop_class(node_list[i], 'remove', cc, 'map', g_list[cc].state.map, '_hover');
         }
     }
 
     g_list[cc].state.map = state;
 
     for(var i = 0; i < node_list.length; i++) {
-        if(node_list[i].classList == undefined) {
-            buggy_svg_classList.add(node_list[i], 'map_' + g_list[cc].state.map);
-            if(have_hover && g_use_map_hover) buggy_svg_classList.add(node_list[i], 'map_' + g_list[cc].state.map + '_hover');
-        } else {
-            node_list[i].classList.add('map_' + g_list[cc].state.map);
-            if(have_hover && g_use_map_hover) node_list[i].classList.add('map_' + g_list[cc].state.map + '_hover');
-        }
+        set_prop_class(node_list[i], 'add', cc, 'map', g_list[cc].state.map, '');
+        if(have_hover) set_prop_class(node_list[i], 'add', cc, 'map', g_list[cc].state.map, '_hover');
     }
 }
 
