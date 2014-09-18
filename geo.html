@@ -1332,14 +1332,14 @@ var g_filter_reg = {};
 var g_filter_fail_list = false;
 
 var g_zoom = {};
-g_zoom.world       = {height: 1403, width: 1, y: 60 , x: -53};
-g_zoom.compact     = {height: 1160, width: 1, y: 100, x: 400};
-g_zoom.Afrika      = {height: 640 , width: 1, y: 430, x: 1070};
-g_zoom.Asien       = {height: 700 , width: 1, y: 160, x: 1450};
-g_zoom.Europa      = {height: 310 , width: 1, y: 160, x: 1150};
-g_zoom.Nordamerika = {height: 550 , width: 1, y: 160, x: 250};
-g_zoom.Oceanien    = {height: 560 , width: 1, y: 620, x: 2100};
-g_zoom.Sydamerika  = {height: 630 , width: 1, y: 630, x: 630};
+g_zoom.world       = {height: 1403, width: 2830, y: 60 , x: -53};
+g_zoom.compact     = {height: 1160, width: 2340, y: 100, x: 400};
+g_zoom.Afrika      = {height: 640 , width: 670 , y: 430, x: 1070};
+g_zoom.Asien       = {height: 700 , width: 950 , y: 160, x: 1450};
+g_zoom.Europa      = {height: 310 , width: 410 , y: 160, x: 1150};
+g_zoom.Nordamerika = {height: 550 , width: 710 , y: 160, x: 250};
+g_zoom.Oceanien    = {height: 560 , width: 630 , y: 620, x: 2100};
+g_zoom.Sydamerika  = {height: 630 , width: 400 , y: 630, x: 630};
 
 function set_zoom(arg, evt) {
     var zoom;
@@ -1364,6 +1364,7 @@ function set_zoom(arg, evt) {
     g_map.viewBox.baseVal.x = zoom.x;
     g_map.viewBox.baseVal.y = zoom.y;
     g_map.viewBox.baseVal.height = zoom.height;
+    g_map.viewBox.baseVal.width = zoom.width;
 }
 
 function show_message(msg, type) {
@@ -3293,6 +3294,7 @@ function init() {
     obj('map_resizer').addEventListener("mousedown", function(evt) { map_resizer_mousedown(evt); }, false);
     
     set_map_width(70 * window.innerWidth / 100.0);
+    set_zoom('world');
     set_flag_width(g_flag_width);
 }
 
