@@ -1281,6 +1281,16 @@ function polyData(poly){
 	return ret;
 }
 
+function get_total_bbox(a, b) {
+    var c = {};
+    c.x = Math.min(a.x, b.x);
+    c.y = Math.min(a.y, b.y);
+    c.width = Math.max(a.x + a.width, b.x + b.width) - c.x;
+    c.height = Math.max(a.y + a.height, b.y + b.height) - c.y;
+    
+    return c;
+}
+
 function shade_color(state, percent) {
     if(state.hover_color != undefined) return state.hover_color;
     var color = state.color;
@@ -1345,6 +1355,11 @@ var g_game_correct_nr, g_game_done_nr, g_game_total_nr, g_game_guess_nr, g_game_
 var g_filter_reg = {};
 var g_filter_fail_list = false;
 
+var g_use_polyData = false;
+var g_max_size_highlight = 0.04;
+
+var g_debug_bbox = false;
+
 var g_zoom = {};
 g_zoom.world       = {height: 1403, width: 2830, y: 60 , x: -53};
 g_zoom.compact     = {height: 1160, width: 2340, y: 100, x: 400};
@@ -1372,7 +1387,7 @@ function set_zoom(arg, evt) {
                 set_choice(undefined, 'filter_reg', 'none');
             }
         } else if(g_list[arg] != undefined) {
-            zoom = g_list[arg].map_bbox;
+            zoom = g_list[arg].map_vbox;
         } else {
             alert('Internal error 2: "' + arg + '"');
         }
@@ -1491,11 +1506,11 @@ function document_mouseup(evt)
 
 function on_map_paused_hover_add(obj, type, id, prop, state, suffix)
 {
+    var mw = g_map.viewBox.baseVal.width;
+    var mh = g_map.viewBox.baseVal.height;
+    var m_min = Math.min(mw, mh);
     function add_flashing_circle(o) {
-        var mw = g_map.viewBox.baseVal.width;
-        var mh = g_map.viewBox.baseVal.height;
-        var m_min = Math.min(mw, mh);
-        if(o.bbox.width > 0.05 * mw || o.bbox.height > 0.05 * mh) return;
+        if(o.bbox.width > g_max_size_highlight * mw || o.bbox.height > g_max_size_highlight * mh) return;
         var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         circ.setAttribute('cx', o.cent_x);
         circ.setAttribute('cy', o.cent_y);
@@ -1538,6 +1553,19 @@ function on_map_paused_hover_add(obj, type, id, prop, state, suffix)
         o.have_highlight = true;
     }
 
+    if(g_debug_bbox && g_list[id].disp_bbox != true) {
+        g_list[id].disp_bbox = true;
+        var o = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        o.setAttribute('x', g_list[id].map_bbox.x);
+        o.setAttribute('y', g_list[id].map_bbox.y);
+        o.setAttribute('width', g_list[id].map_bbox.width);
+        o.setAttribute('height', g_list[id].map_bbox.height);
+        o.style.fill = 'none';
+        o.style.stroke = '#ffffff';
+        o.style.strokeWidth = 2;
+        g_map.appendChild(o);
+        g_list[id].disp_bbox_obj = o;
+    }
     if(set_prop_hover.prev_prop == 'map') return;
     for(var i = 0; i < g_list[id].map_obj.length; i++) {
         if(g_list[id].map_obj[i].need_highlight && g_list[id].map_obj[i].have_highlight == false) add_flashing_circle(g_list[id].map_obj[i]);
@@ -1551,6 +1579,11 @@ function on_map_paused_hover_remove(obj, type, id, prop, state, suffix) {
             delete g_list[id].map_obj[i].obj_highlight;
             g_list[id].map_obj[i].have_highlight = false;
         }
+    }
+    if(g_debug_bbox && g_list[id].disp_bbox) {
+        g_list[id].disp_bbox = false;
+        g_list[id].disp_bbox_obj.parentNode.removeChild(g_list[id].disp_bbox_obj);
+        delete g_list[id].disp_bbox_obj;
     }
 }
 
@@ -1880,82 +1913,103 @@ function init_map(cc) {
     else node_list = g_map.getElementsByClassName(cc);
 
     g_list[cc].map_obj = [];
+    var allowed_tag = { circle: true, path: true };
     for(var i = 0, length = node_list.length; i < length; i++) {
         add_prop_events(node_list[i], 'map', cc);
 
-        if(node_list[i]['data-added'] == undefined) {
+        if(node_list[i]['data-added'] == undefined && node_list[i].tagName in allowed_tag) {
             g_list[cc].map_obj.push({obj: node_list[i]});
             node_list[i]['data-added'] = '1';
         }
-        var clist = node_list[i].getElementsByTagName('path');
-        for(var j = 0; j < clist.length; j++) {
-            if(clist[j]['data-added'] != undefined) continue;
-            g_list[cc].map_obj.push({obj: clist[j]});
-            clist[j]['data-added'] = '1';
-        }
-        var clist = node_list[i].getElementsByTagName('circle');
-        for(var j = 0; j < clist.length; j++) {
-            if(clist[j]['data-added'] != undefined) continue;
-            g_list[cc].map_obj.push({obj: clist[j]});
-            clist[j]['data-added'] = '1';
+        
+        for(tag in allowed_tag) {
+            var clist = node_list[i].getElementsByTagName(tag);
+            for(var j = 0; j < clist.length; j++) {
+                if(clist[j]['data-added'] != undefined) continue;
+                g_list[cc].map_obj.push({obj: clist[j]});
+                clist[j]['data-added'] = '1';
+            }
         }
     }
 
     for(var i = 0; i < g_list[cc].map_obj.length; i++) {
         var obj = g_list[cc].map_obj[i];
-        if(obj.obj.tagName == 'path') {
-            var d = polyData(pathToPolygon(obj.obj, 2));
-            obj.area = d.area;
-            obj.cent_x = d.cent_x;
-            obj.cent_y = d.cent_y;
-            obj.size = Math.sqrt(Math.abs(obj.area)/Math.PI);
-        } else if(obj.obj.tagName == 'circle') {
-            obj.area = obj.obj.r.baseVal.value * obj.obj.r.baseVal.value * Math.PI;
-            obj.cent_x = obj.obj.cx.baseVal.value;
-            obj.cent_y = obj.obj.cy.baseVal.value;
-            obj.size = obj.obj.r.baseVal.value;
+        obj.bbox = obj.obj.getBBox();
+        
+        if(g_use_polyData) {
+            if(obj.obj.tagName == 'path') {
+                var d = polyData(pathToPolygon(obj.obj, 2));
+                obj.area = Math.abs(d.area);
+                obj.cent_x = d.cent_x;
+                obj.cent_y = d.cent_y;
+                obj.size = 2*Math.sqrt(obj.area/Math.PI);
+            } else if(obj.obj.tagName == 'circle') {
+                obj.area = obj.obj.r.baseVal.value * obj.obj.r.baseVal.value * Math.PI;
+                obj.cent_x = obj.obj.cx.baseVal.value;
+                obj.cent_y = obj.obj.cy.baseVal.value;
+                obj.size = 2*obj.obj.r.baseVal.value;
+            } else {
+                alert('Internal error 23');
+            }
         } else {
-            obj.area = 0;
-            obj.cent_x = 0;
-            obj.cent_y = 0;
-            obj.size = 0;
+            obj.area = obj.bbox.width * obj.bbox.height;
+            obj.cent_x = obj.bbox.x + 0.5*obj.bbox.width;
+            obj.cent_y = obj.bbox.y + 0.5*obj.bbox.height;
+            obj.size = Math.sqrt(obj.area);
         }
     }
 
     // Sort with largest first
-    g_list[cc].map_obj.sort(function(a, b){return Math.abs(b.area) - Math.abs(a.area)});
+    g_list[cc].map_obj.sort(function(a, b){return b.size - a.size});
 
     // Remove objects with too small area
-    // A normal circle has area 114, a small circle 56
-    while(g_list[cc].map_obj.length && Math.abs(g_list[cc].map_obj[g_list[cc].map_obj.length - 1].area) < 28) {
+    // A normal circle has size 12, a small circle 8.5
+    while(g_list[cc].map_obj.length && g_list[cc].map_obj[g_list[cc].map_obj.length - 1].size < 7) {
         g_list[cc].map_obj.pop();
     }
     if(g_list[cc].map_obj.length == 0) alert(cc + ' has no area');
 
-    g_list[cc].map_bbox = g_list[cc].map_obj[0].obj.getBBox();
-    min_width = 150;
-    min_height = 150;
-    size_factor = 1.5;
-    new_width = Math.max(min_width, g_list[cc].map_bbox.width * size_factor);
-    new_height = Math.max(min_height, g_list[cc].map_bbox.height * size_factor);
-    g_list[cc].map_bbox.x -= 0.5 * (new_width - g_list[cc].map_bbox.width);
-    g_list[cc].map_bbox.y -= 0.5 * (new_height - g_list[cc].map_bbox.height);
-    g_list[cc].map_bbox.width = new_width;
-    g_list[cc].map_bbox.height = new_height;
+    // Calculate country bbox
+    g_list[cc].map_bbox = g_list[cc].map_obj[0].bbox;
+    for(var i = 1; i < g_list[cc].map_obj.length; i++) {
+        // Skip this part if sqrt((x2 - x1)^2 + (y2 - y1)^2) - 0.5*size_tot > C * size_part
+        var size_part = g_list[cc].map_obj[i].size;
+        var x1 = g_list[cc].map_bbox.x + 0.5*g_list[cc].map_bbox.width;
+        var y1 = g_list[cc].map_bbox.y + 0.5*g_list[cc].map_bbox.height;
+        var x2 = g_list[cc].map_obj[i].cent_x;
+        var y2 = g_list[cc].map_obj[i].cent_y;
+        var dist = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        var size_tot = Math.sqrt(g_list[cc].map_bbox.width * g_list[cc].map_bbox.height);
+        
+        if(dist - 0.5*size_tot > 8*size_part) continue;
+        
+        // Get bbox containing both bboxes
+        g_list[cc].map_bbox = get_total_bbox(g_list[cc].map_bbox, g_list[cc].map_obj[i].bbox);
+    }
+    
+    g_list[cc].map_vbox = {};
+    var min_width = 150;
+    var min_height = 150;
+    var size_factor = 1.5;
+    var new_width = Math.max(min_width, g_list[cc].map_bbox.width * size_factor);
+    var new_height = Math.max(min_height, g_list[cc].map_bbox.height * size_factor);
+    g_list[cc].map_vbox.x = g_list[cc].map_bbox.x - 0.5 * (new_width - g_list[cc].map_bbox.width);
+    g_list[cc].map_vbox.y = g_list[cc].map_bbox.y - 0.5 * (new_height - g_list[cc].map_bbox.height);
+    g_list[cc].map_vbox.width = new_width;
+    g_list[cc].map_vbox.height = new_height;
 
     var d = g_list[cc].map_obj;
     for(var i = 0; i < g_list[cc].map_obj.length; i++) {
         d[i].have_highlight = false;
-        d[i].bbox = d[i].obj.getBBox();
-        if(Math.abs(d[i].area) > 1000) {
+        if(d[i].bbox.width > g_max_size_highlight * g_zoom.world.width || d[i].bbox.height > g_max_size_highlight * g_zoom.world.height) {
             d[i].need_highlight = false;
             continue;
         }
 
         d[i].need_highlight = true;
         for(var j = 0; j < i; j++) {
-            // if (xj-xi)^2 + (yj-yi)^2 < (C*(rj + ri) + rc)^2
-            if(Math.pow(d[j].cent_x - d[i].cent_x, 2) + Math.pow(d[j].cent_y - d[i].cent_y, 2) < Math.pow(1.5*(d[j].size + d[i].size) + 50, 2)) {
+            var dist = Math.sqrt(Math.pow(d[j].cent_x - d[i].cent_x, 2) + Math.pow(d[j].cent_y - d[i].cent_y, 2));
+            if(dist - 0.5*d[j].size < 3.5 * d[i].size) {
                 d[i].need_highlight = false;
                 break;
             }
