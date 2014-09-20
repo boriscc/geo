@@ -1369,11 +1369,14 @@ g_zoom.Europa      = {height: 310 , width: 410 , y: 160, x: 1150};
 g_zoom.Nordamerika = {height: 550 , width: 710 , y: 160, x: 250};
 g_zoom.Oceanien    = {height: 560 , width: 630 , y: 620, x: 2100};
 g_zoom.Sydamerika  = {height: 630 , width: 400 , y: 630, x: 630};
+var g_zoom_cur = false;
 
 function set_zoom(arg, evt) {
     var zoom;
 
     if(typeof arg == 'string') {
+        if(g_zoom_cur == arg) return;
+        g_zoom_cur = arg;
         if(g_zoom[arg] != undefined) {
             zoom = g_zoom[arg];
             var i;
@@ -1501,6 +1504,71 @@ function document_mouseup(evt)
         g_map_resizer_moving = false;
         var off = get_object_offset(obj('map_container'));
         set_map_width(mouseX(evt) - off.x1, mouseY(evt) - off.y1);
+    }
+}
+
+function on_map_highlight_add(obj, type, id, prop, state, suffix)
+{
+    var mw = g_map.viewBox.baseVal.width;
+    var mh = g_map.viewBox.baseVal.height;
+    var m_min = Math.min(mw, mh);
+    function add_flashing_circle(o) {
+        if(o.bbox.width > g_max_size_highlight * mw || o.bbox.height > g_max_size_highlight * mh) return;
+        var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circ.setAttribute('cx', o.cent_x);
+        circ.setAttribute('cy', o.cent_y);
+        circ.setAttribute('r', Math.min(0.15 * m_min / 2, 70));
+        circ.style.fill = 'none';
+        circ.style.stroke = '#ffffff';
+        circ.style.strokeWidth = 0.03 * m_min / 2;
+        circ.addEventListener('mouseover', function(evt){evt.stopPropagation();}, false);
+        g_map.appendChild(circ);
+        var anim = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+        anim.setAttribute('attributeName', 'r');
+        anim.setAttribute('attributeType', 'XML');
+        anim.setAttribute('to', '0');
+        anim.setAttribute('begin', 'indefinite');
+        anim.setAttribute('dur', '1.0s');
+        anim.setAttribute('id', name + '_anim_r');
+        anim.setAttribute('repeatCount', '2');
+        var anim2 = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+        anim2.setAttribute('attributeName', 'opacity');
+        anim2.setAttribute('attributeType', 'XML');
+        anim2.setAttribute('from', '1');
+        anim2.setAttribute('to', '0');
+        anim2.setAttribute('begin', name + '_anim_r.end');
+        anim2.setAttribute('dur', '1.0s');
+        anim2.setAttribute('repeatCount', '1');
+        anim2.setAttribute('fill', 'freeze');
+        if(anim.classList == undefined) {
+            buggy_svg_classList.add(anim, name + '_anim');
+            buggy_svg_classList.add(anim2, name + '_anim');
+            buggy_svg_classList.add(circ, name + '_anim_' + id);
+        } else {
+            anim.classList.add(name + '_anim');
+            anim2.classList.add(name + '_anim');
+            circ.classList.add(name + '_anim_' + id);
+        }
+        circ.appendChild(anim);
+        circ.appendChild(anim2);
+        anim.beginElement();
+        o.obj_highlight = circ;
+        o.have_highlight = true;
+    }
+
+    set_zoom(id);
+    for(var i = 0; i < g_list[id].map_obj.length; i++) {
+        if(g_list[id].map_obj[i].need_highlight && g_list[id].map_obj[i].have_highlight == false) add_flashing_circle(g_list[id].map_obj[i]);
+    }
+}
+
+function on_map_highlight_remove(obj, type, id, prop, state, suffix) {
+    for(var i = 0; i < g_list[id].map_obj.length; i++) {
+        if(g_list[id].map_obj[i].have_highlight) {
+            g_list[id].map_obj[i].obj_highlight.parentNode.removeChild(g_list[id].map_obj[i].obj_highlight);
+            delete g_list[id].map_obj[i].obj_highlight;
+            g_list[id].map_obj[i].have_highlight = false;
+        }
     }
 }
 
@@ -2016,6 +2084,8 @@ function init_map(cc) {
         }
     }
 
+    g_list[cc].on_map_highlight_add = on_map_highlight_add;
+    g_list[cc].on_map_highlight_remove = on_map_highlight_remove;
     g_list[cc].on_map_paused_hover_add = on_map_paused_hover_add;
     g_list[cc].on_map_paused_hover_remove = on_map_paused_hover_remove;
     g_list[cc].on_map_paused_click = on_prop_paused_click;
