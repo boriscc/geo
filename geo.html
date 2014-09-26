@@ -1417,7 +1417,8 @@ function show_message(msg, type) {
 }
 
 function set_map_width(width, height) {
-    if(width == undefined || isNaN(width) || width <= 0) alert('Internal error 56.2');
+    if(width == undefined || isNaN(width)) alert('Internal error 56.2');
+    if(width <= 0) width = 1;
     if(height == undefined || isNaN(height) || height <= 0) height = width / 2;
     
     g_map.setAttribute("width", width);
