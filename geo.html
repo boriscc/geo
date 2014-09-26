@@ -436,7 +436,7 @@ div {
                 </div><div id="start_button" class="menu_button menu_button_disabled" onclick="toggle_game(event)">STARTA
                 </div><div id="game_status" class='removed' title="<antal gissningar> (<antal rätt>) / <totalt antal>">
                 </div><div id="message" title="Senaste statusmeddelandet"></div>
-            </div><div id="game_aid" title="Information om landet du ska gissa på nu">
+            </div><div id="game_aid" title="Information om landet du ska gissa på nu" onclick="game_aid_click(event)">
                 <img id="game_aid_flag" src="" height="30" />
                 <div>
                     <div style="display: block">
@@ -1660,10 +1660,29 @@ function on_map_paused_hover_remove(obj, type, id, prop, state, suffix) {
 function on_flag_paused_hover_add(o, type, id, prop, state, suffix) {
 }
 
+function on_flag_highlight_add(o, type, id, prop, state, suffix) {
+    highlight_flag(id);
+}
+
+function highlight_map(cc) {
+    set_zoom(cc);
+}
+
+function highlight_flag(cc) {
+    scrollSmooth(obj('flag'), obj('flag').scrollTop - obj('flag').getBoundingClientRect().top + obj('flag_' + cc).getBoundingClientRect().top, 250);
+}
+
 function on_prop_paused_click(o, type, id, prop, state, suffix) {
     if(g_prop[prop].unique) {
-        if(prop != 'flag') scrollSmooth(obj('flag'), obj('flag').scrollTop - obj('flag').getBoundingClientRect().top + obj('flag_' + id).getBoundingClientRect().top, 250);
-        set_zoom(id);
+        if(prop != 'flag') highlight_flag(id)
+        highlight_map(id);
+    }
+}
+
+function on_prop_highlight_click(o, type, id, prop, state, suffix) {
+    if(g_prop[prop].unique) {
+        if(prop != 'flag' && g_list[id].state.flag == 'highlight') highlight_flag(id);
+        if(g_list[id].state.map == 'highlight') highlight_map(id);
     }
 }
 
@@ -1777,6 +1796,25 @@ function document_mousemove(evt)
     set_map_resizer_pos(evt);
 }
 
+function game_aid_click(event)
+{
+    if(g_game_state == 'off' || game_done()) return;
+    if(g_game_mode != 'specific') return;
+    
+    cc = game_get_correct(g_game_done_nr).country_code;
+    for(prop in g_prop) {
+        if(g_prop[prop].unique == false) continue;
+        state = g_list[cc].state[prop];
+        if(state != 'highlight') continue;
+        
+        func_name = 'highlight_' + prop;
+        f = top[func_name];
+        if(f != undefined) f(cc);
+    }
+    
+    event.stopPropagation();
+}
+
 function map_click(event) {
     var cur = g_map.viewBox.baseVal;
     var set = {};
@@ -1820,11 +1858,10 @@ function prop_click(event, prop, id) {
             }
         }
 
-        if(g_game_state == 'off') {
-            if(g_prop[prop].unique) {
-                f = g_list[id]['on_' + prop + '_paused_click'];
-                if(f != undefined) f(event.currentTarget, 'click', id, prop, 'paused', '');
-            }
+        if(g_prop[prop].unique) {
+            state = g_list[id].state[prop];
+            f = g_list[id]['on_' + prop + '_' + state + '_click'];
+            if(f != undefined) f(event.currentTarget, 'click', id, prop, state, '');
         }
     }
     event.stopPropagation();
@@ -1974,6 +2011,8 @@ function init_flag(country_code) {
     add_prop_events(elem, 'flag', country_code);
     g_list[country_code].on_flag_paused_hover_add = on_flag_paused_hover_add;
     g_list[country_code].on_flag_paused_click = on_prop_paused_click;
+    g_list[country_code].on_flag_highlight_add = on_flag_highlight_add;
+    g_list[country_code].on_flag_highlight_click = on_prop_highlight_click;
 }
 
 function init_map(cc) {
@@ -2091,6 +2130,7 @@ function init_map(cc) {
     g_list[cc].on_map_paused_hover_add = on_map_paused_hover_add;
     g_list[cc].on_map_paused_hover_remove = on_map_paused_hover_remove;
     g_list[cc].on_map_paused_click = on_prop_paused_click;
+    g_list[cc].on_map_highlight_click = on_prop_highlight_click;
 }
 
 function set_state(id, prop, state) {
