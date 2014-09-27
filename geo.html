@@ -1801,7 +1801,7 @@ function game_aid_click(event)
     if(g_game_state == 'off' || game_done()) return;
     if(g_game_mode != 'specific') return;
     
-    cc = game_get_correct(g_game_done_nr).country_code;
+    cc = g_game_country_list[g_game_done_nr].country_code;
     for(prop in g_prop) {
         if(g_prop[prop].unique == false) continue;
         state = g_list[cc].state[prop];
@@ -2791,27 +2791,25 @@ function game_show_help() {
     }
 }
 
-function game_get_correct(id) {
+function game_get_correct(cc) {
     var correct, correct_disp;
     var prop = g_game_guess;
 
     if(g_prop[prop].type == 'text') {
-        correct_disp = decodeURIComponent(g_list[g_game_country_list[id].country_code][prop].replace(/_/g, ' '));
+        correct_disp = decodeURIComponent(g_list[cc][prop].replace(/_/g, ' '));
         correct = correct_disp.replace(/ /g, '_').toLowerCase();
     } else if(g_prop[prop].type == 'numeric') {
-        correct = g_list[g_game_country_list[id].country_code][prop];
+        correct = g_list[cc][prop];
         correct_disp = numberWithCommas(correct);
     } else if(g_prop[prop].type == 'image' || g_prop[prop].type == 'map') {
-        correct = g_game_country_list[id].country_code;
+        correct = cc;
     } else if(g_prop[prop].type == 'boolean') {
-        correct = g_list[g_game_country_list[id].country_code][prop];
+        correct = g_list[cc][prop];
     } else {
         alert('Internal error 55');
     }
 
-    var country_code = g_game_country_list[id].country_code;
-
-    return { country_code: country_code, val: correct, disp: correct_disp };
+    return { country_code: cc, val: correct, disp: correct_disp };
 }
 
 function game_guess_correctness(correct, guess, type) {
@@ -2866,7 +2864,7 @@ function make_guess(val) {
 
     if(g_game_mode == 'specific') {
         // Determine if the guess is correct
-        correct = game_get_correct(g_game_done_nr);
+        correct = game_get_correct(g_game_country_list[g_game_done_nr].country_code);
         correctness = game_guess_correctness(correct.val, val, g_prop[g_game_guess].type);
         if(correctness > 0 && correctness < 1) {
             if(g_prop[g_game_guess].type == 'text') {
@@ -2991,7 +2989,7 @@ function make_guess(val) {
         if(choice_get_id('setting_typo') != 'setting_typo_none' && g_prop[g_game_guess].type == 'text') {
             for(var i = 0; i < g_game_country_list.length; i++) {
                 var cc = g_game_country_list[i].country_code;
-                correct = game_get_correct(i);
+                correct = game_get_correct(g_game_country_list[i].country_code);
                 correctness = game_guess_correctness(correct.val, val, g_prop[g_game_guess].type);
                 if(g_list[cc].active && g_list[cc].done == false) {
                     if(correctness > max_active) {
@@ -3009,13 +3007,13 @@ function make_guess(val) {
                     is_correct = true;
                 }
                 correctness = max_active;
-                correct = game_get_correct(correct_id);
+                correct = game_get_correct(g_game_country_list[correct_id].country_code);
             }
         } else {
             for(var i = 0; i < g_game_country_list.length; i++) {
                 var cc = g_game_country_list[i].country_code;
                 if(g_list[cc].active && g_list[cc].done == false) {
-                    correct = game_get_correct(i);
+                    correct = game_get_correct(g_game_country_list[i].country_code);
                     correctness = game_guess_correctness(correct.val, val, g_prop[g_game_guess].type);
                     if(correctness == 1) {
                         correct_id = i;
@@ -3049,6 +3047,18 @@ function make_guess(val) {
                 show_message('Fel, försök igen!');
             } else {
                 show_message('Fel!');
+                if(g_game_guess == 'flag' || g_game_guess == 'map') {
+                    if(g_game_show_done) state = 'prev_wrong';
+                    else state = 'active';
+                    for(var prop2 in g_prop) {
+                        if(g_prop[prop2].show == false) continue;
+                        if(g_prop[prop2].unique) {
+                            window['set_state_' + prop2](val, state);
+                        } else {
+                            window['set_state_' + prop2](g_list[val].val_idx[prop2], 'active');
+                        }
+                    }
+                }
             }
         } else {
             if(g_prop[prop].type == 'text') {
