@@ -2716,8 +2716,13 @@ function update_map_hover() {
 }
 
 function game_done() {
-    return (g_game_guess_until_correct && g_game_done_nr == g_game_total_nr) ||
-           (g_game_guess_until_correct == false && g_game_guess_nr == g_game_total_nr - g_game_skip_nr);
+    if(g_game_mode == 'specific') {
+        return (g_game_guess_until_correct && g_game_done_nr == g_game_total_nr) ||
+               (g_game_guess_until_correct == false && g_game_guess_nr == g_game_total_nr - g_game_skip_nr);
+    } else {
+        return (g_game_guess_until_correct && g_game_done_nr == g_game_total_nr) ||
+               (g_game_guess_until_correct == false && g_game_done_nr == g_game_total_nr);
+    }
 }
 
 function game_show_results() {
