@@ -423,6 +423,10 @@ div {
 .removed {
     display: none !important;
 }
+
+#country_info_flag, #game_aid_flag {
+    position: fixed;
+}
         </style>
         <div id="main_menu" class="menu menu_active">
             <div id="menu_headers">
@@ -437,7 +441,8 @@ div {
                 </div><div id="game_status" class='removed' title="<antal gissningar> (<antal rätt>) / <totalt antal>">
                 </div><div id="message" title="Senaste statusmeddelandet"></div>
             </div><div id="game_aid" title="Information om landet du ska gissa på nu" onclick="game_aid_click(event)">
-                <img id="game_aid_flag" src="" height="30" />
+                <img id="game_aid_flag" src="" />
+                <div id="game_aid_flag_pad"></div>
                 <div>
                     <div style="display: block">
                         <div id="game_aid_name" class="game_aid_text"></div>
@@ -465,7 +470,8 @@ div {
                 /></div>
                 <input type="text" class="menu_tbox" id="guess_input" value="Gissningsruta" onfocus="if(this.value=='Gissningsruta') this.select()" onmouseup="return false" onkeyup="guess_text(event, this)" title="Skriv in svar här. Stora/små bokstäver spelar ingen roll. Använd knapparna ovan för att infoga specialbokstäver. Vilka stavfel som är tillåtna kan ställas in under 'Inställningar'. Numeriska svar kan skrivas in som t ex '10.000.000', '10 miljoner', '10000 tusen', '0,01 miljarder', '10M', '1e7'.">
             </div><div id="country_info">
-                <img id="country_info_flag" src="" height="30" />
+                <img id="country_info_flag" src="" />
+                <div id="country_info_flag_pad"></div>
                 <div>
                     <div style="display: block">
                         <div id="country_info_name" class="country_info_text"></div>
@@ -2276,6 +2282,10 @@ function set_flag_width(width) {
     for(key in g_list) {
         obj('flag_' + key).style.width = g_flag_width + "em";
     }
+    obj('game_aid_flag').style.width = g_flag_width + "em";
+    obj('country_info_flag').style.width = g_flag_width + "em";
+    obj('game_aid_flag_pad').style.width = g_flag_width + "em";
+    obj('country_info_flag_pad').style.width = g_flag_width + "em";
 }
 
 function get_key(evt) {
