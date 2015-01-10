@@ -2809,6 +2809,7 @@ function game_get_correct(cc) {
         correct = g_list[cc][prop];
         correct_disp = numberWithCommas(correct);
     } else if(g_prop[prop].type == 'image' || g_prop[prop].type == 'map') {
+        correct_disp = decodeURIComponent(g_list[cc].name.replace(/_/g, ' '));
         correct = cc;
     } else if(g_prop[prop].type == 'boolean') {
         correct = g_list[cc][prop];
