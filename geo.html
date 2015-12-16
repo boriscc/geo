@@ -1462,12 +1462,16 @@ function set_country_info(cc) {
             if(g_prop[prop].unique) {
                 if(g_prop[prop].type == 'image') {
                     obj('country_info_' + prop).src = 'data:image/png;base64,' + g_prop[prop].img_data[cc];
+                } else if(g_prop[prop].type == 'text') {
+                    obj('country_info_' + prop).innerHTML = g_list[cc].disp[prop].replace(/\|/g, ' ELLER ');
                 } else {
                     obj('country_info_' + prop).innerHTML = g_list[cc].disp[prop];
                 }
             } else {
                 if(g_prop[prop].type == 'image') {
                     obj('country_info_' + prop).src = 'data:image/png;base64,' + g_prop[prop].img_data[cc];
+                } else if(g_prop[prop].type == 'text') {
+                    obj('country_info_' + prop).innerHTML = g_list[cc].disp[prop].replace(/\|/g, ' ELLER ');
                 } else {
                     obj('country_info_' + prop).innerHTML = g_list[cc].disp[prop];
                 }
@@ -1918,17 +1922,17 @@ function init_text_numeric(prop, text, id) {
 }
 
 function init_cap(cc) {
-    init_text_numeric('cap', g_list[cc].disp.cap, cc);
+    init_text_numeric('cap', g_list[cc].disp.cap.replace(/\|/g, ' ELLER '), cc);
 }
 
 function init_reg(id) {
     var val = g_prop.reg.val[id];
-    init_text_numeric('reg', val.disp, val.idx);
+    init_text_numeric('reg', val.disp.replace(/\|/g, ' ELLER '), val.idx);
 }
 
 function init_gov(id) {
     var val = g_prop.gov.val[id];
-    init_text_numeric('gov', val.disp, val.idx);
+    init_text_numeric('gov', val.disp.replace(/\|/g, ' ELLER '), val.idx);
 }
 
 function init_lang_a(id) {
@@ -1997,7 +2001,7 @@ function init_rel_j(id) {
 }
 
 function init_name(cc) {
-    init_text_numeric('name', g_list[cc].disp.name, cc);
+    init_text_numeric('name', g_list[cc].disp.name.replace(/\|/g, ' ELLER '), cc);
 }
 
 function init_pop(id) {
@@ -2793,7 +2797,11 @@ function game_show_help() {
                     var val;
                     if(g_prop[prop].unique) val = g_list[cc].disp[prop];
                     else val = g_prop[prop].val[g_list[cc].val_idx[prop]].disp;
-                    obj('game_aid_' + prop).innerHTML = val;
+                    if(g_prop[prop].type == 'text') {
+                        obj('game_aid_' + prop).innerHTML = val.replace(/\|/g, ' ELLER ');
+                    } else {
+                        obj('game_aid_' + prop).innerHTML = val;
+                    }
                 }
             }
 
@@ -2813,8 +2821,8 @@ function game_get_correct(cc) {
     var prop = g_game_guess;
 
     if(g_prop[prop].type == 'text') {
-        correct_disp = decodeURIComponent(g_list[cc][prop].replace(/_/g, ' '));
-        correct = correct_disp.replace(/ /g, '_').toLowerCase();
+        correct_disp = decodeURIComponent(g_list[cc][prop].replace(/_/g, ' ').replace(/\|/g, ' ELLER '));
+        correct = decodeURIComponent(g_list[cc][prop]).toLowerCase();
     } else if(g_prop[prop].type == 'numeric') {
         correct = g_list[cc][prop];
         correct_disp = numberWithCommas(correct);
@@ -2833,24 +2841,34 @@ function game_get_correct(cc) {
 function game_guess_correctness(correct, guess, type) {
     if(type == 'map' || type == 'image') return 1 * (correct == guess);
     if(type == 'text') {
-        var typo = choice_get_id('setting_typo');
-        if(typo == 'setting_typo_none') return 1 * (correct == guess);
-        var err = levDist(correct, guess);
-        var len = correct.length;
-        var fact;
-        var min;
-        var tol;
-        if(typo == 'setting_typo_small') {
-            fact = 0.1;
-            min = 1;
-        } else if(typo == 'setting_typo_large') {
-            fact = 0.2;
-            min = 2;
-        } else alert('Internal error 22');
-        tol = parseInt(fact * len + 0.5);
-        if(tol < min) tol = min;
-        if(err > tol) return 0;
-        return (1 + (tol - err)) / (1 + tol);
+        list = correct.split('|');
+        var correct_max = 0;
+        for(var curk in list) {
+            cur = list[curk];
+            var typo = choice_get_id('setting_typo');
+            if(typo == 'setting_typo_none') {
+                if(guess == cur) correct_max = 1;
+            }
+            var err = levDist(cur, guess);
+            var len = correct.length;
+            var fact;
+            var min;
+            var tol;
+            if(typo == 'setting_typo_small') {
+                fact = 0.1;
+                min = 1;
+            } else if(typo == 'setting_typo_large') {
+                fact = 0.2;
+                min = 2;
+            } else alert('Internal error 22');
+            tol = parseInt(fact * len + 0.5);
+            if(tol < min) tol = min;
+            if(err <= tol) {
+                correct_cur = (1 + (tol - err)) / (1 + tol);
+                if(correct_cur > correct_max) correct_max = correct_cur;
+            }
+        }
+        return correct_max;
     } else if(type == 'numeric') {
         return 1 * (correct >= guess.min && correct <= guess.max);
     } else if(type == 'boolean') {
