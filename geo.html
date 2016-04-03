@@ -2848,6 +2848,7 @@ function game_guess_correctness(correct, guess, type) {
             var typo = choice_get_id('setting_typo');
             if(typo == 'setting_typo_none') {
                 if(guess == cur) correct_max = 1;
+                continue;
             }
             var err = levDist(cur, guess);
             var len = correct.length;
