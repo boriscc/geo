@@ -3771,7 +3771,7 @@ function init() {
                 var val = g_list[cc][prop];
 
                 if(g_prop[prop].val_to_idx[val] == undefined) {
-                    g_prop[prop].val.push({ idx: i, val: val, disp: val.replace(/_/g, ' ') });
+                    g_prop[prop].val.push({ idx: i, val: val, disp: decodeURIComponent(val.replace(/_/g, ' ')) });
                     g_prop[prop].val_to_idx[val] = i;
                     i++;
                 }
