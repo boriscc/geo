@@ -567,7 +567,8 @@ div {
                     <div id="country_info_gov" class="country_info_text"></div>
                 </div>
             </div>
-            <div id="filter_flagp_group">
+            <div id="filter_flagp_group" onclick="event.stopPropagation()">
+                <div id="filter_flagp_clear" class="menu_button" onclick="filter_flagp_clear_onclick(event)">Rensa</div>
                 <div id="filter_flagp_red" class="filter_flagp"></div>
                 <div id="filter_flagp_orange" class="filter_flagp"></div>
                 <div id="filter_flagp_yellow" class="filter_flagp"></div>
@@ -3631,6 +3632,14 @@ function filter_flagp_apply() {
         if(hide) obj('flag_' + cc).classList.add('flag_filtered_out');
         else obj('flag_' + cc).classList.remove('flag_filtered_out');
     }
+}
+
+function filter_flagp_clear_onclick(event) {
+    for(var prop in g_flag_prop) {
+        set_choice(undefined, 'filter_' + prop, 'none');
+    }
+
+    filter_flagp_apply();
 }
 
 function init() {
