@@ -463,6 +463,10 @@ div {
     overflow-y: scroll;
 }
 
+.flag_filtered_out {
+    display: none;
+}
+
 #map_resizer {
     position: absolute;
     width: 1em;
@@ -484,6 +488,25 @@ div {
 
 #country_info_flag, #game_aid_flag {
     position: fixed;
+}
+
+#filter_flagp_group {
+    float: right;
+}
+
+.filter_flagp {
+    width: 2em;
+}
+
+.filter_flagp_title {
+    display: block;
+}
+
+.filter_flagp_val {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 50%;
 }
         </style>
         <div id="main_menu" class="menu menu_active">
@@ -543,7 +566,19 @@ div {
                     <div class="country_info_header">Statsskick:</div>
                     <div id="country_info_gov" class="country_info_text"></div>
                 </div>
-            </div><div id="info_menu" class="menu" onclick="event.stopPropagation()">
+            </div>
+            <div id="filter_flagp_group">
+                <div id="filter_flagp_red" class="filter_flagp"></div>
+                <div id="filter_flagp_orange" class="filter_flagp"></div>
+                <div id="filter_flagp_yellow" class="filter_flagp"></div>
+                <div id="filter_flagp_green" class="filter_flagp"></div>
+                <div id="filter_flagp_blue" class="filter_flagp"></div>
+                <div id="filter_flagp_white" class="filter_flagp"></div>
+                <div id="filter_flagp_black" class="filter_flagp"></div>
+                <div id="filter_flagp_complex" class="filter_flagp"></div>
+                <div id="filter_flagp_straight" class="filter_flagp"></div>
+            </div>
+            <div id="info_menu" class="menu" onclick="event.stopPropagation()">
                 <div class="menu_header" onclick="toggle_menu(event, 'info', 'info_help_menu')">Hjälp
                 </div><div class="menu_header" onclick="toggle_menu(event, 'info', 'info_info_menu')">Info
                 </div><div class="menu_header" onclick="toggle_menu(event, 'info', 'info_sources_menu')">Källor
@@ -3575,6 +3610,29 @@ function set_prop_div_visibility() {
     }
 }
 
+function filter_flagp_apply() {
+    filter_list = {}
+    for(var prop in g_flag_prop) {
+        var id = choice_get_id('filter_' + prop);
+        if(id != undefined) {
+            var is_yes = (id.substring(id.length - 3, id.length) == 'yes');
+            filter_list[prop] = is_yes;
+        }
+    }
+    
+    for(var cc in g_list) {
+        var hide = false;
+        for(var filter in filter_list) {
+            if(g_list[cc][filter] != filter_list[filter]) {
+                hide = true;
+                break;
+            }
+        }
+        if(hide) obj('flag_' + cc).classList.add('flag_filtered_out');
+        else obj('flag_' + cc).classList.remove('flag_filtered_out');
+    }
+}
+
 function init() {
     // Initialize g_eng_to_cc, used to go from english name to cc (two-letter code)
     for(var cc in g_list) {
@@ -3804,6 +3862,36 @@ function init() {
                 alert('Internal error 26');
             }
         }
+    }
+
+    // Initialize flagp filter
+    for(var prop in g_flag_prop) {
+        // Create title
+        var elem = document.createElement('div');
+        elem.innerHTML = g_flag_prop[prop].disp.substring(2, 6);
+        elem.classList.add('filter_flagp_title');
+        elem.id = 'filter_' + prop + '_title';
+        obj('filter_' + prop).appendChild(elem);
+
+        // Create yes/no buttons
+        function create_click_set_choice(group_id, type) { return function(evt) { top.set_choice(evt, group_id, type); top.filter_flagp_apply(); }; }
+        var elem = document.createElement('div');
+        elem.classList.add('filter_flagp_val');
+        elem.classList.add('menu_choice');
+        elem.classList.add('filter_flagp_yes');
+        elem.innerHTML = 'J';
+        elem.id = 'filter_' + prop + '_yes';
+        elem.addEventListener("click", create_click_set_choice('filter_' + prop, 'one'), false);
+        obj('filter_' + prop).appendChild(elem);
+
+        var elem = document.createElement('div');
+        elem.classList.add('filter_flagp_val');
+        elem.classList.add('menu_choice');
+        elem.classList.add('filter_flagp_no');
+        elem.innerHTML = 'N';
+        elem.id = 'filter_' + prop + '_no';
+        elem.addEventListener("click", create_click_set_choice('filter_' + prop, 'one'), false);
+        obj('filter_' + prop).appendChild(elem);
     }
 
     set_country_sorting('name');
