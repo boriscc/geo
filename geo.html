@@ -509,6 +509,25 @@ div {
     flex-wrap: nowrap;
     width: 50%;
 }
+
+@keyframes flashing_circle_shrink {
+    100% { r: 0; }
+}
+
+@keyframes flashing_circle_fade {
+    100% { opacity: 0; }
+}
+
+.flashing_circle {
+    fill: none;
+    stroke: #ffffff;
+    animation-name: flashing_circle_shrink, flashing_circle_fade;
+    animation-duration: 1s, 1s;
+    animation-delay: 0s, 2s;
+    animation-timing-function: linear, linear;
+    animation-iteration-count: 2, 1;
+    animation-fill-mode: none, both;
+}
         </style>
         <div id="main_menu" class="menu menu_active">
             <div id="menu_headers">
@@ -1643,40 +1662,11 @@ function on_map_highlight_add(obj, type, id, prop, state, suffix)
         circ.setAttribute('cx', o.cent_x);
         circ.setAttribute('cy', o.cent_y);
         circ.setAttribute('r', Math.min(0.15 * m_min / 2, 70));
-        circ.style.fill = 'none';
-        circ.style.stroke = '#ffffff';
         circ.style.strokeWidth = 0.03 * m_min / 2;
         circ.addEventListener('mouseover', function(evt){evt.stopPropagation();}, false);
+        if(circ.classList == undefined) buggy_svg_classList(circ, 'flashing_circle');
+        else circ.classList.add('flashing_circle');
         g_map.appendChild(circ);
-        var anim = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
-        anim.setAttribute('attributeName', 'r');
-        anim.setAttribute('attributeType', 'XML');
-        anim.setAttribute('to', '0');
-        anim.setAttribute('begin', 'indefinite');
-        anim.setAttribute('dur', '1.0s');
-        anim.setAttribute('id', name + '_anim_r');
-        anim.setAttribute('repeatCount', '2');
-        var anim2 = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
-        anim2.setAttribute('attributeName', 'opacity');
-        anim2.setAttribute('attributeType', 'XML');
-        anim2.setAttribute('from', '1');
-        anim2.setAttribute('to', '0');
-        anim2.setAttribute('begin', name + '_anim_r.end');
-        anim2.setAttribute('dur', '1.0s');
-        anim2.setAttribute('repeatCount', '1');
-        anim2.setAttribute('fill', 'freeze');
-        if(anim.classList == undefined) {
-            buggy_svg_classList.add(anim, name + '_anim');
-            buggy_svg_classList.add(anim2, name + '_anim');
-            buggy_svg_classList.add(circ, name + '_anim_' + id);
-        } else {
-            anim.classList.add(name + '_anim');
-            anim2.classList.add(name + '_anim');
-            circ.classList.add(name + '_anim_' + id);
-        }
-        circ.appendChild(anim);
-        circ.appendChild(anim2);
-        anim.beginElement();
         o.obj_highlight = circ;
         o.have_highlight = true;
     }
@@ -1708,40 +1698,11 @@ function on_map_paused_hover_add(obj, type, id, prop, state, suffix)
         circ.setAttribute('cx', o.cent_x);
         circ.setAttribute('cy', o.cent_y);
         circ.setAttribute('r', Math.min(0.15 * m_min / 2, 70));
-        circ.style.fill = 'none';
-        circ.style.stroke = '#ffffff';
         circ.style.strokeWidth = 0.03 * m_min / 2;
         circ.addEventListener('mouseover', function(evt){evt.stopPropagation();}, false);
+        if(circ.classList == undefined) buggy_svg_classList(circ, 'flashing_circle');
+        else circ.classList.add('flashing_circle');
         g_map.appendChild(circ);
-        var anim = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
-        anim.setAttribute('attributeName', 'r');
-        anim.setAttribute('attributeType', 'XML');
-        anim.setAttribute('to', '0');
-        anim.setAttribute('begin', 'indefinite');
-        anim.setAttribute('dur', '1.0s');
-        anim.setAttribute('id', name + '_anim_r');
-        anim.setAttribute('repeatCount', '2');
-        var anim2 = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
-        anim2.setAttribute('attributeName', 'opacity');
-        anim2.setAttribute('attributeType', 'XML');
-        anim2.setAttribute('from', '1');
-        anim2.setAttribute('to', '0');
-        anim2.setAttribute('begin', name + '_anim_r.end');
-        anim2.setAttribute('dur', '1.0s');
-        anim2.setAttribute('repeatCount', '1');
-        anim2.setAttribute('fill', 'freeze');
-        if(anim.classList == undefined) {
-            buggy_svg_classList.add(anim, name + '_anim');
-            buggy_svg_classList.add(anim2, name + '_anim');
-            buggy_svg_classList.add(circ, name + '_anim_' + id);
-        } else {
-            anim.classList.add(name + '_anim');
-            anim2.classList.add(name + '_anim');
-            circ.classList.add(name + '_anim_' + id);
-        }
-        circ.appendChild(anim);
-        circ.appendChild(anim2);
-        anim.beginElement();
         o.obj_highlight = circ;
         o.have_highlight = true;
     }
