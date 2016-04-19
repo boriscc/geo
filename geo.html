@@ -519,8 +519,13 @@ div {
 }
 
 .flashing_circle {
+    display: none;
     fill: none;
     stroke: #ffffff;
+}
+
+.flashing_circle_animation {
+    display: inline;
     animation-name: flashing_circle_shrink, flashing_circle_fade;
     animation-duration: 1s, 1s;
     animation-delay: 0s, 2s;
@@ -1658,16 +1663,11 @@ function on_map_highlight_add(obj, type, id, prop, state, suffix)
     var m_min = Math.min(mw, mh);
     function add_flashing_circle(o) {
         if(o.bbox.width > g_max_size_highlight * mw || o.bbox.height > g_max_size_highlight * mh) return;
-        var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        circ.setAttribute('cx', o.cent_x);
-        circ.setAttribute('cy', o.cent_y);
+        var circ = o.obj_highlight;
         circ.setAttribute('r', Math.min(0.15 * m_min / 2, 70));
         circ.style.strokeWidth = 0.03 * m_min / 2;
-        circ.addEventListener('mouseover', function(evt){evt.stopPropagation();}, false);
-        if(circ.classList == undefined) buggy_svg_classList(circ, 'flashing_circle');
-        else circ.classList.add('flashing_circle');
-        g_map.appendChild(circ);
-        o.obj_highlight = circ;
+        if(circ.classList == undefined) buggy_svg_classList.add(circ, 'flashing_circle_animation');
+        else circ.classList.add('flashing_circle_animation');
         o.have_highlight = true;
     }
 
@@ -1682,8 +1682,9 @@ function on_map_highlight_remove(obj, type, id, prop, state, suffix) {
     for(var ii = 0; ii < g_list[id].map_obj_highlight_idx.length; ii++) {
         var i = g_list[id].map_obj_highlight_idx[ii];
         if(g_list[id].map_obj[i].have_highlight) {
-            g_list[id].map_obj[i].obj_highlight.parentNode.removeChild(g_list[id].map_obj[i].obj_highlight);
-            delete g_list[id].map_obj[i].obj_highlight;
+            var circ = g_list[id].map_obj[i].obj_highlight;
+            if(circ.classList == undefined) buggy_svg_classList.remove(circ, 'flashing_circle_animation');
+            else circ.classList.remove('flashing_circle_animation');
             g_list[id].map_obj[i].have_highlight = false;
         }
     }
@@ -1696,16 +1697,11 @@ function on_map_paused_hover_add(obj, type, id, prop, state, suffix)
     var m_min = Math.min(mw, mh);
     function add_flashing_circle(o) {
         if(o.bbox.width > g_max_size_highlight * mw || o.bbox.height > g_max_size_highlight * mh) return;
-        var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        circ.setAttribute('cx', o.cent_x);
-        circ.setAttribute('cy', o.cent_y);
+        var circ = o.obj_highlight;
         circ.setAttribute('r', Math.min(0.15 * m_min / 2, 70));
         circ.style.strokeWidth = 0.03 * m_min / 2;
-        circ.addEventListener('mouseover', function(evt){evt.stopPropagation();}, false);
-        if(circ.classList == undefined) buggy_svg_classList(circ, 'flashing_circle');
-        else circ.classList.add('flashing_circle');
-        g_map.appendChild(circ);
-        o.obj_highlight = circ;
+        if(circ.classList == undefined) buggy_svg_classList.add(circ, 'flashing_circle_animation');
+        else circ.classList.add('flashing_circle_animation');
         o.have_highlight = true;
     }
 
@@ -1733,8 +1729,9 @@ function on_map_paused_hover_remove(obj, type, id, prop, state, suffix) {
     for(var ii = 0; ii < g_list[id].map_obj_highlight_idx.length; ii++) {
         var i = g_list[id].map_obj_highlight_idx[ii];
         if(g_list[id].map_obj[i].have_highlight) {
-            g_list[id].map_obj[i].obj_highlight.parentNode.removeChild(g_list[id].map_obj[i].obj_highlight);
-            delete g_list[id].map_obj[i].obj_highlight;
+            var circ = g_list[id].map_obj[i].obj_highlight;
+            if(circ.classList == undefined) buggy_svg_classList.remove(circ, 'flashing_circle_animation');
+            else circ.classList.remove('flashing_circle_animation');
             g_list[id].map_obj[i].have_highlight = false;
         }
     }
@@ -2262,7 +2259,20 @@ function init_map(cc) {
                 break;
             }
         }
-        if(d[i].need_highlight) g_list[cc].map_obj_highlight_idx.push(i);
+        if(d[i].need_highlight) {
+            g_list[cc].map_obj_highlight_idx.push(i);
+
+            var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circ.setAttribute('cx', d[i].cent_x);
+            circ.setAttribute('cy', d[i].cent_y);
+            circ.addEventListener('mouseover', function(evt){evt.stopPropagation();}, false);
+            if(circ.classList == undefined) buggy_svg_classList(circ, 'flashing_circle');
+            else circ.classList.add('flashing_circle');
+            if(circ.classList == undefined) buggy_svg_classList(circ, 'flashing_circle_hidden');
+            else circ.classList.add('flashing_circle_hidden');
+            g_map.appendChild(circ);
+            d[i].obj_highlight = circ;
+        }
     }
 
     g_list[cc].on_map_highlight_add = on_map_highlight_add;
