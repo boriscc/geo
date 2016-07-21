@@ -594,6 +594,7 @@ div {
             </div>
             <div id="filter_flagp_group" onclick="event.stopPropagation()">
                 <div id="filter_flagp_clear" class="menu_button" onclick="filter_flagp_clear_onclick(event)">Rensa</div>
+                <div id="filter_flagp_nocol" class="menu_button" onclick="filter_flagp_no_color_onclick(event)">N färg</div>
                 <div id="filter_flagp_red" class="filter_flagp"></div>
                 <div id="filter_flagp_orange" class="filter_flagp"></div>
                 <div id="filter_flagp_yellow" class="filter_flagp"></div>
@@ -1453,15 +1454,15 @@ var g_rel_prop = { rel_c: { disp: 'Kristendom' },
                    rel_o: { disp: 'Övrig religion' },
                    rel_j: { disp: 'Judendom' } };
 
-var g_flag_prop = { flagp_red     : { disp: 'F-Röd' },
-                    flagp_orange  : { disp: 'F-Orange' },
-                    flagp_yellow  : { disp: 'F-Gul' },
-                    flagp_green   : { disp: 'F-Grön' },
-                    flagp_blue    : { disp: 'F-Blå' },
-                    flagp_white   : { disp: 'F-Vit' },
-                    flagp_black   : { disp: 'F-Svart' },
-                    flagp_complex : { disp: 'F-Komplex' },
-                    flagp_straight: { disp: 'F-Rak' } };
+var g_flag_prop = { flagp_red     : { disp: 'F-Röd', is_color: true },
+                    flagp_orange  : { disp: 'F-Orange', is_color: true },
+                    flagp_yellow  : { disp: 'F-Gul', is_color: true },
+                    flagp_green   : { disp: 'F-Grön', is_color: true },
+                    flagp_blue    : { disp: 'F-Blå', is_color: true },
+                    flagp_white   : { disp: 'F-Vit', is_color: true },
+                    flagp_black   : { disp: 'F-Svart', is_color: true },
+                    flagp_complex : { disp: 'F-Komplex', is_color: false },
+                    flagp_straight: { disp: 'F-Rak', is_color: false } };
 
 var g_prop = { cap : { disp_name: "Huvudstad" , unique: true , type: "text"    , show: false},
                reg : { disp_name: "Världsdel" , unique: false, type: "text"    , show: true },
@@ -3615,6 +3616,16 @@ function filter_flagp_apply() {
 function filter_flagp_clear_onclick(event) {
     for(var prop in g_flag_prop) {
         set_choice(undefined, 'filter_' + prop, 'none');
+    }
+
+    filter_flagp_apply();
+}
+
+function filter_flagp_no_color_onclick(event) {
+    for(var prop in g_flag_prop) {
+        if(!g_flag_prop[prop].is_color) continue;
+        set_choice(undefined, 'filter_' + prop, 'none');
+        set_choice({target: obj('filter_' + prop + '_no') }, 'filter_' + prop, 'one');
     }
 
     filter_flagp_apply();
